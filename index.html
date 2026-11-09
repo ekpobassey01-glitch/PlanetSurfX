@@ -1,54 +1,98 @@
 <!DOCTYPE html>
 <html>
 <head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>PlanetSurfX</title>
 <style>
-body{font-family:Arial;background:#f2f2f2;padding:20px}
-.card{background:white;padding:20px;border-radius:15px;margin-bottom:15px}
-h1{color:green;text-align:center}
-button{background:green;color:white;padding:12px;border:none;border-radius:10px;width:100%;font-size:16px}
-input{width:100%;padding:12px;margin:8px 0;border:1px solid #ccc;border-radius:10px}
-.on{color:green;font-weight:bold}
+*{box-sizing:border-box}
+body{font-family:Arial;margin:0;background:#f0f2f5;padding-bottom:30px}
+.top{background:#0a8a2a;color:white;padding:20px 16px 30px;text-align:center;border-radius:0 0 25px 25px}
+.logo{font-size:32px;font-weight:900;letter-spacing:1px}
+.logo span{color:#ffe600}
+.sub{font-size:13px;opacity:.9;margin-top:4px}
+.wrap{padding:14px;margin-top:-10px}
+.card{background:white;padding:16px;border-radius:18px;margin-bottom:14px;box-shadow:0 4px 14px rgba(0,0,0,.08)}
+h2{font-size:17px;margin:0 0 12px}
+input{width:100%;padding:13px;margin:6px 0;border:1px solid #ddd;border-radius:12px;font-size:15px}
+button{background:#0a8a2a;color:white;padding:14px;border:none;border-radius:12px;width:100%;font-size:16px;font-weight:bold}
+button:active{transform:scale(.98)}
+.green{background:#e8f8ec;color:#0a8a2a;padding:10px;border-radius:10px;font-weight:bold;font-size:14px}
+.ad{display:flex;gap:12px;align-items:center;background:#fafafa;padding:10px;border-radius:14px;margin-bottom:10px}
+.ad img{width:70px;height:70px;object-fit:cover;border-radius:12px}
+.ad b{font-size:15px}
+.ad p{margin:4px 0 0;font-size:13px;color:#555}
+.pin{background:#fff3cd;padding:6px 10px;border-radius:20px;font-weight:bold;font-size:13px}
+.row{display:flex;gap:10px;text-align:center}
+.box{flex:1;background:#f7f7f7;padding:12px;border-radius:14px}
+.box b{color:#0a8a2a}
+.small{font-size:12px;color:#777}
 </style>
 </head>
 <body>
 
-<h1>PlanetSurfX</h1>
+<div class="top">
+<div class="logo">🌍 Planet<span>SurfX</span></div>
+<div class="sub">Buy • Sell • Surf • Get Paid Fast</div>
+</div>
+
+<div class="wrap">
 
 <div class="card">
-<h2>1. Change Opay Account</h2>
+<h2>💳 1. Change Opay Account</h2>
 <input placeholder="Full Name on Opay">
 <input placeholder="Opay Phone Number">
 <input placeholder="Opay Account Number - 10 digits">
-<button onclick="alert('OTP sent to your new Opay number')">Verify & Continue</button>
+<button onclick="alert('OTP sent to your new Opay number')">Verify & Continue →</button>
 </div>
 
 <div class="card">
-<h2>2. Enter OTP</h2>
+<h2>🔐 2. Enter OTP</h2>
 <input placeholder="Enter 6-digit OTP">
 <button onclick="alert('Opay Account Changed Successfully!')">Verify OTP & Bind Account</button>
+<p class="small" style="text-align:center">Your Opay is locked to this device only.</p>
 </div>
 
 <div class="card">
-<h2>3. Money Notification</h2>
-<p><b>Money Received! 50000 just entered your Opay 0801***5678</b></p>
+<h2>🔔 3. Money Notification</h2>
+<div class="green">✅ Money Received! ₦50,000 just entered your Opay 0801***5678</div>
 </div>
 
 <div class="card">
-<h2>4. One PIN Per Advert</h2>
-<p>iPhone 13 Pro - PIN: <b>7419</b></p>
-<p>MacBook Air - PIN: <b>3820</b></p>
-<p>Toyota Camry - PIN: <b>9156</b></p>
-<p>Each advert has its own PIN. PIN works only on your one device.</p>
-<button onclick="alert('PIN Created & Bound to This Device.')">Show PIN Notification</button>
+<h2>📌 4. One PIN Per Advert</h2>
+
+<div class="ad">
+<img src="https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=200">
+<div><b>iPhone 13 Pro</b><p>₦850,000 • Lagos</p></div>
+<span class="pin">PIN: 7419</span>
+</div>
+
+<div class="ad">
+<img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=200">
+<div><b>MacBook Air M1</b><p>₦950,000 • Abuja</p></div>
+<span class="pin">PIN: 3820</span>
+</div>
+
+<div class="ad">
+<img src="https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?w=200">
+<div><b>Toyota Camry 2018</b><p>₦12,500,000 • Port Harcourt</p></div>
+<span class="pin">PIN: 9156</span>
+</div>
+
+<p class="small">Each advert has its own PIN. PIN works only on your one device.</p>
+<button onclick="alert('PIN Created & Bound to This Device. If this was not you, lock your account.')">Show PIN Notification</button>
 </div>
 
 <div class="card">
-<h2>5. Excellent Quality - All ON</h2>
-<p>Excellent Sound: <span class="on">ON - HD Audio</span></p>
-<p>Excellent Video: <span class="on">ON - Full HD 1080p</span></p>
-<p>Excellent Picture: <span class="on">ON - High Resolution, HDR</span></p>
+<h2>⭐ 5. Excellent Quality - All ON</h2>
+<div class="row">
+<div class="box">🎧<br><b>ON</b><br><span class="small">Excellent Sound<br>HD Audio</span></div>
+<div class="box">🎥<br><b>ON</b><br><span class="small">Excellent Video<br>Full HD 1080p</span></div>
+<div class="box">📸<br><b>ON</b><br><span class="small">Excellent Picture<br>HDR</span></div>
+</div>
 </div>
 
+<p style="text-align:center;color:#888;font-size:12px">© 2026 PlanetSurfX • Made in Nigeria</p>
+
+</div>
 </body>
 </html>
