@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>PlanetSurfX</title>
+<style>
+body{font-family:Arial;background:#f2f2f2;padding:20px}
+.card{background:white;padding:20px;border-radius:15px;margin-bottom:15px}
+h1{color:green;text-align:center}
+button{background:green;color:white;padding:12px;border:none;border-radius:10px;width:100%;font-size:16px}
+input{width:100%;padding:12px;margin:8px 0;border:1px solid #ccc;border-radius:10px}
+.on{color:green;font-weight:bold}
+</style>
+</head>
+<body>
+
+<h1>PlanetSurfX</h1>
+
+<div class="card">
+<h2>1. Change Opay Account</h2>
+<input placeholder="Full Name on Opay">
+<input placeholder="Opay Phone Number">
+<input placeholder="Opay Account Number - 10 digits">
+<button onclick="alert('OTP sent to your new Opay number')">Verify & Continue</button>
+</div>
+
+<div class="card">
+<h2>2. Enter OTP</h2>
+<input placeholder="Enter 6-digit OTP">
+<button onclick="alert('Opay Account Changed Successfully!')">Verify OTP & Bind Account</button>
+</div>
+
+<div class="card">
+<h2>3. Money Notification</h2>
+<p><b>Money Received! 50000 just entered your Opay 0801***5678</b></p>
+</div>
+
+<div class="card">
+<h2>4. One PIN Per Advert</h2>
+<p>iPhone 13 Pro - PIN: <b>7419</b></p>
+<p>MacBook Air - PIN: <b>3820</b></p>
+<p>Toyota Camry - PIN: <b>9156</b></p>
+<p>Each advert has its own PIN. PIN works only on your one device.</p>
+<button onclick="alert('PIN Created & Bound to This Device.')">Show PIN Notification</button>
+</div>
+
+<div class="card">
+<h2>5. Excellent Quality - All ON</h2>
+<p>Excellent Sound: <span class="on">ON - HD Audio</span></p>
+<p>Excellent Video: <span class="on">ON - Full HD 1080p</span></p>
+<p>Excellent Picture: <span class="on">ON - High Resolution, HDR</span></p>
+</div>
+
+</body>
+</html>
