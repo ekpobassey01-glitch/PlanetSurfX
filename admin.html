@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PlanetSurfX - Admin</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
+body{background:#0f172a;color:#fff;padding:15px}
+.card{background:#1e293b;border-radius:12px;padding:16px;margin-bottom:14px}
+input,button{width:100%;padding:13px;margin:6px 0;border-radius:8px;border:none;font-size:16px}
+button{background:#0a8a3a;color:#fff;font-weight:bold;cursor:pointer}
+.btn-red{background:#dc2626}.btn-grey{background:#475569}.btn-blue{background:#2563eb}
+h1{color:#22c55e}h2{margin-bottom:8px}.small{color:#94a3b8;font-size:13px}
+.stat{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:12px 0}
+.stat div{background:#0f172a;border:1px solid #334155;border-radius:10px;padding:12px;text-align:center}
+.item{background:#0f172a;border:1px solid #334155;border-radius:10px;padding:12px;margin:8px 0}
+.hidden{display:none}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+.tabs button{width:auto;padding:9px 14px;background:#334155}
+.tabs button.active{background:#0a8a3a}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="adminLogin" style="max-width:420px;margin:60px auto;text-align:center">
+  <h1>🌍 PlanetSurfX</h1>
+  <h2 style="margin:10px 0">Admin Only - Secret Page</h2>
+  <p class="small">This page is not linked on the main site. Only the owner should know it.</p>
+  <div class="card">
+    <input id="adminPass" type="password" placeholder="Enter Admin Password">
+    <button onclick="checkAdmin()">Enter Admin</button>
+    <p class="small" style="margin-top:8px">Demo password: PlanetAdmin2026<br>Change it in the code where it says ADMIN_PASSWORD</p>
+  </div>
+  <button class="btn-grey" onclick="location.href='index.html'">← Back to Main Site</button>
+</div>
+
+<!-- DASHBOARD -->
+<div id="adminDash" class="hidden" style="max-width:900px;margin:auto">
+  <div style="display:flex;justify-content:space-between;align-items:center">
+    <div><h1>Admin Dashboard</h1><p class="small">Welcome Boss. You control PlanetSurfX from here.</p></div>
+    <button style="width:auto;padding:10px 16px" class="btn-red" onclick="logoutAdmin()">Log Out</button>
+  </div>
+
+  <div class="stat">
+    <div><h2 id="statUsers">1</h2><span>Users</span></div>
+    <div><h2 id="statPosts">0</h2><span>Posts</span></div>
+    <div><h2 id="statProducts">0</h2><span>Products</span></div>
+  </div>
+
+  <div class="tabs">
+    <button id="tb-users" class="active" onclick="showA('users')">Users</button>
+    <button id="tb-posts" onclick="showA('posts')">Posts</button>
+    <button id="tb-products" onclick="showA('products')">Marketplace</button>
+    <button id="tb-settings" onclick="showA('settings')">Settings</button>
+  </div>
+
+  <div id="a-users" class="card"><h2>👥 Users</h2><div id="usersList"></div>
+    <input id="newUser" placeholder="Add user name manually"><button onclick="addUser()">+ Add User</button>
+    <p class="small">Note: This demo admin shows users saved on THIS phone. For real app with many phones, we need a real server/database later.</p>
+  </div>
+
+  <div id="a-posts" class="card hidden"><h2>📝 Posts - Delete Bad Posts</h2><div id="postsList"></div></div>
+
+  <div id="a-products" class="card hidden"><h2>🛍️ Marketplace - Remove Scam Products</h2><div id="productsList"></div></div>
+
+  <div id="a-settings" class="card hidden"><h2>⚙️ Settings</h2>
+    <p>App Name: PlanetSurfX</p><p>Admin Password: Change in code (search ADMIN_PASSWORD)</p><br>
+    <button class="btn-blue" onclick="alert('Settings saved (demo)')">Save Settings</button><br><br>
+    <button class="btn-red" onclick="resetAll()">⚠️ RESET ALL DATA - Delete everything</button>
+  </div>
+</div>
+
+<script>
+const ADMIN_PASSWORD = "PlanetAdmin2026";
+let posts = JSON.parse(localStorage.getItem('psx_posts')||'[]');
+let products = JSON.parse(localStorage.getItem('psx_products')||'[]');
+let userName = localStorage.getItem('psx_user')||'No user yet';
+
+function checkAdmin(){
+  if(document.getElementById('adminPass').value === ADMIN_PASSWORD){
+    document.getElementById('adminLogin').classList.add('hidden');
+    document.getElementById('adminDash').classList.remove('hidden');
+    renderAdmin();
+  } else { alert('Wrong password!'); }
+}
+function logoutAdmin(){ location.reload(); }
+function showA(t){
+  ['users','posts','products','settings'].forEach(x=>{
+    document.getElementById('a-'+x).classList.add('hidden');
+    document.getElementById('tb-'+x).classList.remove('active');
+  });
+  document.getElementById('a-'+t).classList.remove('hidden');
+  document.getElementById('tb-'+t).classList.add('active');
+}
+function renderAdmin(){
+  document.getElementById('statUsers').innerText = 1;
+  document.getElementById('statPosts').innerText = posts.length;
+  document.getElementById('statProducts').innerText = products.length;
+  document.getElementById('usersList').innerHTML = `<div class="item"><b>${userName}</b> - Owner / Main User <br><button class="btn-red" style="margin-top:8px" onclick="alert('You cannot block yourself, Boss!')">Block</button></div>`;
+  document.getElementById('postsList').innerHTML = posts.length ? posts.map((p,i)=>`<div class="item"><b>${p.name}</b>: ${p.text.substring(0,120)}<br><button class="btn-red" style="margin-top:8px" onclick="deletePost(${i})">Delete Post</button></div>`).join('') : '<p>No posts yet</p>';
+  document.getElementById('productsList').innerHTML = products.length ? products.map((p,i)=>`<div class="item"><b>${p.title}</b> - ₦${p.price.toLocaleString()}<br><button class="btn-red" style="margin-top:8px" onclick="deleteProduct(${i})">Remove Product</button></div>`).join('') : '<p>No products yet</p>';
+}
+function deletePost(i){ if(confirm('Delete this post?')){ posts.splice(i,1); localStorage.setItem('psx_posts', JSON.stringify(posts)); renderAdmin(); } }
+function deleteProduct(i){ if(confirm('Remove this product?')){ products.splice(i,1); localStorage.setItem('psx_products', JSON.stringify(products)); renderAdmin(); } }
+function addUser(){ let n=document.getElementById('newUser').value.trim(); if(!n) return; alert('User '+n+' added (demo)'); }
+function resetAll(){ if(confirm('Are you sure? This will delete ALL posts, products, balance on this phone.')){ localStorage.clear(); location.reload(); } }
+</script>
+</body>
+</html>
