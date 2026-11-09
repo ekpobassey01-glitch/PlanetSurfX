@@ -1,98 +1,219 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>PlanetSurfX</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PlanetSurfX - Connect, Buy, Sell, Surf</title>
 <style>
-*{box-sizing:border-box}
-body{font-family:Arial;margin:0;background:#f0f2f5;padding-bottom:30px}
-.top{background:#0a8a2a;color:white;padding:20px 16px 30px;text-align:center;border-radius:0 0 25px 25px}
-.logo{font-size:32px;font-weight:900;letter-spacing:1px}
-.logo span{color:#ffe600}
-.sub{font-size:13px;opacity:.9;margin-top:4px}
-.wrap{padding:14px;margin-top:-10px}
-.card{background:white;padding:16px;border-radius:18px;margin-bottom:14px;box-shadow:0 4px 14px rgba(0,0,0,.08)}
-h2{font-size:17px;margin:0 0 12px}
-input{width:100%;padding:13px;margin:6px 0;border:1px solid #ddd;border-radius:12px;font-size:15px}
-button{background:#0a8a2a;color:white;padding:14px;border:none;border-radius:12px;width:100%;font-size:16px;font-weight:bold}
-button:active{transform:scale(.98)}
-.green{background:#e8f8ec;color:#0a8a2a;padding:10px;border-radius:10px;font-weight:bold;font-size:14px}
-.ad{display:flex;gap:12px;align-items:center;background:#fafafa;padding:10px;border-radius:14px;margin-bottom:10px}
-.ad img{width:70px;height:70px;object-fit:cover;border-radius:12px}
-.ad b{font-size:15px}
-.ad p{margin:4px 0 0;font-size:13px;color:#555}
-.pin{background:#fff3cd;padding:6px 10px;border-radius:20px;font-weight:bold;font-size:13px}
-.row{display:flex;gap:10px;text-align:center}
-.box{flex:1;background:#f7f7f7;padding:12px;border-radius:14px}
-.box b{color:#0a8a2a}
-.small{font-size:12px;color:#777}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
+body{background:#f0f2f5}
+a{cursor:pointer}
+button{cursor:pointer;border:none}
+/* HEADER */
+.topbar{background:#fff;box-shadow:0 1px 5px rgba(0,0,0,.1);position:sticky;top:0;z-index:99;display:none;align-items:center;padding:8px 12px;gap:10px}
+.topbar h1{color:#0a8a3a;font-size:22px}
+.topbar input{flex:1;padding:9px 14px;border-radius:20px;border:none;background:#f0f2f5;outline:none}
+.topbar .icons span{background:#e4e6eb;padding:8px 10px;border-radius:50%;margin-left:5px}
+/* LAYOUT */
+.wrap{max-width:1100px;margin:15px auto;display:none;gap:15px;padding:0 10px;grid-template-columns:220px 1fr 280px}
+.card{background:#fff;border-radius:12px;padding:14px;box-shadow:0 1px 3px rgba(0,0,0,.1);margin-bottom:14px}
+/* LOGIN PAGE */
+#auth{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;background:#f0f2f5}
+.auth-inner{max-width:950px;display:grid;grid-template-columns:1.2fr 1fr;gap:30px;align-items:center;width:100%}
+.auth-inner h1{font-size:55px;color:#0a8a3a;line-height:1}
+.auth-inner p{font-size:22px;margin-top:10px;color:#333}
+.auth-box{background:#fff;padding:20px;border-radius:12px;box-shadow:0 2px 10px rgba(0,0,0,.15);text-align:center}
+.auth-box input{width:100%;padding:13px;margin:6px 0;border:1px solid #ddd;border-radius:8px;font-size:16px}
+.btn-green{background:#0a8a3a;color:#fff;padding:13px;width:100%;border-radius:8px;font-size:18px;font-weight:bold}
+.btn-blue{background:#1877f2;color:#fff;padding:12px 20px;border-radius:8px;font-weight:bold;margin-top:12px}
+.btn-light{background:#e4e6eb;padding:10px 16px;border-radius:8px;font-weight:bold}
+.small{font-size:13px;color:#666;margin-top:10px}
+/* FEED */
+.avatar{width:40px;height:40px;border-radius:50%;background:#0a8a3a;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:bold;flex-shrink:0}
+.post-head{display:flex;gap:10px;align-items:center}
+.post-img{width:100%;border-radius:10px;margin:10px 0;max-height:380px;object-fit:cover}
+.actions{display:flex;justify-content:space-between;border-top:1px solid #eee;padding-top:10px;color:#555;font-weight:bold}
+.actions span{cursor:pointer}
+.stories{display:flex;gap:10px;overflow:auto}
+.story{min-width:110px;height:180px;border-radius:12px;color:#fff;padding:10px;display:flex;align-items:flex-end;font-weight:bold;background-size:cover;background-position:center}
+.tabs{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+.tabs button{padding:9px 14px;border-radius:20px;background:#e4e6eb;font-weight:bold}
+.tabs button.active{background:#0a8a3a;color:#fff}
+.market-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.m-item{border:1px solid #eee;border-radius:12px;overflow:hidden}
+.m-item img{width:100%;height:140px;object-fit:cover}
+.m-item div{padding:10px}
+.price{color:#0a8a3a;font-weight:bold;font-size:18px}
+input,textarea,select{width:100%;padding:11px;margin:6px 0;border:1px solid #ddd;border-radius:8px}
+.hidden{display:none!important}
+@media(max-width:800px){.wrap{grid-template-columns:1fr}.left,.right{display:none}.auth-inner{grid-template-columns:1fr}.auth-inner h1{font-size:40px;text-align:center}.auth-inner p{text-align:center}}
 </style>
 </head>
 <body>
 
-<div class="top">
-<div class="logo">🌍 Planet<span>SurfX</span></div>
-<div class="sub">Buy • Sell • Surf • Get Paid Fast</div>
+<!-- ===== 1. FRONTPAGE / LOGIN LIKE FACEBOOK ===== -->
+<div id="auth">
+  <div class="auth-inner">
+    <div>
+      <h1>🌍 PlanetSurfX</h1>
+      <p>Connect with friends, buy & sell, and surf to earn — all in one place.</p>
+      <p style="font-size:16px;color:#555;margin-top:15px">✔ Social Feed &nbsp; ✔ Marketplace &nbsp; ✔ Wallet &nbsp; ✔ Surf to Earn</p>
+    </div>
+    <div class="auth-box">
+      <h2 style="margin-bottom:10px">Welcome to PlanetSurfX</h2>
+      <input id="loginName" placeholder="Full Name / Email / Phone">
+      <input id="loginPass" type="password" placeholder="Password">
+      <button class="btn-green" onclick="login()">Log In</button>
+      <div class="small">Forgotten password?</div>
+      <hr style="margin:15px 0">
+      <button class="btn-blue" onclick="signup()">Create New Account</button>
+      <div class="small">By continuing, you agree to PlanetSurfX terms. This is a demo frontpage — your account is saved on this phone.</div>
+    </div>
+  </div>
 </div>
 
-<div class="wrap">
-
-<div class="card">
-<h2>💳 1. Change Opay Account</h2>
-<input placeholder="Full Name on Opay">
-<input placeholder="Opay Phone Number">
-<input placeholder="Opay Account Number - 10 digits">
-<button onclick="alert('OTP sent to your new Opay number')">Verify & Continue →</button>
+<!-- ===== TOP BAR INSIDE APP ===== -->
+<div class="topbar" id="topbar">
+  <h1 onclick="showTab('feed')">🌍 PlanetSurfX</h1>
+  <input placeholder="🔍 Search friends, iPhone, MacBook, Camry...">
+  <div class="icons"><span onclick="showTab('feed')">🏠</span><span onclick="showTab('market')">🛍️</span><span onclick="showTab('wallet')">💰</span><span onclick="logout()">🚪</span></div>
 </div>
 
-<div class="card">
-<h2>🔐 2. Enter OTP</h2>
-<input placeholder="Enter 6-digit OTP">
-<button onclick="alert('Opay Account Changed Successfully!')">Verify OTP & Bind Account</button>
-<p class="small" style="text-align:center">Your Opay is locked to this device only.</p>
+<!-- ===== MAIN APP ===== -->
+<div class="wrap" id="app">
+  <!-- LEFT -->
+  <div class="left">
+    <div class="card">
+      <div class="post-head"><div class="avatar" id="myAvatar">P</div><div><b id="myName">Planet User</b><div style="font-size:13px;color:#666">View your profile</div></div></div>
+      <hr style="margin:12px 0">
+      <p onclick="showTab('feed')">🏠 <b>Feed</b></p><br>
+      <p onclick="showTab('market')">🛍️ <b>Marketplace</b></p><br>
+      <p onclick="showTab('wallet')">💰 <b>Wallet - Opay</b></p><br>
+      <p onclick="showTab('surf')">🌐 <b>Surf to Earn</b></p><br>
+      <p>👥 Friends</p><br><p>👥 Groups</p><br><p>⭐ Saved</p>
+    </div>
+    <div class="card"><b>Your Balance</b><h2 style="color:#0a8a3a" id="balanceText">₦0.00</h2><button class="btn-green" style="padding:10px;margin-top:8px" onclick="showTab('wallet')">Open Wallet</button></div>
+  </div>
+
+  <!-- CENTER -->
+  <div>
+    <div class="tabs">
+      <button id="t-feed" class="active" onclick="showTab('feed')">Feed</button>
+      <button id="t-market" onclick="showTab('market')">Marketplace</button>
+      <button id="t-wallet" onclick="showTab('wallet')">Wallet</button>
+      <button id="t-surf" onclick="showTab('surf')">Surf to Earn</button>
+      <button onclick="logout()">Log Out</button>
+    </div>
+
+    <!-- FEED TAB -->
+    <div id="tab-feed">
+      <div class="card"><div class="stories">
+        <div class="story" style="background-image:linear-gradient(rgba(0,0,0,.3),rgba(0,0,0,.3)),url('https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400')">+ Your Story</div>
+        <div class="story" style="background-image:url('https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=400')">Ada • iPhone</div>
+        <div class="story" style="background-image:url('https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=400')">Emeka • Laptop</div>
+        <div class="story" style="background-image:url('https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=400')">Tobi • Camry</div>
+      </div></div>
+      <div class="card">
+        <div class="post-head"><div class="avatar" id="postAvatar">P</div><input id="postText" placeholder="What's on your mind?"></div>
+        <input id="postImg" placeholder="Paste image link (optional)">
+        <button class="btn-green" style="margin-top:8px" onclick="addPost()">Post</button>
+      </div>
+      <div id="feedList"></div>
+    </div>
+
+    <!-- MARKETPLACE TAB -->
+    <div id="tab-market" class="hidden">
+      <div class="card"><h2>Marketplace</h2><p>Buy and sell in Agbor & everywhere</p><br>
+        <input id="mTitle" placeholder="What are you selling? e.g. iPhone 13">
+        <input id="mPrice" placeholder="Price e.g. 450000">
+        <input id="mImg" placeholder="Image link (optional)">
+        <button class="btn-green" onclick="addProduct()">+ List Product</button>
+      </div>
+      <div class="card"><div class="market-grid" id="marketList"></div></div>
+    </div>
+
+    <!-- WALLET TAB - OPAY INSIDE -->
+    <div id="tab-wallet" class="hidden">
+      <div class="card"><h2>💰 Wallet - Bind Opay</h2><p>This is inside the app, not the frontpage. Bind your Opay to receive money.</p><br>
+        <input id="opayName" placeholder="Full Name on Opay">
+        <input id="opayPhone" placeholder="Opay Phone Number">
+        <input id="opayAcct" placeholder="10-digit Opay Account Number">
+        <button class="btn-green" onclick="verifyOpay()">Verify & Continue</button>
+        <div id="otpBox" class="hidden" style="margin-top:12px"><input id="otpInput" placeholder="Enter 6-digit OTP (use 123456 for demo)"><button class="btn-blue" style="width:100%" onclick="verifyOTP()">Verify OTP & Bind Account</button></div>
+        <p id="walletMsg" style="margin-top:10px;font-weight:bold"></p>
+      </div>
+      <div class="card"><h3>Wallet Actions</h3><br><button class="btn-light" onclick="addMoney(5000)">+ Add ₦5,000 (Demo)</button> <button class="btn-light" onclick="withdraw()">Withdraw</button><p id="walletBalance" style="margin-top:10px"></p></div>
+    </div>
+
+    <!-- SURF TAB -->
+    <div id="tab-surf" class="hidden">
+      <div class="card"><h2>🌐 Surf to Earn</h2><p>Tap Surf, wait, earn. Your balance grows.</p><br>
+        <h1 id="surfBal" style="color:#0a8a3a">₦0.00</h1>
+        <button class="btn-green" onclick="surfEarn()">🌐 Start Surfing - Earn ₦50</button>
+        <p id="surfMsg" style="margin-top:10px"></p>
+        <div style="background:#eee;height:12px;border-radius:20px;margin-top:12px;overflow:hidden"><div id="surfBar" style="height:100%;width:0%;background:#0a8a3a"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT -->
+  <div class="right">
+    <div class="card"><b>Sponsored</b><br><br><img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=400" style="width:100%;border-radius:10px"><b>iPhone 13 - ₦450,000</b><p>Agbor, Delta</p><button class="btn-green" style="padding:9px;margin-top:8px" onclick="showTab('market')">Buy Now</button></div>
+    <div class="card"><b>People You May Know</b><br><br><p>👤 Ada Okonkwo - <button class="btn-light">Add Friend</button></p><br><p>👤 Emeka Eze - <button class="btn-light">Add Friend</button></p><br><p>👤 Tobi Adebayo - <button class="btn-light">Add Friend</button></p></div>
+    <div class="card"><b>Trending</b><p>#PlanetSurfX</p><p>#AgborMarket</p><p>#SurfToEarn</p></div>
+  </div>
 </div>
 
-<div class="card">
-<h2>🔔 3. Money Notification</h2>
-<div class="green">✅ Money Received! ₦50,000 just entered your Opay 0801***5678</div>
-</div>
-
-<div class="card">
-<h2>📌 4. One PIN Per Advert</h2>
-
-<div class="ad">
-<img src="https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=200">
-<div><b>iPhone 13 Pro</b><p>₦850,000 • Lagos</p></div>
-<span class="pin">PIN: 7419</span>
-</div>
-
-<div class="ad">
-<img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=200">
-<div><b>MacBook Air M1</b><p>₦950,000 • Abuja</p></div>
-<span class="pin">PIN: 3820</span>
-</div>
-
-<div class="ad">
-<img src="https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?w=200">
-<div><b>Toyota Camry 2018</b><p>₦12,500,000 • Port Harcourt</p></div>
-<span class="pin">PIN: 9156</span>
-</div>
-
-<p class="small">Each advert has its own PIN. PIN works only on your one device.</p>
-<button onclick="alert('PIN Created & Bound to This Device. If this was not you, lock your account.')">Show PIN Notification</button>
-</div>
-
-<div class="card">
-<h2>⭐ 5. Excellent Quality - All ON</h2>
-<div class="row">
-<div class="box">🎧<br><b>ON</b><br><span class="small">Excellent Sound<br>HD Audio</span></div>
-<div class="box">🎥<br><b>ON</b><br><span class="small">Excellent Video<br>Full HD 1080p</span></div>
-<div class="box">📸<br><b>ON</b><br><span class="small">Excellent Picture<br>HDR</span></div>
-</div>
-</div>
-
-<p style="text-align:center;color:#888;font-size:12px">© 2026 PlanetSurfX • Made in Nigeria</p>
-
-</div>
+<script>
+let balance = parseInt(localStorage.getItem('psx_bal')||'0');
+let userName = localStorage.getItem('psx_user')||'';
+let posts = JSON.parse(localStorage.getItem('psx_posts')||'null') || [
+  {name:'Ada Okonkwo', time:'2 hrs ago', text:'Just got iPhone 13 from PlanetSurfX Marketplace! Very clean, seller was honest. Agbor people, check it out! 🔥', img:'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800', likes:128, comments:['Emeka: How much?','Tobi: Congrats!']},
+  {name:'Emeka Eze', time:'5 hrs ago', text:'MacBook Pro 2021 for sale. Battery 92%. DM me. Serious buyers only.', img:'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=800', likes:89, comments:['Ada: Still available?']},
+  {name:'Tobi Adebayo', time:'8 hrs ago', text:'Toyota Camry 2019, very neat, Lagos cleared. Price negotiable. Who wants?', img:'https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=800', likes:204, comments:['Nice car!']}
+];
+let products = JSON.parse(localStorage.getItem('psx_products')||'null') || [
+  {title:'iPhone 13 - 128GB', price:450000, img:'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=600', loc:'Agbor'},
+  {title:'MacBook Pro 2021', price:850000, img:'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=600', loc:'Asaba'},
+  {title:'Toyota Camry 2019', price:8500000, img:'https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=600', loc:'Lagos'},
+  {title:'Headphones - New', price:35000, img:'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600', loc:'Agbor'}
+];
+function save(){localStorage.setItem('psx_bal',balance);localStorage.setItem('psx_posts',JSON.stringify(posts));localStorage.setItem('psx_products',JSON.stringify(products));updateBal();}
+function updateBal(){document.getElementById('balanceText').innerText='₦'+balance.toLocaleString()+'.00';document.getElementById('surfBal').innerText='₦'+balance.toLocaleString()+'.00';document.getElementById('walletBalance').innerText='Balance: ₦'+balance.toLocaleString();}
+function login(){
+  let n=document.getElementById('loginName').value.trim()||'Planet User';
+  userName=n; localStorage.setItem('psx_user',n);
+  document.getElementById('myName').innerText=n; document.getElementById('myAvatar').innerText=n[0].toUpperCase(); document.getElementById('postAvatar').innerText=n[0].toUpperCase();
+  document.getElementById('auth').style.display='none'; document.getElementById('topbar').style.display='flex'; document.getElementById('app').style.display='grid';
+  renderFeed(); renderMarket(); updateBal(); showTab('feed');
+}
+function signup(){ let n=document.getElementById('loginName').value.trim(); if(!n){alert('Type your name first');return;} alert('Welcome '+n+'! Account created. Now tap Log In.'); login(); }
+function logout(){ document.getElementById('auth').style.display='flex'; document.getElementById('topbar').style.display='none'; document.getElementById('app').style.display='none'; }
+function showTab(t){
+  ['feed','market','wallet','surf'].forEach(x=>{document.getElementById('tab-'+x).classList.add('hidden'); document.getElementById('t-'+x).classList.remove('active');});
+  document.getElementById('tab-'+t).classList.remove('hidden'); document.getElementById('t-'+t).classList.add('active');
+}
+function renderFeed(){
+  let h=''; posts.forEach((p,i)=>{
+    h+=`<div class="card"><div class="post-head"><div class="avatar">${p.name[0]}</div><div><b>${p.name}</b><div style="font-size:12px;color:#888">${p.time}</div></div></div><p style="margin:10px 0">${p.text}</p>${p.img?`<img class="post-img" src="${p.img}">`:''}<div class="actions"><span onclick="likePost(${i})">👍 Like (${p.likes})</span><span onclick="commentPost(${i})">💬 Comment (${p.comments.length})</span><span onclick="sharePost()">↗️ Share</span></div><div style="font-size:13px;color:#555;margin-top:8px">${p.comments.map(c=>'<div>💬 '+c+'</div>').join('')}</div></div>`;
+  }); document.getElementById('feedList').innerHTML=h;
+}
+function likePost(i){posts[i].likes++; save(); renderFeed();}
+function commentPost(i){let c=prompt('Write comment:'); if(c){posts[i].comments.push((userName||'You')+': '+c); save(); renderFeed();}}
+function sharePost(){alert('Post shared to your timeline!');}
+function addPost(){let t=document.getElementById('postText').value.trim(); if(!t){alert('Write something first');return;} let img=document.getElementById('postImg').value.trim(); posts.unshift({name:userName||'You', time:'Just now', text:t, img:img, likes:0, comments:[]}); save(); renderFeed(); document.getElementById('postText').value=''; document.getElementById('postImg').value='';}
+function renderMarket(){
+  document.getElementById('marketList').innerHTML=products.map(p=>`<div class="m-item"><img src="${p.img}"><div><b>${p.title}</b><div class="price">₦${p.price.toLocaleString()}</div><div style="font-size:13px;color:#888">${p.loc}</div><button class="btn-green" style="padding:8px;margin-top:6px" onclick="buyProduct('${p.title.replace(/'/g,'')}','${p.price}')">Buy Now</button></div></div>`).join('');
+}
+function addProduct(){let t=document.getElementById('mTitle').value.trim(); let pr=parseInt(document.getElementById('mPrice').value)||0; let img=document.getElementById('mImg').value.trim()||'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600'; if(!t){alert('Type product name');return;} products.unshift({title:t, price:pr, img:img, loc:'Agbor'}); save(); renderMarket(); alert('Product listed!');}
+function buyProduct(title,price){ if(confirm('Buy '+title+' for ₦'+parseInt(price).toLocaleString()+'?')){ alert('Order placed! Seller will contact you. Use Wallet to pay.'); showTab('wallet'); } }
+function verifyOpay(){let a=document.getElementById('opayAcct').value.trim(); if(a.length<10){alert('Enter 10-digit Opay number');return;} document.getElementById('otpBox').classList.remove('hidden'); document.getElementById('walletMsg').innerText='OTP sent to your Opay phone (demo: use 123456)';}
+function verifyOTP(){ if(document.getElementById('otpInput').value.trim()==='123456'){ document.getElementById('walletMsg').innerText='✅ Opay Account Bound Successfully! You can now receive money.'; } else alert('Wrong OTP. Demo OTP is 123456'); }
+function addMoney(v){balance+=v; save(); alert('₦'+v.toLocaleString()+' added (demo)');}
+function withdraw(){ if(balance<=0){alert('Balance is 0. Surf to earn first.');return;} alert('Withdraw ₦'+balance.toLocaleString()+' requested to your Opay!'); balance=0; save(); }
+function surfEarn(){ let bar=document.getElementById('surfBar'); let w=0; document.getElementById('surfMsg').innerText='Surfing... please wait...'; let iv=setInterval(()=>{w+=10; bar.style.width=w+'%'; if(w>=100){clearInterval(iv); balance+=50; save(); document.getElementById('surfMsg').innerText='✅ You earned ₦50! New balance: ₦'+balance.toLocaleString();}},200); }
+if(userName){ document.getElementById('loginName').value=userName; }
+updateBal();
+</script>
 </body>
 </html>
