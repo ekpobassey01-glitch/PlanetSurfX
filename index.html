@@ -223,5 +223,72 @@ setTimeout(()=>{
   }
 },1000);
 </script>
+<script>
+function ownerForceEnter(){
+  try{
+    let users=JSON.parse(localStorage.getItem("psx_users")||"[]");
+    let me=users.find(u=>u.username==="Fieldmarshal");
+    if(!me){
+      me={name:"Ekpo Bassey Bassey",username:"Fieldmarshal",email:"owner@planetsurfx.com",password:"owner1234",bio:"Owner of PlanetSurfX",location:"Port Harcourt",trust:100,badge:"👑 Owner",isAdmin:true,isOwner:true};
+      users.push(me);
+    }else{
+      me.isAdmin=true;me.isOwner=true;me.name="Ekpo Bassey Bassey";
+      users[users.findIndex(u=>u.username==="Fieldmarshal")]=me;
+    }
+    localStorage.setItem("psx_users",JSON.stringify(users));
+    localStorage.setItem("psx_me",JSON.stringify(me));
+    localStorage.setItem("psx_coins",JSON.stringify(1000));
+    document.getElementById("authScreen").classList.add("hidden");
+    document.getElementById("appScreen").classList.remove("hidden");
+    document.getElementById("mobileNav").classList.remove("hidden");
+    document.getElementById("logoutBtn").classList.remove("hidden");
+    if(typeof startApp==="function"){ startApp("admin"); }
+    else { setTimeout(()=>{ location.href=location.pathname+"?owner=1&v="+Date.now(); }, 500); }
+  }catch(e){
+    localStorage.setItem("psx_me",JSON.stringify({name:"Ekpo Bassey Bassey",username:"Fieldmarshal",isAdmin:true,isOwner:true}));
+    location.href=location.pathname+"?owner=1&v="+Date.now();
+  }
+}
+setTimeout(()=>{
+  let old=document.getElementById("ownerQuickBtn"); if(old) old.remove();
+  let box=document.querySelector(".authbox");
+  if(box && !document.getElementById("ownerForceBtn")){
+    let b=document.createElement("button");
+    b.id="ownerForceBtn"; b.type="button"; b.textContent="👑 TAP HERE TO ENTER AS OWNER";
+    b.style.cssText="width:100%;padding:16px;background:#00c853;color:#fff;font-weight:900;border-radius:12px;margin-top:12px;font-size:18px;border:0;cursor:pointer";
+    b.addEventListener("click", ownerForceEnter);
+    b.addEventListener("touchend", function(e){ e.preventDefault(); ownerForceEnter(); });
+    box.appendChild(b);
+  }
+  window.ownerQuickLogin = ownerForceEnter;
+  // PRIVACY - Hide Owner Bar everywhere except Admin page
+  let origOpen = window.openPage;
+  if(origOpen){
+    window.openPage = function(p){
+      origOpen(p);
+      let bar=document.getElementById("ownerBar");
+      if(bar){ bar.style.display = (p==="admin") ? "block" : "none"; }
+    };
+  }
+  // PRIVACY - Rooms show Fieldmarshal, not Owner
+  window.renderRoomMsgs = function(){
+    if(!currentRoom) return;
+    let list = roomMsgs[currentRoom]||[];
+    document.getElementById("roomMembers").textContent = "Members online: "+(5+list.length)+" • You: Fieldmarshal";
+    document.getElementById("roomMessages").innerHTML = list.length ? list.map((m,i)=>{
+      let displayName = (m.user==="Ekpo Bassey Bassey"||m.user==="Fieldmarshal") ? "Fieldmarshal" : m.user;
+      return "<div class='comment'><b>"+displayName+":</b> "+m.text+" <span class='muted'>"+(m.time||"")+"</span> <button onclick=\"deleteRoomMsg('"+currentRoom+"',"+i+")\" style='background:none;color:#e34c5c;font-size:11px'>🗑️</button></div>";
+    }).join("") : "<div class='empty'>No messages yet. Say hello! 👋</div>";
+    document.getElementById("roomMessages").scrollTop=9999;
+  };
+  window.sendRoomMsg = function(){
+    let inp=document.getElementById("roomInput");
+    let t=inp.value.trim(); if(!t||!currentRoom) return alert("Type a message");
+    roomMsgs[currentRoom]=roomMsgs[currentRoom]||[];
+    roomMsgs[currentRoom].push({user:"Fieldmarshal", text:t, time:new Date().toLocaleString()});
+    saveAll(); inp.value=""; renderRoomMsgs(); renderRooms();
+  };
+},800);
+</script>
 </body>
 </html>
