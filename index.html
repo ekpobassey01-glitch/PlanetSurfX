@@ -96,7 +96,6 @@ textarea{resize:vertical;min-height:85px}
   <button id="logoutBtn" class="hidden" onclick="logout()">Log out</button>
  </div>
 </header>
-
 <section id="authScreen" class="authwrap">
  <div class="authbox">
   <div class="authhero">
@@ -133,7 +132,6 @@ textarea{resize:vertical;min-height:85px}
   <p class="muted" style="text-align:center;margin-top:18px">By joining, you agree to use PlanetSurfX responsibly.</p>
  </div>
 </section>
-
 <div id="appScreen" class="hidden">
  <div class="shell">
   <aside class="sidebar panel">
@@ -156,14 +154,12 @@ textarea{resize:vertical;min-height:85px}
     <div class="section-title"><h2>World Feed</h2><button class="btn small secondary" onclick="loadFeed()">Refresh</button></div>
     <div id="feedList"><div class="loading">Loading your feed…</div></div>
    </section>
-
    <section id="page-friends" class="page hidden">
     <div class="card"><h2>Find and connect</h2><p class="muted">Send friend requests and build your community.</p><button class="btn" onclick="loadFriends()">Refresh friends</button></div>
     <div class="card"><h3>Friend requests</h3><div id="friendRequests"></div></div>
     <div class="card"><h3>Your friends</h3><div id="friendList"></div></div>
     <div class="card"><h3>Send a friend request</h3><input id="friendUserId" placeholder="Enter the user's ID"><button class="btn" onclick="sendFriendRequest()">Send request</button></div>
    </section>
-
    <section id="page-groups" class="page hidden">
     <div class="card"><h2>Groups & Communities</h2><p class="muted">Find your people. Build communities around shared interests.</p>
      <input id="groupName" placeholder="Community name">
@@ -173,7 +169,6 @@ textarea{resize:vertical;min-height:85px}
     <div class="card"><h3>Discover communities</h3><div id="groupList"></div></div>
     <div id="groupDetail" class="card hidden"></div>
    </section>
-
    <section id="page-stories" class="page hidden">
     <div class="card"><h2>Stories</h2><p class="muted">Share a short update with your community.</p>
      <textarea id="storyContent" placeholder="What would you like to share?"></textarea>
@@ -181,7 +176,6 @@ textarea{resize:vertical;min-height:85px}
     </div>
     <div class="card"><h3>Recent stories</h3><div id="storyList"></div></div>
    </section>
-
    <section id="page-reels" class="page hidden">
     <div class="card"><h2>PlanetSurfX Reels</h2><p class="muted">Discover short videos shared by the community.</p>
      <input id="reelCaption" placeholder="Video caption">
@@ -191,7 +185,6 @@ textarea{resize:vertical;min-height:85px}
     </div>
     <div id="reelList"></div>
    </section>
-
    <section id="page-chat" class="page hidden">
     <div class="card"><h2>Private messages</h2>
      <label>Conversation user ID</label><input id="chatUserId" placeholder="Enter the other user's ID">
@@ -202,7 +195,6 @@ textarea{resize:vertical;min-height:85px}
      <button class="btn" onclick="sendMessage()">Send message</button>
     </div>
    </section>
-
    <section id="page-market" class="page hidden">
     <div class="card"><h2>Marketplace</h2><p class="muted">Discover products and services from the community.</p>
      <input id="listingTitle" placeholder="Product or service title">
@@ -212,11 +204,9 @@ textarea{resize:vertical;min-height:85px}
     </div>
     <div class="card"><h3>Community listings</h3><div id="marketList"></div></div>
    </section>
-
    <section id="page-alerts" class="page hidden">
     <div class="card"><div class="section-title"><h2>Notifications</h2><button class="btn small secondary" onclick="readNotifications()">Mark all read</button></div><div id="notificationList"></div></div>
    </section>
-
    <section id="page-profile" class="page hidden">
     <div class="card">
      <div class="profile-cover"></div><div id="profileAvatar" class="avatar profile-avatar">P</div>
@@ -228,13 +218,11 @@ textarea{resize:vertical;min-height:85px}
      <button class="btn" onclick="saveProfile()">Save profile</button>
     </div>
    </section>
-
    <section id="page-admin" class="page hidden">
     <div class="card"><h2>Administration</h2><p class="muted">Platform overview and member management.</p><button class="btn" onclick="loadAdmin()">Refresh dashboard</button><div id="adminStats"></div></div>
     <div class="card"><h3>Members</h3><div id="adminUsers"></div></div>
    </section>
   </main>
-
   <aside class="rightcol">
    <div class="card"><h3>Welcome to PlanetSurfX 🌍</h3><p class="muted">A world of connections, ideas and opportunities.</p></div>
    <div class="card"><h3>Explore</h3>
@@ -246,7 +234,6 @@ textarea{resize:vertical;min-height:85px}
   </aside>
  </div>
 </div>
-
 <nav id="mobileNav" class="mobile-nav hidden">
  <button data-page="feed" onclick="openPage('feed')"><span>🏠</span>Feed</button>
  <button data-page="friends" onclick="openPage('friends')"><span>👥</span>Friends</button>
@@ -256,11 +243,17 @@ textarea{resize:vertical;min-height:85px}
  <button data-page="profile" onclick="openPage('profile')"><span>👤</span>Profile</button>
 </nav>
 <div class="footer">© <span id="year"></span> PlanetSurfX. Connect Beyond Borders.</div>
-
 <script>
 const API="https://planetsurfx.ekpobassey01.workers.dev";
 let token=localStorage.getItem("psx_token")||"";
 let me=null,activePage="feed",currentGroup=null;
+// ===== FIX: remember open comment boxes + comments locally =====
+let openComments=new Set(JSON.parse(localStorage.getItem("psx_open_comments")||"[]"));
+let commentCache=JSON.parse(localStorage.getItem("psx_comment_cache")||"{}");
+function saveCommentState(){
+  localStorage.setItem("psx_open_comments",JSON.stringify([...openComments]));
+  localStorage.setItem("psx_comment_cache",JSON.stringify(commentCache));
+}
 const $=id=>document.getElementById(id);
 const esc=value=>String(value??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const getId=o=>o?.id??o?.user_id??o?.userId??"";
@@ -329,13 +322,28 @@ function openPage(page){
  if(loaders[page])loaders[page]();
 }
 function arrayFrom(d,...keys){if(Array.isArray(d))return d;for(const k of keys)if(Array.isArray(d?.[k]))return d[k];return []}
+// ===== FIXED postCard: merges server comments + local cache, keeps box open =====
+function getCommentsForPost(p){
+  const id=String(getId(p));
+  const serverComments=arrayFrom(p.comments);
+  const cached=commentCache[id]||[];
+  // merge, avoid duplicates by content+author
+  const merged=[...serverComments];
+  cached.forEach(c=>{
+    if(!merged.some(m=>(m.content||m.text)===c.content && displayName(m)===displayName(c))) merged.push(c);
+  });
+  return merged;
+}
 function postCard(p){
- const id=getId(p),author=displayName(p),comments=arrayFrom(p.comments);
+ const id=String(getId(p)),author=displayName(p),comments=getCommentsForPost(p);
+ const serverCount=Number(p.comments_count||0);
+ const count=Math.max(serverCount, comments.length);
+ const isOpen=openComments.has(id);
  return `<article class="card"><div class="userline"><div class="avatar">${esc(author[0].toUpperCase())}</div><div><strong>${esc(author)}</strong><small>${esc(p.created_at||p.createdAt||"PlanetSurfX")}</small></div></div>
  <div class="posttext">${esc(p.content||p.text||"")}</div>
  ${p.image_url?`<img src="${esc(p.image_url)}" alt="Post image" style="width:100%;border-radius:12px;margin-top:10px">`:""}
- <div class="post-actions"><button onclick="likePost('${esc(id)}')">❤️ Like (${Number(p.likes_count||p.likes||0)})</button><button onclick="toggleComments('${esc(id)}')">💬 Comments (${Number(p.comments_count||comments.length)})</button>${String(p.user_id||p.author_id||"")===String(getId(me))?`<button onclick="deletePost('${esc(id)}')">🗑 Delete</button>`:""}</div>
- <div id="comments-${esc(id)}" class="commentbox hidden">${comments.map(c=>`<div class="comment"><strong>${esc(displayName(c))}:</strong> ${esc(c.content||c.text)}</div>`).join("")}<div class="commentform"><input id="commentInput-${esc(id)}" placeholder="Write a comment…"><button class="btn small" onclick="sendComment('${esc(id)}')">Send</button></div></div></article>`;
+ <div class="post-actions"><button onclick="likePost('${esc(id)}')">❤️ Like (${Number(p.likes_count||p.likes||0)})</button><button onclick="toggleComments('${esc(id)}')">💬 Comments (${count})</button>${String(p.user_id||p.author_id||"")===String(getId(me))?`<button onclick="deletePost('${esc(id)}')">🗑 Delete</button>`:""}</div>
+ <div id="comments-${esc(id)}" class="commentbox ${isOpen?"":"hidden"}">${comments.length?comments.map(c=>`<div class="comment"><strong>${esc(displayName(c))}:</strong> ${esc(c.content||c.text)}</div>`).join(""):`<div class="muted">No comments yet. Be the first.</div>`}<div class="commentform"><input id="commentInput-${esc(id)}" placeholder="Write a comment…"><button class="btn small" onclick="sendComment('${esc(id)}')">Send</button></div></div></article>`;
 }
 async function loadFeed(){
  $("feedList").innerHTML='<div class="loading">Loading posts…</div>';
@@ -348,11 +356,30 @@ async function createPost(){
  catch(e){alert(e.message)}
 }
 async function likePost(id){try{await api("/api/posts/"+encodeURIComponent(id)+"/like",{method:"POST",body:"{}"});loadFeed()}catch(e){alert(e.message)}}
-async function deletePost(id){if(!confirm("Delete this post?"))return;try{await api("/api/posts/"+encodeURIComponent(id),{method:"DELETE"});loadFeed()}catch(e){alert(e.message)}}
-function toggleComments(id){$("comments-"+id)?.classList.toggle("hidden")}
+async function deletePost(id){if(!confirm("Delete this post?"))return;try{await api("/api/posts/"+encodeURIComponent(id),{method:"DELETE"});delete commentCache[String(id)];openComments.delete(String(id));saveCommentState();loadFeed()}catch(e){alert(e.message)}}
+// ===== FIXED toggle + send: keep open, save locally FIRST =====
+function toggleComments(id){
+  id=String(id);
+  if(openComments.has(id)) openComments.delete(id); else openComments.add(id);
+  saveCommentState();
+  $("comments-"+id)?.classList.toggle("hidden");
+}
 async function sendComment(id){
+ id=String(id);
  const input=$("commentInput-"+id),content=input?.value.trim();if(!content)return;
- try{await api("/api/posts/"+encodeURIComponent(id)+"/comments",{method:"POST",body:JSON.stringify({content})});loadFeed()}catch(e){alert(e.message)}
+ // 1. SAVE LOCALLY FIRST - so it shows instantly even if server is slow / does not return comments
+ const myComment={content:content, full_name:displayName(me), username:me?.username||"", created_at:new Date().toISOString()};
+ if(!commentCache[id]) commentCache[id]=[];
+ commentCache[id].push(myComment);
+ openComments.add(id);
+ saveCommentState();
+ // 2. Re-render immediately - you will SEE Comments (1) + your comment, box stays open
+ loadFeed();
+ // 3. Then send to server in background
+ try{await api("/api/posts/"+encodeURIComponent(id)+"/comments",{method:"POST",body:JSON.stringify({content})});}
+ catch(e){alert("Comment saved on your phone, but server said: "+e.message)}
+ // 4. Final reload - cache keeps it visible even if server still returns 0
+ setTimeout(()=>loadFeed(),600);
 }
 async function sendFriendRequest(){
  const id=$("friendUserId").value.trim();if(!id)return alert("Enter a user ID.");
