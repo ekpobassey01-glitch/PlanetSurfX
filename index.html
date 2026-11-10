@@ -3,529 +3,164 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#0759c7">
 <title>PlanetSurfX — Connect Beyond Borders</title>
 <style>
-:root{--blue:#0759c7;--cyan:#00bde8;--navy:#102b52;--gold:#ffbd39;--bg:#f1f6fc;--white:#fff;--muted:#718096;--line:#e4ebf4;--green:#12a875;--red:#e34c5c}
-*{box-sizing:border-box}
-body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:#172b4d}
-button,input,textarea,select{font:inherit}
-button{cursor:pointer;border:0}
-.topbar{background:linear-gradient(110deg,#0645a5,#087fd2,#00b9d8);color:white;padding:13px 4%;display:flex;align-items:center;justify-content:space-between;gap:12px;position:sticky;top:0;z-index:20;box-shadow:0 3px 14px #1235}
-.brand{font-size:23px;font-weight:900;letter-spacing:-1px}.brand span{color:#ffe18a}
-.top-actions{display:flex;gap:8px;align-items:center}
-.top-actions button{background:#ffffff22;color:white;padding:9px 12px;border-radius:20px}
+:root{--blue:#0759c7;--gold:#ffbd39;--bg:#f1f6fc;--muted:#718096;--line:#e4ebf4;--green:#12a875;--red:#e34c5c}
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:var(--bg);color:#172b4d}
+button,input,textarea,select{font:inherit}button{cursor:pointer;border:0}
+.topbar{background:linear-gradient(110deg,#0645a5,#087fd2,#00b9d8);color:#fff;padding:13px 4%;display:flex;justify-content:space-between;position:sticky;top:0;z-index:20}
+.brand{font-size:23px;font-weight:900}.brand span{color:#ffe18a}
+.top-actions button{background:#ffffff22;color:#fff;padding:9px 12px;border-radius:20px}
 .shell{max-width:1400px;margin:auto;padding:18px;display:grid;grid-template-columns:220px minmax(0,650px) 260px;gap:18px}
-.panel,.card{background:white;border:1px solid var(--line);border-radius:16px;box-shadow:0 3px 14px #18365b0a}
+.panel,.card{background:#fff;border:1px solid var(--line);border-radius:16px}
 .sidebar{padding:12px;height:max-content;position:sticky;top:76px}
-.navbtn{display:flex;width:100%;align-items:center;gap:12px;padding:13px 12px;background:transparent;color:#334766;text-align:left;border-radius:11px;margin:2px 0;font-weight:700}
-.navbtn:hover,.navbtn.active{background:#eaf4ff;color:var(--blue)}
-.navicon{font-size:19px;width:23px;text-align:center}
-.main{min-width:0}
-.rightcol{display:flex;flex-direction:column;gap:14px}
-.card{padding:16px;margin-bottom:14px}
-h2,h3{margin:0 0 12px}
-h2{font-size:20px}h3{font-size:16px}
-.muted{color:var(--muted);font-size:13px}
-input,textarea,select{width:100%;padding:12px;border:1px solid #dce5f0;border-radius:10px;background:#fbfdff;outline:none;margin:5px 0 10px;color:#19304f}
-input:focus,textarea:focus{border-color:#1685df;box-shadow:0 0 0 3px #1685df18}
-textarea{resize:vertical;min-height:85px}
-.btn{padding:11px 16px;border-radius:10px;background:var(--blue);color:white;font-weight:700}
-.btn:hover{filter:brightness(1.08)}
-.btn.secondary{background:#eaf3ff;color:var(--blue)}
-.btn.gold{background:var(--gold);color:#453000}
-.btn.red{background:#fff0f1;color:var(--red)}
-.btn.small{padding:8px 11px;font-size:13px}
-.btn.full{width:100%}
-.row{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
-.between{justify-content:space-between}
-.avatar{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#0879d4,#00c4d7);color:white;font-weight:900;flex-shrink:0}
-.userline{display:flex;gap:10px;align-items:center;margin-bottom:12px}
-.userline strong{display:block}.userline small{color:var(--muted)}
-.posttext{line-height:1.6;white-space:pre-wrap;overflow-wrap:anywhere}
-.post-actions{display:flex;gap:7px;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:10px;margin-top:12px}
-.post-actions button{background:#f0f5fb;color:#3c5573;border-radius:9px;padding:8px 11px}
-.post-actions button:hover{background:#e2f0ff;color:var(--blue)}
-.authwrap{min-height:calc(100vh - 56px);display:grid;place-items:center;padding:20px;background:radial-gradient(circle at top left,#d5f7ff,transparent 40%),linear-gradient(135deg,#eaf2ff,#fff)}
-.authbox{width:min(100%,460px);background:white;border-radius:22px;padding:25px;box-shadow:0 15px 50px #174b8b20}
-.authhero{text-align:center;margin-bottom:20px}
-.authhero .biglogo{font-size:34px;font-weight:900;color:var(--blue)}
-.authhero p{color:var(--muted)}
-.tabs{display:flex;background:#edf4fb;padding:4px;border-radius:12px;margin-bottom:18px}
-.tabs button{flex:1;padding:10px 5px;background:transparent;border-radius:9px;color:#536984;font-weight:700}
-.tabs button.active{background:white;color:var(--blue);box-shadow:0 2px 7px #1232}
-.hidden{display:none!important}
-.section-title{display:flex;align-items:center;justify-content:space-between;margin:5px 0 14px}
-.storyrail{display:flex;gap:12px;overflow-x:auto;padding:3px 0 12px}
-.story{min-width:82px;height:115px;border-radius:14px;background:linear-gradient(150deg,#0874d5,#04c5d1);color:white;padding:9px;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden}
-.story strong{font-size:12px}.story small{font-size:11px}
-.story.add{background:linear-gradient(150deg,#ffbd39,#ff7c53);color:#422700;justify-content:center;align-items:center;text-align:center}
-.listitem{padding:12px 0;border-bottom:1px solid var(--line)}
-.listitem:last-child{border-bottom:0}
-.badge{font-size:11px;background:#e9f5ff;color:#0862b9;padding:4px 8px;border-radius:20px}
-.commentbox{margin-top:12px;padding-top:10px;border-top:1px solid var(--line)}
-.comment{padding:8px 10px;background:#f4f7fb;border-radius:10px;margin:6px 0;font-size:13px}
-.commentform{display:flex;gap:7px}.commentform input{margin:0}
-.empty{text-align:center;color:var(--muted);padding:24px 8px}
-.reel{border-radius:14px;background:#142b48;color:white;padding:18px;margin:10px 0;overflow-wrap:anywhere}
-.reel a{color:#9ee8ff}
-.mobile-nav{display:none}
-.notice{padding:11px 13px;border-radius:10px;margin:10px 0;font-size:13px;background:#e9f7ff;color:#0759a8}
-.notice.error{background:#fff0f1;color:#b52d40}
-.notice.success{background:#e8fff5;color:#08784f}
-.loading{padding:20px;text-align:center;color:var(--muted)}
-.profile-cover{height:100px;border-radius:12px;background:linear-gradient(110deg,#0645a5,#00bfd1);margin-bottom:-28px}
-.profile-avatar{width:66px;height:66px;border:4px solid white;font-size:23px;position:relative;margin-left:14px}
-.footer{text-align:center;color:#91a0b3;font-size:12px;padding:18px}
-/* FIX: mobile chips + dashboard grid - so nothing is hidden on phone */
-.mobile-chips{display:none;gap:8px;overflow-x:auto;padding:8px 0;white-space:nowrap}
-.mobile-chips button{background:#fff;border:1px solid var(--line);padding:9px 14px;border-radius:20px;font-weight:700;white-space:nowrap}
-.mobile-chips button.active{background:var(--blue);color:#fff}
-.dash-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.dash-grid button{background:#f0f5fb;border:1px solid var(--line);border-radius:14px;padding:16px 8px;text-align:center;font-weight:700}
-.dash-grid button span{font-size:26px;display:block}
-@media(max-width:1050px){.shell{grid-template-columns:190px minmax(0,1fr)} /* FIX: keep rightcol visible, move it below on tablet */
-  .rightcol{display:flex}}
-@media(max-width:700px){
- .shell{display:block;padding:10px 10px 95px}
- /* FIX: sidebar becomes horizontal chips on phone, NOT display:none */
- .sidebar{display:block;position:static;padding:8px;margin-bottom:10px;overflow:auto}
- .sidebar .navbtn{display:inline-flex;width:auto;padding:9px 13px;margin:2px}
- .sidebar hr,.sidebar .muted,.sidebar p{display:none}
- .topbar{padding:12px}.brand{font-size:20px}
- .top-actions button{padding:8px}
- .mobile-chips{display:flex}
- /* FIX: bottom nav scrollable with ALL pages, not just 6 */
- .mobile-nav{display:flex;position:fixed;bottom:0;left:0;right:0;background:white;border-top:1px solid var(--line);z-index:30;justify-content:flex-start;overflow-x:auto;padding:7px 2px calc(7px + env(safe-area-inset-bottom))}
- .mobile-nav button{background:transparent;color:#60748d;font-size:10px;display:flex;flex-direction:column;align-items:center;gap:3px;min-width:62px;flex-shrink:0}
- .mobile-nav button span{font-size:20px}.mobile-nav button.active{color:var(--blue);font-weight:bold}
- .card{padding:13px}.authbox{padding:20px}
- /* FIX: rightcol shows on phone as cards after main */
- .rightcol{display:flex;margin-top:10px}
-}
+.navbtn{display:flex;width:100%;gap:12px;padding:13px 12px;background:transparent;color:#334766;text-align:left;border-radius:11px;font-weight:700}
+.navbtn.active,.navbtn:hover{background:#eaf4ff;color:var(--blue)}
+.main{min-width:0}.rightcol{display:flex;flex-direction:column;gap:14px}
+.card{padding:16px;margin-bottom:14px}h2,h3{margin:0 0 12px}.muted{color:var(--muted);font-size:13px}
+input,textarea,select{width:100%;padding:12px;border:1px solid #dce5f0;border-radius:10px;margin:5px 0 10px}
+textarea{min-height:85px}.btn{padding:11px 16px;border-radius:10px;background:var(--blue);color:#fff;font-weight:700}
+.btn.secondary{background:#eaf3ff;color:var(--blue)}.btn.gold{background:var(--gold);color:#453000}.btn.green{background:var(--green);color:#fff}.btn.red{background:#fff0f1;color:var(--red)}.btn.small{padding:8px 11px;font-size:13px}.btn.full{width:100%}
+.row{display:flex;gap:9px;flex-wrap:wrap;align-items:center}.between{justify-content:space-between}
+.avatar{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#0879d4,#00c4d7);color:#fff;font-weight:900}
+.userline{display:flex;gap:10px;align-items:center;margin-bottom:12px}.posttext{line-height:1.6;white-space:pre-wrap;overflow-wrap:anywhere}
+.post-actions{display:flex;gap:7px;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:10px;margin-top:12px}.post-actions button{background:#f0f5fb;padding:8px 11px;border-radius:9px}
+.authwrap{min-height:100vh;display:grid;place-items:center;padding:20px}.authbox{width:min(100%,460px);background:#fff;border-radius:22px;padding:25px;box-shadow:0 15px 50px #174b8b20}
+.tabs{display:flex;background:#edf4fb;padding:4px;border-radius:12px;margin-bottom:18px}.tabs button{flex:1;padding:10px;background:transparent;border-radius:9px;font-weight:700}.tabs button.active{background:#fff;color:var(--blue)}
+.hidden{display:none!important}.storyrail{display:flex;gap:12px;overflow-x:auto}.story{min-width:82px;height:115px;border-radius:14px;background:linear-gradient(150deg,#0874d5,#04c5d1);color:#fff;padding:9px;display:flex;flex-direction:column;justify-content:space-between}
+.listitem{padding:12px 0;border-bottom:1px solid var(--line)}.badge{font-size:11px;background:#e9f5ff;color:#0862b9;padding:4px 8px;border-radius:20px}
+.commentbox{margin-top:12px;padding-top:10px;border-top:1px solid var(--line)}.comment{padding:8px 10px;background:#f4f7fb;border-radius:10px;margin:6px 0;font-size:13px}.commentform{display:flex;gap:7px}.commentform input{margin:0}
+.empty{text-align:center;color:var(--muted);padding:24px}.reel{border-radius:14px;background:#142b48;color:#fff;padding:18px;margin:10px 0}.reel a{color:#9ee8ff}
+.mobile-nav{display:none}.notice{padding:11px;border-radius:10px;margin:10px 0;font-size:13px;background:#e9f7ff;color:#0759a8}.notice.error{background:#fff0f1;color:#b52d40}.notice.success{background:#e8fff5;color:#08784f}
+.profile-cover{height:100px;border-radius:12px;background:linear-gradient(110deg,#0645a5,#00bfd1);margin-bottom:-28px}.profile-avatar{width:66px;height:66px;border:4px solid #fff;font-size:23px;margin-left:14px}
+.footer{text-align:center;color:#91a0b3;font-size:12px;padding:18px}.mobile-chips{display:none;gap:8px;overflow-x:auto}.mobile-chips button{background:#fff;border:1px solid var(--line);padding:9px 14px;border-radius:20px;font-weight:700}
+.dash-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.dash-grid button{background:#f0f5fb;border:1px solid var(--line);border-radius:14px;padding:16px 8px;font-weight:700}.dash-grid button span{font-size:26px;display:block}
+.emoji-bar{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0}.emoji-bar button{background:#f0f5fb;padding:8px 10px;border-radius:10px;font-size:18px}
+.paybox{background:#fff7e6;border:1px solid #ffe18a;border-radius:14px;padding:14px}.lock{font-size:12px;color:#08784f;background:#e8fff5;padding:4px 8px;border-radius:20px}.coin{font-size:12px;color:#453000;background:#fff7e6;padding:4px 8px;border-radius:20px;font-weight:700}.livebox{background:#1a0f2e;color:#fff;border-radius:14px;padding:16px}
+@media(max-width:700px){.shell{display:block;padding:10px 10px 95px}.sidebar{display:block;position:static;overflow:auto}.sidebar .navbtn{display:inline-flex;width:auto}.sidebar hr,.sidebar .muted,.sidebar p{display:none}.mobile-chips{display:flex}.mobile-nav{display:flex;position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--line);z-index:30;overflow-x:auto;padding:7px 2px}.mobile-nav button{background:transparent;color:#60748d;font-size:10px;display:flex;flex-direction:column;align-items:center;gap:3px;min-width:62px}.mobile-nav button span{font-size:20px}.mobile-nav button.active{color:var(--blue)}.card{padding:13px}.rightcol{margin-top:10px}}
 </style>
 </head>
 <body>
-<header class="topbar">
- <div class="brand">Planet<span>Surf</span>X 🌍</div>
- <div class="top-actions">
-  <span id="topUser" class="muted" style="color:white"></span>
-  <button id="logoutBtn" class="hidden" onclick="logout()">Log out</button>
- </div>
-</header>
-<section id="authScreen" class="authwrap">
- <div class="authbox">
-  <div class="authhero">
-   <div class="biglogo">PlanetSurfX 🌍</div>
-   <h2>Connect Beyond Borders</h2>
-   <p>Meet people. Share ideas. Discover your world.</p>
-  </div>
-  <div class="tabs">
-   <button id="tabLogin" class="active" onclick="showAuth('login')">Sign in</button>
-   <button id="tabRegister" onclick="showAuth('register')">Join PlanetSurfX</button>
-   <button id="tabAdmin" onclick="showAuth('admin')">Admin</button>
-  </div>
-  <div id="authMessage"></div>
-  <form id="loginForm">
-   <h3>Welcome back!</h3>
-   <label>Username</label><input id="loginUsername" required autocomplete="username" placeholder="Your username">
-   <label>Password</label><input id="loginPassword" type="password" required autocomplete="current-password" placeholder="Your password">
-   <button class="btn full">Sign in</button>
-  </form>
-  <form id="registerForm" class="hidden">
-   <h3>Create your free account</h3>
-   <label>Full name</label><input id="regFullName" required placeholder="Your full name">
-   <label>Username</label><input id="regUsername" required minlength="3" maxlength="30" placeholder="Choose a username">
-   <label>Email (optional)</label><input id="regEmail" type="email" placeholder="Email address">
-   <label>Password</label><input id="regPassword" type="password" required minlength="8" placeholder="At least 8 characters">
-   <button class="btn full">Create account</button>
-  </form>
-  <form id="adminForm" class="hidden">
-   <h3>Administrator sign in</h3>
-   <label>Admin username</label><input id="adminUsername" required>
-   <label>Password</label><input id="adminPassword" type="password" required>
-   <button class="btn full">Admin sign in</button>
-  </form>
-  <p class="muted" style="text-align:center;margin-top:18px">By joining, you agree to use PlanetSurfX responsibly.</p>
- </div>
-</section>
-<div id="appScreen" class="hidden">
- <!-- FIX: Mobile chips - all pages visible on phone -->
- <div class="mobile-chips" id="mobileChips"></div>
- <div class="shell">
-  <aside class="sidebar panel">
-   <div class="navlist"></div>
-   <hr style="border:0;border-top:1px solid var(--line);margin:12px 0">
-   <div class="muted">PlanetSurfX</div>
-   <p class="muted">Connect • Share • Discover</p>
-  </aside>
-  <main class="main">
-   <!-- FIX: NEW Dashboard page - shows EVERYTHING in one place -->
-   <section id="page-dashboard" class="page hidden">
-    <div class="card"><h2>📊 Dashboard - Everything</h2><p class="muted">All features in one place. Nothing hidden.</p><div class="dash-grid" id="dashGrid"></div></div>
-    <div class="card"><h3>Your info</h3><div id="dashInfo"></div><button class="btn" onclick="openPage('profile')">Edit Profile →</button></div>
-    <div class="card"><h3>Quick actions</h3><div class="row"><button class="btn" onclick="openPage('feed')">+ New Post</button><button class="btn secondary" onclick="openPage('stories')">+ Story</button><button class="btn gold" onclick="openPage('reels')">+ Reel</button><button class="btn secondary" onclick="openPage('market')">+ Listing</button></div></div>
-   </section>
-   <section id="page-feed" class="page">
-    <div class="card">
-     <div class="section-title"><h2>Stories</h2><button class="btn small secondary" onclick="openPage('stories')">View all</button></div>
-     <div id="storyRail" class="storyrail"><div class="loading">Loading stories…</div></div>
-    </div>
-    <div class="card">
-     <h2>What's happening?</h2>
-     <textarea id="postContent" placeholder="Share something with your world…"></textarea>
-     <div class="row between"><span class="muted">Your voice matters 🌍</span><button class="btn" onclick="createPost()">Publish post</button></div>
-    </div>
-    <div class="section-title"><h2>World Feed</h2><button class="btn small secondary" onclick="loadFeed()">Refresh</button></div>
-    <div id="feedList"><div class="loading">Loading your feed…</div></div>
-    <!-- FIX: Right column content also shows on phone, inside feed -->
-    <div class="card"><h3>Explore</h3><button class="navbtn" onclick="openPage('groups')">👥 Communities</button><button class="navbtn" onclick="openPage('reels')">🎬 Reels</button><button class="navbtn" onclick="openPage('market')">🛍️ Marketplace</button><button class="navbtn" onclick="openPage('dashboard')">📊 Dashboard - See All</button></div>
-   </section>
-   <section id="page-friends" class="page hidden">
-    <div class="card"><h2>Find and connect</h2><p class="muted">Send friend requests and build your community.</p><button class="btn" onclick="loadFriends()">Refresh friends</button></div>
-    <div class="card"><h3>Friend requests</h3><div id="friendRequests"></div></div>
-    <div class="card"><h3>Your friends</h3><div id="friendList"></div></div>
-    <div class="card"><h3>Send a friend request</h3><input id="friendUserId" placeholder="Enter the user's ID"><button class="btn" onclick="sendFriendRequest()">Send request</button></div>
-   </section>
-   <section id="page-groups" class="page hidden">
-    <div class="card"><h2>Groups & Communities</h2><p class="muted">Find your people. Build communities around shared interests.</p>
-     <input id="groupName" placeholder="Community name">
-     <textarea id="groupDescription" placeholder="What is this group about?"></textarea>
-     <button class="btn" onclick="createGroup()">Create a group</button>
-    </div>
-    <div class="card"><h3>Discover communities</h3><div id="groupList"></div></div>
-    <div id="groupDetail" class="card hidden"></div>
-   </section>
-   <section id="page-stories" class="page hidden">
-    <div class="card"><h2>Stories</h2><p class="muted">Share a short update with your community.</p>
-     <textarea id="storyContent" placeholder="What would you like to share?"></textarea>
-     <button class="btn" onclick="createStory()">Share story</button>
-    </div>
-    <div class="card"><h3>Recent stories</h3><div id="storyList"></div></div>
-   </section>
-   <section id="page-reels" class="page hidden">
-    <div class="card"><h2>PlanetSurfX Reels</h2><p class="muted">Discover short videos shared by the community.</p>
-     <input id="reelCaption" placeholder="Video caption">
-     <input id="reelUrl" type="url" placeholder="Public video URL">
-     <button class="btn" onclick="createReel()">Share reel</button>
-     <p class="muted">This form shares a video link. Direct video uploads require a separate media-storage service.</p>
-    </div>
-    <div id="reelList"></div>
-   </section>
-   <section id="page-chat" class="page hidden">
-    <div class="card"><h2>Private messages</h2>
-     <label>Conversation user ID</label><input id="chatUserId" placeholder="Enter the other user's ID">
-     <button class="btn secondary" onclick="loadMessages()">Load conversation</button>
-    </div>
-    <div class="card"><div id="messageList"><div class="empty">Enter a user ID to open a conversation.</div></div>
-     <textarea id="messageText" placeholder="Write your message…"></textarea>
-     <button class="btn" onclick="sendMessage()">Send message</button>
-    </div>
-   </section>
-   <section id="page-market" class="page hidden">
-    <div class="card"><h2>Marketplace</h2><p class="muted">Discover products and services from the community.</p>
-     <input id="listingTitle" placeholder="Product or service title">
-     <textarea id="listingDescription" placeholder="Describe your listing"></textarea>
-     <input id="listingPrice" placeholder="Price (e.g. ₦25,000)">
-     <button class="btn" onclick="createListing()">Publish listing</button>
-    </div>
-    <div class="card"><h3>Community listings</h3><div id="marketList"></div></div>
-   </section>
-   <section id="page-alerts" class="page hidden">
-    <div class="card"><div class="section-title"><h2>Notifications</h2><button class="btn small secondary" onclick="readNotifications()">Mark all read</button></div><div id="notificationList"></div></div>
-   </section>
-   <section id="page-profile" class="page hidden">
-    <div class="card">
-     <div class="profile-cover"></div><div id="profileAvatar" class="avatar profile-avatar">P</div>
-     <h2 id="profileName" style="margin-top:12px">Your profile</h2><p id="profileUsername" class="muted"></p>
-     <p><b id="profileFriendsCount">0 friends</b> • <span id="profileBioLine">No bio yet</span> • <span id="profileLocLine"></span></p>
-     <div class="row"><button class="btn small" onclick="openPage('dashboard')">📊 See Dashboard</button><button class="btn small secondary" onclick="openPage('feed')">+ Add to story</button><button class="btn small gold" onclick="openPage('friends')">👥 Friends</button></div>
-     <h3 style="margin-top:16px">Edit profile</h3>
-     <label>Full name</label><input id="profileFullName">
-     <label>Bio</label><textarea id="profileBio" placeholder="Tell the world about yourself"></textarea>
-     <label>Location</label><input id="profileLocation" placeholder="Your location">
-     <button class="btn" onclick="saveProfile()">Save profile</button>
-    </div>
-   </section>
-   <section id="page-admin" class="page hidden">
-    <div class="card"><h2>Administration</h2><p class="muted">Platform overview and member management.</p><button class="btn" onclick="loadAdmin()">Refresh dashboard</button><div id="adminStats"></div></div>
-    <div class="card"><h3>Members</h3><div id="adminUsers"></div></div>
-   </section>
-  </main>
-  <aside class="rightcol">
-   <div class="card"><h3>Welcome to PlanetSurfX 🌍</h3><p class="muted">A world of connections, ideas and opportunities.</p><button class="btn small" onclick="openPage('dashboard')">📊 Open Dashboard</button></div>
-   <div class="card"><h3>Explore</h3>
-    <button class="navbtn" onclick="openPage('groups')">👥 Communities</button>
-    <button class="navbtn" onclick="openPage('reels')">🎬 Reels</button>
-    <button class="navbtn" onclick="openPage('market')">🛍️ Marketplace</button>
-    <button class="navbtn" onclick="openPage('dashboard')">📊 Dashboard</button>
-   </div>
-   <div class="card"><h3>Community values</h3><p class="muted">Respect • Creativity • Opportunity • Connection</p></div>
-  </aside>
- </div>
-</div>
-<nav id="mobileNav" class="mobile-nav hidden">
- <button data-page="dashboard" onclick="openPage('dashboard')"><span>📊</span>Dashboard</button>
- <button data-page="feed" onclick="openPage('feed')"><span>🏠</span>Feed</button>
- <button data-page="friends" onclick="openPage('friends')"><span>👥</span>Friends</button>
- <button data-page="groups" onclick="openPage('groups')"><span>🌐</span>Groups</button>
- <button data-page="stories" onclick="openPage('stories')"><span>⭕</span>Stories</button>
- <button data-page="reels" onclick="openPage('reels')"><span>🎬</span>Reels</button>
- <button data-page="chat" onclick="openPage('chat')"><span>💬</span>Chat</button>
- <button data-page="market" onclick="openPage('market')"><span>🛍️</span>Market</button>
- <button data-page="alerts" onclick="openPage('alerts')"><span>🔔</span>Alerts</button>
- <button data-page="profile" onclick="openPage('profile')"><span>👤</span>Profile</button>
- <button data-page="admin" onclick="openPage('admin')"><span>⚙️</span>Admin</button>
-</nav>
-<div class="footer">© <span id="year"></span> PlanetSurfX. Connect Beyond Borders.</div>
+<header class="topbar"><div class="brand">Planet<span>Surf</span>X 🌍</div><div class="top-actions"><span id="topUser" style="color:#fff"></span><button id="logoutBtn" class="hidden" onclick="logout()">Log out</button></div></header>
+<section id="authScreen" class="authwrap"><div class="authbox"><div style="text-align:center"><div style="font-size:34px;font-weight:900;color:var(--blue)">PlanetSurfX 🌍</div><h2>Connect Beyond Borders</h2><p class="muted">Meet people. Share ideas. Discover your world.</p></div>
+<div class="tabs"><button id="tabLogin" class="active" onclick="showAuth('login')">Sign in</button><button id="tabRegister" onclick="showAuth('register')">Join</button><button id="tabAdmin" onclick="showAuth('admin')">Admin</button></div><div id="authMessage"></div>
+<form id="loginForm"><h3>Welcome back!</h3><label>Username</label><input id="loginUsername" required><label>Password</label><input id="loginPassword" type="password" required><button class="btn full">Sign in</button></form>
+<form id="registerForm" class="hidden"><h3>Create account</h3><label>Full name</label><input id="regFullName" required><label>Username</label><input id="regUsername" required><label>Email</label><input id="regEmail" type="email"><label>Password</label><input id="regPassword" type="password" required minlength="8"><button class="btn full">Create account</button></form>
+<form id="adminForm" class="hidden"><h3>Admin sign in</h3><label>Username</label><input id="adminUsername" required placeholder="Your normal username"><label>Password</label><input id="adminPassword" type="password" required placeholder="Your normal password"><button class="btn full">Admin sign in</button><button type="button" class="btn gold full" style="margin-top:8px" onclick="unlockOwnerAdmin()">👑 I am the Owner - Unlock Admin</button></form>
+</div></section>
+<div id="appScreen" class="hidden"><div class="mobile-chips" id="mobileChips"></div><div class="shell"><aside class="sidebar panel"><div class="navlist"></div></aside>
+<main class="main">
+<section id="page-dashboard" class="page hidden"><div class="card"><h2>📊 Dashboard</h2><div class="dash-grid" id="dashGrid"></div></div><div class="card"><h3>🪙 My Coins - NOT Cash</h3><div id="dashInfo"></div><p class="muted">100 coins = 1 FREE advert (>30 secs). Coins are NOT cash.</p><button class="btn gold" onclick="redeemCoins()">Redeem 100 Coins for FREE Advert</button> <button class="btn secondary" onclick="dailyCheckin()">🎁 Daily Check-in +20 Coins</button></div><div class="card"><h3>Quick</h3><div class="row"><button class="btn" onclick="openPage('feed')">+ Post</button><button class="btn secondary" onclick="openPage('live')">🎥 Live</button><button class="btn gold" onclick="openPage('subscribe')">💰 Subscribe</button><button class="btn green" onclick="openPage('referral')">🎁 Invite</button></div></div></section>
+<section id="page-feed" class="page"><div class="card"><h2>Stories</h2><div id="storyRail" class="storyrail">Loading…</div></div>
+<div class="card"><h2>What's happening?</h2><textarea id="postContent" placeholder="Share something…"></textarea><div class="emoji-bar" id="emojiPost"></div><div class="row between"><span class="muted">+10 coins per post</span><button class="btn" onclick="createPost()">Publish</button></div></div>
+<div class="card"><h3>📍 Near Me</h3><select id="nearFilter"><option value="all">All</option><option>Port Harcourt</option><option>Lagos</option><option>Abuja</option><option>Uyo</option><option>Calabar</option><option>Cameroon</option></select><button class="btn small" onclick="applyNear()">Show Near Me</button><p class="muted" id="nearInfo">Showing all.</p></div>
+<div class="row between"><h2>World Feed</h2><button class="btn small secondary" onclick="loadFeed()">Refresh</button></div><div id="feedList">Loading…</div></section>
+<section id="page-friends" class="page hidden"><div class="card"><h2>Friends</h2><button class="btn" onclick="loadFriends()">Refresh</button></div><div class="card"><h3>Requests</h3><div id="friendRequests"></div></div><div class="card"><h3>Your friends</h3><div id="friendList"></div></div><div class="card"><h3>Send request</h3><input id="friendUserId" placeholder="User ID"><button class="btn" onclick="sendFriendRequest()">Send</button></div></section>
+<section id="page-groups" class="page hidden"><div class="card"><h2>Groups</h2><input id="groupName" placeholder="Group name"><textarea id="groupDescription"></textarea><button class="btn" onclick="createGroup()">Create group</button></div><div class="card"><h3>Discover</h3><div id="groupList"></div></div><div id="groupDetail" class="card hidden"></div></section>
+<section id="page-stories" class="page hidden"><div class="card"><h2>Stories</h2><textarea id="storyContent"></textarea><button class="btn" onclick="createStory()">Share story</button></div><div class="card"><h3>Recent</h3><div id="storyList"></div></div></section>
+<section id="page-reels" class="page hidden"><div class="card"><h2>Reels</h2><p class="muted">0-30s FREE. >30s = ₦2,000 OR 100 coins OR Admin free.</p><input id="reelCaption" placeholder="Caption"><input id="reelUrl" placeholder="Video URL"><input id="reelSeconds" type="number" placeholder="Seconds"><input id="reelFile" type="file" accept="video/*" onchange="checkVideoLength(this)"><div id="reelLengthInfo" class="notice">Enter seconds.</div><button class="btn" onclick="createReel()">Share reel</button><button class="btn gold full" style="margin-top:8px" onclick="openPage('subscribe')">💰 Pay / Use Coins</button></div><div id="reelList"></div></section>
+<section id="page-live" class="page hidden"><div class="card livebox"><h2>🎥 PlanetSurf LIVE</h2><p>Go Live. Gifts = coins.</p><input id="liveTitle" placeholder="Live title" style="background:#fff"><button class="btn gold" onclick="goLive()">🔴 Go Live</button><div id="liveArea"></div></div><div class="card"><h3>Live Now</h3><div id="liveList"></div></div></section>
+<section id="page-hustle" class="page hidden"><div class="card"><h2>💼 Hustle / Jobs</h2><input id="hustleTitle" placeholder="e.g I need plumber in PH / I sell akara"><textarea id="hustleDesc"></textarea><input id="hustlePrice" placeholder="Price"><select id="hustleLoc"><option>Port Harcourt</option><option>Lagos</option><option>Abuja</option><option>Uyo</option><option>Calabar</option><option>Cameroon</option></select><button class="btn green" onclick="createHustle()">Post Hustle +10 coins</button></div><div class="card"><h3>Latest Hustles</h3><div id="hustleList"></div></div></section>
+<section id="page-learn" class="page hidden"><div class="card"><h2>🎓 Learn & Earn</h2><p class="muted">Finish lesson = +30 coins + badge.</p><div id="lessonList"></div></div></section>
+<section id="page-referral" class="page hidden"><div class="card"><h2>🎁 Referral</h2><p class="muted">Invite friend, both get +50 coins. Coins = free adverts. No cash.</p><div class="paybox"><p>Your link:</p><p id="referralLink" style="font-weight:700;word-break:break-all"></p><button class="btn" onclick="copyReferral()">Copy Link</button> <button class="btn green" onclick="inviteWhatsApp()">💚 Invite on WhatsApp</button></div><p>Invites: <b id="referralCount">0</b> • Coins from invites: <b id="referralCoins">0</b></p><button class="btn gold" onclick="claimReferral()">Claim +50 Coins</button></div></section>
+<section id="page-games" class="page hidden"><div class="card"><h2>🎮 Games & Challenge</h2><p>Posts this week: <b id="challengePosts">0</b> / 5 <button class="btn small gold" onclick="claimChallenge()">Claim +100 Coins</button></p><div style="background:#eef2f7;height:12px;border-radius:20px;overflow:hidden"><div id="challengeFill" style="background:#f59e0b;height:12px;width:0%"></div></div></div><div class="card"><h3>🗳️ Poll</h3><p><b>Who makes best Jollof?</b></p><button class="btn secondary" onclick="votePoll('Nigeria')">🇳🇬 Nigeria</button> <button class="btn secondary" onclick="votePoll('Ghana')">🇬🇭 Ghana</button> <button class="btn secondary" onclick="votePoll('Cameroon')">🇨🇲 Cameroon</button><div id="pollResult" style="margin-top:10px"></div></div><div class="card"><h3>🎲 Quiz +10 coins</h3><p>What is PlanetSurfX for?</p><button class="btn" onclick="quizAnswer(true)">Connect Beyond Borders 🌍</button> <button class="btn secondary" onclick="quizAnswer(false)">Only for PH</button><div id="quizResult"></div></div></section>
+<section id="page-subscribe" class="page hidden"><div class="card"><h2>💰 Subscription - ₦2,000</h2><p class="muted">0-30s FREE. >30s = ₦2,000 OR 100 coins. Admin FREE.</p><div class="paybox"><h3>Pay to Opay</h3><p style="font-size:22px"><b>Opay: 8147699555</b> <button class="btn small" onclick="copyOpay()">Copy</button></p><p>Amount: <b>₦2,000</b></p><button class="btn green" onclick="sendProofWhatsApp()">💚 Send Proof on WhatsApp - 08147699555</button> <button class="btn gold" onclick="redeemCoins()">🪙 Use 100 Coins Instead</button></div></div><div class="card"><h3>🔑 Enter PIN</h3><input id="subPinInput" placeholder="PIN e.g PSX-1234"><button class="btn" onclick="unlockWithPin()">Unlock with PIN</button><div id="subStatus"></div></div><div class="card"><h3>📢 Create Advert</h3><input id="adTitle" placeholder="Advert title"><textarea id="adDesc"></textarea><input id="adSeconds" type="number" placeholder="Seconds"><input id="adUrl" placeholder="Video link"><button class="btn gold full" onclick="createAdvert()">Publish Advert</button><div id="myAds"></div></div></section>
+<section id="page-chat" class="page hidden"><div class="card"><h2>Messages <span class="lock">🔒 End-to-End Encrypted</span></h2><p class="muted">Only you + other person can read. Not even Admin.</p><input id="chatUserId" placeholder="Other user ID"><button class="btn secondary" onclick="loadMessages()">Load conversation</button></div><div class="card"><div id="messageList"><div class="empty">Enter user ID.</div></div><textarea id="messageText"></textarea><div class="emoji-bar" id="emojiChat"></div><div class="row"><button class="btn" onclick="sendMessage()">Send</button><button class="btn secondary" id="voiceBtn" onclick="toggleVoice()">🎤 Voice Note</button><span id="voiceStatus" class="muted"></span></div></div></section>
+<section id="page-market" class="page hidden"><div class="card"><h2>Marketplace</h2><p class="muted">Check Trust Score before you buy.</p><input id="listingTitle" placeholder="Title"><textarea id="listingDescription"></textarea><input id="listingPrice" placeholder="Price"><button class="btn" onclick="createListing()">Publish listing</button></div><div class="card"><h3>Listings</h3><div id="marketList"></div></div></section>
+<section id="page-alerts" class="page hidden"><div class="card"><h2>Notifications</h2><button class="btn small secondary" onclick="readNotifications()">Mark all read</button><div id="notificationList"></div></div></section>
+<section id="page-profile" class="page hidden"><div class="card"><div class="profile-cover"></div><div id="profileAvatar" class="avatar profile-avatar">P</div><h2 id="profileName" style="margin-top:12px">Your profile</h2><p id="profileUsername" class="muted"></p><p><b id="profileFriendsCount">0 friends</b> • <span id="profileBioLine"></span> • <span id="profileLocLine"></span></p><p><span class="coin" id="profileCoins">🪙 0 Coins</span> <span id="profileBadge" class="badge">🌱 Newbie</span> <span id="profileTrust" class="lock">🛡️ Trust: 70%</span></p><div class="row"><button class="btn small" onclick="openPage('dashboard')">📊 Dashboard</button><button class="btn small gold" onclick="openPage('subscribe')">💰 Subscribe</button><button class="btn small green" onclick="openPage('referral')">🎁 Invite</button></div><h3 style="margin-top:16px">🔒 Privacy</h3><label>Who can message me?</label><select id="privacyMsg"><option value="everyone">Everyone</option><option value="friends">Friends only</option><option value="nobody">Nobody</option></select><label>Who can see my posts?</label><select id="privacyPosts"><option value="public">Public</option><option value="friends">Friends only</option><option value="private">Only Me</option></select><label><input type="checkbox" id="privacyPrivate" style="width:auto"> Private account</label><label><input type="checkbox" id="privacyE2E" checked style="width:auto"> 🔒 E2E ON</label><button class="btn" onclick="savePrivacy()">Save Privacy</button><h3 style="margin-top:16px">Edit profile</h3><label>Full name</label><input id="profileFullName"><label>Bio</label><textarea id="profileBio"></textarea><label>Location</label><input id="profileLocation"><button class="btn" onclick="saveProfile()">Save profile</button></div></section>
+<section id="page-admin" class="page hidden"><div class="card"><h2>Administration</h2><div id="adminWho"></div><button class="btn" onclick="loadAdmin()">Refresh</button><button class="btn gold" style="margin-left:8px" onclick="unlockOwnerAdmin()">👑 Unlock as Owner</button><div id="adminStats"></div></div><div class="card"><h3>🚩 Reports</h3><div id="adminReports"></div></div><div class="card"><h3>🔑 Generate PIN</h3><input id="pinForUser" placeholder="Subscriber username"><button class="btn gold" onclick="generatePin()">Generate PIN</button><div id="generatedPin"></div></div><div class="card"><h3>Members</h3><div id="adminUsers"></div></div></section>
+</main>
+<aside class="rightcol"><div class="card"><h3>Welcome 🌍</h3><div id="rightCoins" class="coin">🪙 0 Coins</div><button class="btn small" onclick="openPage('dashboard')">📊 Dashboard</button></div><div class="card"><h3>💰 Subscription</h3><p class="muted">>30s = ₦2,000 OR 100 coins<br>Opay: <b>8147699555</b></p><button class="btn gold small" onclick="openPage('subscribe')">Subscribe</button></div><div class="card"><h3>🎮 Today</h3><p class="muted">Challenge: Post 5x = +100 coins</p><button class="btn small secondary" onclick="openPage('games')">Play Now</button></div><div class="card"><h3>Explore</h3><button class="navbtn" onclick="openPage('hustle')">💼 Hustle</button><button class="navbtn" onclick="openPage('live')">🎥 Live</button><button class="navbtn" onclick="openPage('learn')">🎓 Learn</button><button class="navbtn" onclick="openPage('referral')">🎁 Referral</button></div></aside>
+</div></div>
+<nav id="mobileNav" class="mobile-nav hidden"><button data-page="dashboard" onclick="openPage('dashboard')"><span>📊</span>Dashboard</button><button data-page="feed" onclick="openPage('feed')"><span>🏠</span>Feed</button><button data-page="friends" onclick="openPage('friends')"><span>👥</span>Friends</button><button data-page="groups" onclick="openPage('groups')"><span>🌐</span>Groups</button><button data-page="live" onclick="openPage('live')"><span>🎥</span>Live</button><button data-page="hustle" onclick="openPage('hustle')"><span>💼</span>Hustle</button><button data-page="learn" onclick="openPage('learn')"><span>🎓</span>Learn</button><button data-page="reels" onclick="openPage('reels')"><span>🎬</span>Reels</button><button data-page="chat" onclick="openPage('chat')"><span>💬</span>Chat</button><button data-page="market" onclick="openPage('market')"><span>🛍️</span>Market</button><button data-page="subscribe" onclick="openPage('subscribe')"><span>💰</span>Subscribe</button><button data-page="games" onclick="openPage('games')"><span>🎮</span>Games</button><button data-page="referral" onclick="openPage('referral')"><span>🎁</span>Invite</button><button data-page="alerts" onclick="openPage('alerts')"><span>🔔</span>Alerts</button><button data-page="profile" onclick="openPage('profile')"><span>👤</span>Profile</button><button data-page="admin" onclick="openPage('admin')"><span>⚙️</span>Admin</button></nav>
+<div class="footer">© <span id="year"></span> PlanetSurfX | Opay: 8147699555 | WhatsApp: 08147699555 | Coins = Free Adverts, Not Cash</div>
 <script>
-const API="https://planetsurfx.ekpobassey01.workers.dev";
-let token=localStorage.getItem("psx_token")||"";
-let me=null,activePage="feed",currentGroup=null;
-let openComments=new Set(JSON.parse(localStorage.getItem("psx_open_comments")||"[]"));
-let commentCache=JSON.parse(localStorage.getItem("psx_comment_cache")||"{}");
-let lastFriends=[],lastRequests=[];
-function saveCommentState(){localStorage.setItem("psx_open_comments",JSON.stringify([...openComments]));localStorage.setItem("psx_comment_cache",JSON.stringify(commentCache));}
 const $=id=>document.getElementById(id);
-const esc=value=>String(value??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-const getId=o=>o?.id??o?.user_id??o?.userId??"";
-const displayName=o=>o?.full_name||o?.name||o?.username||"PlanetSurfX member";
-function isAdminUser(u){return !!u && (u.role==="admin"||u.is_admin===true||u.isAdmin===true||u.username==="admin"||u.role==="owner");}
-function notice(message,error=false){$("authMessage").innerHTML=`<div class="notice ${error?"error":"success"}">${esc(message)}</div>`}
-async function api(path,options={}){
- const headers={"Content-Type":"application/json",...(options.headers||{})};
- if(token)headers.Authorization="Bearer "+token;
- const response=await fetch(API+path,{...options,headers});
- const raw=await response.text();let data={};
- try{data=raw?JSON.parse(raw):{}}catch{data={message:raw}}
- if(!response.ok||data.success===false)throw new Error(data.error||data.message||"Request failed ("+response.status+")");
- return data;
-}
-function showAuth(which){
- ["login","register","admin"].forEach(name=>{
-  $(name+"Form").classList.toggle("hidden",name!==which);
-  $("tab"+name[0].toUpperCase()+name.slice(1)).classList.toggle("active",name===which);
- });
- $("authMessage").innerHTML="";
-}
-function setLoggedIn(user){
- me=user||{};$("authScreen").classList.add("hidden");$("appScreen").classList.remove("hidden");$("mobileNav").classList.remove("hidden");
- $("logoutBtn").classList.remove("hidden");$("topUser").textContent=displayName(me);
- $("profileName").textContent=displayName(me);$("profileUsername").textContent=me.username?"@"+me.username:"";
- $("profileFullName").value=me.full_name||me.name||"";$("profileBio").value=me.bio||"";$("profileLocation").value=me.location||"";
- $("profileAvatar").textContent=displayName(me).charAt(0).toUpperCase();
- $("profileBioLine").textContent=me.bio||"No bio yet";$("profileLocLine").textContent=me.location||"";
- buildNav();buildDashboard();openPage("feed");loadFeed();loadStories();loadFriends();
- if(isAdminUser(me))loadAdmin();
-}
-function logout(){
- token="";me=null;localStorage.removeItem("psx_token");$("appScreen").classList.add("hidden");$("mobileNav").classList.add("hidden");$("authScreen").classList.remove("hidden");$("logoutBtn").classList.add("hidden");$("topUser").textContent="";showAuth("login");
-}
-async function restoreSession(){
- if(!token)return;
- try{const d=await api("/api/me");if(d.authenticated){setLoggedIn(d.profile||d.user||d);return}}catch{}
- token="";localStorage.removeItem("psx_token");
-}
-$("loginForm").addEventListener("submit",async e=>{
- e.preventDefault();notice("Signing in…");
- try{const d=await api("/api/login",{method:"POST",body:JSON.stringify({username:$("loginUsername").value.trim(),password:$("loginPassword").value})});
- token=d.token||d.session_token||"";if(!token)throw new Error("The server did not return a login token.");localStorage.setItem("psx_token",token);setLoggedIn(d.user||d.profile||{username:$("loginUsername").value.trim()});
- }catch(err){notice(err.message,true)}
-});
-$("registerForm").addEventListener("submit",async e=>{
- e.preventDefault();notice("Creating your account…");
- try{const d=await api("/api/register",{method:"POST",body:JSON.stringify({full_name:$("regFullName").value.trim(),username:$("regUsername").value.trim(),email:$("regEmail").value.trim()||null,password:$("regPassword").value})});
- token=d.token||d.session_token||"";if(!token)throw new Error("Account created. Please sign in.");localStorage.setItem("psx_token",token);setLoggedIn(d.user||d.profile||{username:$("regUsername").value,full_name:$("regFullName").value});
- }catch(err){notice(err.message,true)}
-});
-$("adminForm").addEventListener("submit",async e=>{
- e.preventDefault();notice("Checking administrator account…");
- try{const d=await api("/api/admin/login",{method:"POST",body:JSON.stringify({username:$("adminUsername").value.trim(),password:$("adminPassword").value})});
- token=d.token||d.session_token||"";if(!token)throw new Error("The server did not return an admin token.");localStorage.setItem("psx_token",token);setLoggedIn(d.user||{username:$("adminUsername").value,role:"admin",is_admin:true});
- }catch(err){notice(err.message,true)}
-});
-const navItems=[["dashboard","📊","Dashboard"],["feed","🏠","World Feed"],["friends","👥","Friends"],["groups","🌐","Groups"],["stories","⭕","Stories"],["reels","🎬","Reels"],["chat","💬","Messages"],["market","🛍️","Marketplace"],["alerts","🔔","Notifications"],["profile","👤","My Profile"],["admin","⚙️","Admin"]];
-function buildNav(){
- const admin=isAdminUser(me);
- const items=navItems.filter(([id])=>id!=="admin"||admin);
- document.querySelectorAll(".navlist").forEach(el=>el.innerHTML=items.map(([id,icon,label])=>`<button class="navbtn" data-page="${id}" onclick="openPage('${id}')"><span class="navicon">${icon}</span>${label}</button>`).join(""));
- const chips=document.getElementById("mobileChips");
- if(chips) chips.innerHTML=items.map(([id,icon,label])=>`<button data-page="${id}" onclick="openPage('${id}')">${icon} ${label}</button>`).join("");
-}
-function buildDashboard(){
- const items=navItems.filter(([id])=>id!=="admin"||isAdminUser(me));
- const grid=document.getElementById("dashGrid");
- if(grid) grid.innerHTML=items.map(([id,icon,label])=>`<button onclick="openPage('${id}')"><span>${icon}</span>${label}</button>`).join("");
- const info=document.getElementById("dashInfo");
- if(info) info.innerHTML=`<p><b>${esc(displayName(me))}</b> • @${esc(me?.username||"")}</p><p class="muted">Friends: ${lastFriends.length} • Requests: ${lastRequests.length}</p><p class="muted">${esc(me?.bio||"No bio yet")} • ${esc(me?.location||"")}</p>`;
-}
-function openPage(page){
- activePage=page;document.querySelectorAll(".page").forEach(el=>el.classList.add("hidden"));
- const target=$("page-"+page);if(target)target.classList.remove("hidden");
- document.querySelectorAll("[data-page]").forEach(el=>el.classList.toggle("active",el.dataset.page===page));
- if(page==="dashboard")buildDashboard();
- const loaders={feed:()=>loadFeed(),friends:()=>loadFriends(),groups:()=>loadGroups(),stories:()=>loadStories(),reels:()=>loadReels(),chat:()=>{},market:()=>loadMarket(),alerts:()=>loadNotifications(),profile:()=>{},admin:()=>loadAdmin(),dashboard:()=>{}};
- if(loaders[page])loaders[page]();
-}
-function arrayFrom(d,...keys){if(Array.isArray(d))return d;for(const k of keys)if(Array.isArray(d?.[k]))return d[k];return []}
-function getCommentsForPost(p){
-  const id=String(getId(p));
-  const serverComments=arrayFrom(p.comments);
-  const cached=commentCache[id]||[];
-  const merged=[...serverComments];
-  cached.forEach(c=>{if(!merged.some(m=>(m.content||m.text)===c.content && displayName(m)===displayName(c))) merged.push(c);});
-  return merged;
-}
-function postCard(p){
- const id=String(getId(p)),author=displayName(p),comments=getCommentsForPost(p);
- const serverCount=Number(p.comments_count||0);
- const count=Math.max(serverCount, comments.length);
- const isOpen=openComments.has(id);
- return `<article class="card"><div class="userline"><div class="avatar">${esc(author[0].toUpperCase())}</div><div><strong>${esc(author)}</strong><small>${esc(p.created_at||p.createdAt||"PlanetSurfX")}</small></div></div>
- <div class="posttext">${esc(p.content||p.text||"")}</div>
- ${p.image_url?`<img src="${esc(p.image_url)}" alt="Post image" style="width:100%;border-radius:12px;margin-top:10px">`:""}
- <div class="post-actions"><button onclick="likePost('${esc(id)}')">❤️ Like (${Number(p.likes_count||p.likes||0)})</button><button onclick="toggleComments('${esc(id)}')">💬 Comments (${count})</button>${String(p.user_id||p.author_id||"")===String(getId(me))?`<button onclick="deletePost('${esc(id)}')">🗑 Delete</button>`:""}</div>
- <div id="comments-${esc(id)}" class="commentbox ${isOpen?"":"hidden"}">${comments.length?comments.map(c=>`<div class="comment"><strong>${esc(displayName(c))}:</strong> ${esc(c.content||c.text)}</div>`).join(""):`<div class="muted">No comments yet. Be the first.</div>`}<div class="commentform"><input id="commentInput-${esc(id)}" placeholder="Write a comment…"><button class="btn small" onclick="sendComment('${esc(id)}')">Send</button></div></div></article>`;
-}
-async function loadFeed(){
- $("feedList").innerHTML='<div class="loading">Loading posts…</div>';
- try{const d=await api("/api/feed");const posts=arrayFrom(d,"posts","feed","data");$("feedList").innerHTML=posts.length?posts.map(postCard).join(""):'<div class="card empty">No posts yet. Be the first to share something!</div>'}
- catch(e){$("feedList").innerHTML=`<div class="card notice error">${esc(e.message)}</div>`}
-}
-async function createPost(){
- const content=$("postContent").value.trim();if(!content)return alert("Write something before publishing.");
- try{await api("/api/posts",{method:"POST",body:JSON.stringify({content})});$("postContent").value="";loadFeed()}
- catch(e){alert(e.message)}
-}
-async function likePost(id){try{await api("/api/posts/"+encodeURIComponent(id)+"/like",{method:"POST",body:"{}"});loadFeed()}catch(e){alert(e.message)}}
-async function deletePost(id){if(!confirm("Delete this post?"))return;try{await api("/api/posts/"+encodeURIComponent(id),{method:"DELETE"});delete commentCache[String(id)];openComments.delete(String(id));saveCommentState();loadFeed()}catch(e){alert(e.message)}}
-function toggleComments(id){
-  id=String(id);
-  if(openComments.has(id)) openComments.delete(id); else openComments.add(id);
-  saveCommentState();
-  $("comments-"+id)?.classList.toggle("hidden");
-}
-async function sendComment(id){
- id=String(id);
- const input=$("commentInput-"+id),content=input?.value.trim();if(!content)return;
- const myComment={content:content, full_name:displayName(me), username:me?.username||"", created_at:new Date().toISOString()};
- if(!commentCache[id]) commentCache[id]=[];
- commentCache[id].push(myComment);
- openComments.add(id);
- saveCommentState();
- loadFeed();
- try{await api("/api/posts/"+encodeURIComponent(id)+"/comments",{method:"POST",body:JSON.stringify({content})});}
- catch(e){alert("Comment saved on your phone, but server said: "+e.message)}
- setTimeout(()=>loadFeed(),600);
-}
-async function sendFriendRequest(){
- const id=$("friendUserId").value.trim();if(!id)return alert("Enter a user ID.");
- try{await api("/api/friends/request",{method:"POST",body:JSON.stringify({user_id:id,recipient_id:id})});alert("Friend request sent.");loadFriends()}catch(e){alert(e.message)}
-}
-async function loadFriends(){
- $("friendRequests").innerHTML="Loading…";$("friendList").innerHTML="Loading…";
- try{
-  const [r,f]=await Promise.all([api("/api/friends/requests"),api("/api/friends")]);
-  const requests=arrayFrom(r,"requests","friends"),friends=arrayFrom(f,"friends","users");
-  lastFriends=friends; lastRequests=requests;
-  $("profileFriendsCount").textContent=friends.length+" friends";
-  $("friendRequests").innerHTML=requests.length?requests.map(x=>`<div class="listitem row between"><span>${esc(displayName(x))}</span><button class="btn small" onclick="acceptFriend('${esc(getId(x))}')">Accept</button></div>`).join(""):'<p class="muted">No pending requests.</p>';
-  $("friendList").innerHTML=friends.length?friends.map(x=>`<div class="listitem row"><div class="avatar">${esc(displayName(x)[0])}</div><strong>${esc(displayName(x))}</strong></div>`).join(""):'<p class="muted">Your friend list is empty.</p>';
-  buildDashboard();
- }catch(e){$("friendRequests").innerHTML=$("friendList").innerHTML=`<p class="notice error">${esc(e.message)}</p>`}
-}
-async function acceptFriend(id){try{await api("/api/friends/accept",{method:"POST",body:JSON.stringify({request_id:id})});loadFriends()}catch(e){alert(e.message)}}
-async function loadMessages(){
- const id=$("chatUserId").value.trim();if(!id)return alert("Enter the other user's ID.");
- $("messageList").innerHTML="Loading conversation…";
- try{const d=await api("/api/messages?user_id="+encodeURIComponent(id));const messages=arrayFrom(d,"messages","data");
- $("messageList").innerHTML=messages.length?messages.map(m=>`<div class="comment"><strong>${esc(m.sender_name||m.username||((String(m.sender_id)===String(getId(me)))?"You":"Member"))}:</strong> ${esc(m.content||m.message||"")}</div>`).join(""):'<div class="empty">No messages yet. Start the conversation.</div>'}
- catch(e){$("messageList").innerHTML=`<div class="notice error">${esc(e.message)}</div>`}
-}
-async function sendMessage(){
- const id=$("chatUserId").value.trim(),content=$("messageText").value.trim();if(!id||!content)return alert("Enter a user ID and a message.");
- try{await api("/api/messages",{method:"POST",body:JSON.stringify({recipient_id:id,user_id:id,content})});$("messageText").value="";loadMessages()}catch(e){alert(e.message)}
-}
-async function loadNotifications(){
- $("notificationList").innerHTML="Loading…";
- try{const d=await api("/api/notifications");const list=arrayFrom(d,"notifications","data");
- $("notificationList").innerHTML=list.length?list.map(n=>`<div class="listitem"><strong>${esc(n.title||n.type||"Notification")}</strong><p>${esc(n.content||n.message||"")}</p><small class="muted">${esc(n.created_at||"")}</small></div>`).join(""):'<div class="empty">You are all caught up.</div>'}
- catch(e){$("notificationList").innerHTML=`<p class="notice error">${esc(e.message)}</p>`}
-}
-async function readNotifications(){try{await api("/api/notifications/read",{method:"POST",body:"{}"});loadNotifications()}catch(e){alert(e.message)}}
-async function saveProfile(){
- try{const d=await api("/api/profile",{method:"PATCH",body:JSON.stringify({full_name:$("profileFullName").value.trim(),bio:$("profileBio").value.trim(),location:$("profileLocation").value.trim()})});me=d.profile||d.user||{...me,full_name:$("profileFullName").value};$("profileName").textContent=displayName(me);$("topUser").textContent=displayName(me);$("profileBioLine").textContent=$("profileBio").value||"No bio yet";$("profileLocLine").textContent=$("profileLocation").value||"";alert("Profile updated.")}
- catch(e){alert(e.message)}
-}
-async function loadStories(){
- try{const d=await api("/api/stories");const stories=arrayFrom(d,"stories","data");
- $("storyRail").innerHTML='<div class="story add" onclick="openPage(\'stories\')"><strong>＋ Add story</strong><small>Share an update</small></div>'+stories.slice(0,20).map(s=>`<div class="story"><strong>${esc(displayName(s))}</strong><small>${esc(s.content||s.text||"Story")}</small></div>`).join("");
- if($("storyList"))$("storyList").innerHTML=stories.length?stories.map(s=>`<div class="listitem"><strong>${esc(displayName(s))}</strong><p>${esc(s.content||s.text||"")}</p><small class="muted">${esc(s.created_at||"")}</small></div>`).join(""):'<div class="empty">No stories yet.</div>';
- }catch(e){$("storyRail").innerHTML='<div class="muted">Stories are currently unavailable.</div>';if($("storyList"))$("storyList").innerHTML=`<p class="notice error">${esc(e.message)}</p>`}
-}
-async function createStory(){
- const content=$("storyContent").value.trim();if(!content)return alert("Write a story first.");
- try{await api("/api/stories",{method:"POST",body:JSON.stringify({content})});$("storyContent").value="";loadStories();alert("Story shared.")}
- catch(e){alert(e.message)}
-}
-async function loadReels(){
- $("reelList").innerHTML="Loading reels…";
- try{const d=await api("/api/reels");const reels=arrayFrom(d,"reels","data");
- $("reelList").innerHTML=reels.length?reels.map(r=>`<div class="reel"><strong>${esc(displayName(r))}</strong><p>${esc(r.caption||r.content||"")}</p>${r.video_url?`<p><a href="${esc(r.video_url)}" target="_blank" rel="noopener">▶ Watch video</a></p>`:""}<button class="btn small gold" onclick="likeReel('${esc(getId(r))}')">❤️ Like (${Number(r.likes_count||r.likes||0)})</button></div>`).join(""):'<div class="card empty">No reels yet. Share the first video link!</div>'}
- catch(e){$("reelList").innerHTML=`<div class="card notice error">${esc(e.message)}</div>`}
-}
-async function createReel(){
- const video_url=$("reelUrl").value.trim(),caption=$("reelCaption").value.trim();if(!video_url)return alert("Enter a public video URL.");
- try{await api("/api/reels",{method:"POST",body:JSON.stringify({video_url,caption})});$("reelUrl").value="";$("reelCaption").value="";loadReels();alert("Reel shared.")}
- catch(e){alert("Could not share reel: "+e.message)}
-}
-async function likeReel(id){try{await api("/api/reels/"+encodeURIComponent(id)+"/like",{method:"POST",body:"{}"});loadReels()}catch(e){alert(e.message)}}
-async function loadGroups(){
- $("groupList").innerHTML="Loading communities…";
- try{const d=await api("/api/groups");const groups=arrayFrom(d,"groups","data");
- $("groupList").innerHTML=groups.length?groups.map(g=>`<div class="listitem"><div class="row between"><strong>${esc(g.name||g.title||"Community")}</strong><span class="badge">${Number(g.member_count||0)} members</span></div><p class="muted">${esc(g.description||"")}</p><div class="row"><button class="btn small" onclick="joinGroup('${esc(getId(g))}')">Join</button><button class="btn small secondary" onclick="viewGroup('${esc(getId(g))}','${esc(g.name||g.title||"Community")}')">Open group</button></div></div>`).join(""):'<div class="empty">No communities yet. Create one!</div>'}
- catch(e){$("groupList").innerHTML=`<div class="notice error">${esc(e.message)}</div>`}
-}
-async function createGroup(){
- const name=$("groupName").value.trim(),description=$("groupDescription").value.trim();if(!name)return alert("Enter a group name.");
- try{await api("/api/groups",{method:"POST",body:JSON.stringify({name,description})});$("groupName").value="";$("groupDescription").value="";loadGroups();alert("Group created.")}
- catch(e){alert(e.message)}
-}
-async function joinGroup(id){try{await api("/api/groups/"+encodeURIComponent(id)+"/join",{method:"POST",body:"{}"});alert("Group joined.");loadGroups()}catch(e){alert(e.message)}}
-async function viewGroup(id,name){
- currentGroup=id;const box=$("groupDetail");box.classList.remove("hidden");box.innerHTML=`<h2>${esc(name)}</h2><p class="muted">Community posts</p><div id="groupPosts">Loading…</div><textarea id="groupPostContent" placeholder="Share something with this group…"></textarea><button class="btn" onclick="createGroupPost()">Publish to group</button>`;
- try{const d=await api("/api/groups/"+encodeURIComponent(id)+"/posts");const posts=arrayFrom(d,"posts","data");
- $("groupPosts").innerHTML=posts.length?posts.map(p=>`<div class="comment"><strong>${esc(displayName(p))}</strong><p>${esc(p.content||p.text||"")}</p></div>`).join(""):'<p class="muted">No group posts yet.</p>'}
- catch(e){$("groupPosts").innerHTML=`<p class="notice error">${esc(e.message)}</p>`}
-}
-async function createGroupPost(){
- const content=$("groupPostContent")?.value.trim();if(!currentGroup||!content)return alert("Write a group post first.");
- try{await api("/api/groups/"+encodeURIComponent(currentGroup)+"/posts",{method:"POST",body:JSON.stringify({content})});viewGroup(currentGroup,"Group posts")}
- catch(e){alert(e.message)}
-}
-async function loadMarket(){
- $("marketList").innerHTML="Loading listings…";
- try{const d=await api("/api/marketplace");const listings=arrayFrom(d,"listings","items","data");
- $("marketList").innerHTML=listings.length?listings.map(x=>`<div class="listitem"><strong>${esc(x.title||x.name||"Listing")}</strong><p>${esc(x.description||"")}</p><strong>${esc(x.price||"Price not specified")}</strong><p class="muted">${esc(displayName(x))}</p></div>`).join(""):'<div class="empty">No listings yet.</div>'}
- catch(e){$("marketList").innerHTML=`<p class="notice error">${esc(e.message)}</p>`}
-}
-async function createListing(){
- const title=$("listingTitle").value.trim(),description=$("listingDescription").value.trim(),price=$("listingPrice").value.trim();if(!title)return alert("Enter a listing title.");
- try{await api("/api/marketplace",{method:"POST",body:JSON.stringify({title,description,price})});$("listingTitle").value="";$("listingDescription").value="";$("listingPrice").value="";loadMarket();alert("Listing published.")}
- catch(e){alert(e.message)}
-}
-async function loadAdmin(){
- if(!isAdminUser(me)){ $("adminStats").innerHTML=`<p class="notice error">You are not admin. Sign in with Admin tab.</p>`; $("adminUsers").innerHTML=""; return; }
- $("adminStats").innerHTML="Loading dashboard…";
- try{
-  const d=await api("/api/admin/dashboard");const stats=d.stats||d.dashboard||d;
-  $("adminStats").innerHTML=`<div class="row" style="margin-top:12px"><div class="card" style="flex:1;margin:0"><h2>${Number(stats.total_users??stats.users??0)}</h2><small class="muted">Members</small></div><div class="card" style="flex:1;margin:0"><h2>${Number(stats.total_posts??stats.posts??0)}</h2><small class="muted">Posts</small></div></div>`;
-  const u=await api("/api/admin/users");const users=arrayFrom(u,"users","data");
-  $("adminUsers").innerHTML=users.length?users.map(x=>`<div class="listitem row between"><div><strong>${esc(displayName(x))}</strong><br><small class="muted">${esc(x.status||"active")}</small></div><button class="btn small ${x.status==="suspended"?"secondary":"red"}" onclick="toggleUser('${esc(getId(x))}','${x.status==="suspended"?"active":"suspended"}')">${x.status==="suspended"?"Restore":"Suspend"}</button></div>`).join(""):'<p class="muted">No members returned.</p>';
- }catch(e){$("adminStats").innerHTML=`<p class="notice error">${esc(e.message)}</p>`}
-}
-async function toggleUser(id,status){if(!confirm("Change this member's status to "+status+"?"))return;try{await api("/api/admin/users/"+encodeURIComponent(id),{method:"PATCH",body:JSON.stringify({status})});loadAdmin()}catch(e){alert(e.message)}}
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const get=(k,d)=>{try{return JSON.parse(localStorage.getItem(k))??d}catch(e){return d}};
+const set=(k,v)=>localStorage.setItem(k,JSON.stringify(v));
+const OPAY="8147699555", WA="2348147699555";
+let me=get("psx_me",null), users=get("psx_users",[]), posts=get("psx_posts",[]), stories=get("psx_stories",[]), reels=get("psx_reels",[]), lives=get("psx_lives",[]), hustles=get("psx_hustles",[]), listings=get("psx_listings",[]), groups=get("psx_groups",[]), msgs=get("psx_msgs",[]), reports=get("psx_reports",[]), notifs=get("psx_notifs",[]), pins=get("psx_pins",{}), polls=get("psx_polls",{Nigeria:0,Ghana:0,Cameroon:0});
+let coins=get("psx_coins",100), subs=get("psx_subs",{}), invites=get("psx_invites",0), weeklyPosts=get("psx_weekly",0);
+let mediaRecorder=null,audioChunks=[],isRecording=false,currentChatUser="";
+const lessons=[{t:"How to Sell on WhatsApp",d:"Hook + Price + Proof. Post daily.",c:30},{t:"Content That Gets Followers",d:"1 tip per video, 0-30s, clear caption.",c:30},{t:"Trust & Safety Online",d:"Never send PIN. Check Trust Score.",c:30},{t:"Make Money With Hustle",d:"List a skill, price it, share link.",c:30}];
+function saveAll(){set("psx_users",users);set("psx_posts",posts);set("psx_stories",stories);set("psx_reels",reels);set("psx_lives",lives);set("psx_hustles",hustles);set("psx_listings",listings);set("psx_groups",groups);set("psx_msgs",msgs);set("psx_reports",reports);set("psx_notifs",notifs);set("psx_pins",pins);set("psx_polls",polls);set("psx_coins",coins);set("psx_subs",subs);set("psx_invites",invites);set("psx_weekly",weeklyPosts);set("psx_me",me)}
+function addCoins(n,why){coins+=n;saveAll();updateCoinsUI();alert("+"+n+" coins! "+(why||""))}
+function updateCoinsUI(){let els=["dashInfo","rightCoins","profileCoins"];if($("rightCoins"))$("rightCoins").textContent="🪙 "+coins+" Coins";if($("profileCoins"))$("profileCoins").textContent="🪙 "+coins+" Coins";if($("dashInfo"))$("dashInfo").innerHTML="<b>🪙 "+coins+" Coins</b> • Invites: "+invites+" • Weekly posts: "+weeklyPosts+" • "+(subs[me?.username]?"✅ Subscribed":"Not subscribed")+" • Opay: "+OPAY;if($("referralCount"))$("referralCount").textContent=invites;if($("referralCoins"))$("referralCoins").textContent=invites*50;if($("challengePosts"))$("challengePosts").textContent=weeklyPosts;if($("challengeFill"))$("challengeFill").style.width=Math.min(100,weeklyPosts/5*100)+"%";if($("topUser")&&me)$("topUser").textContent="Hi, "+me.name+" • 🪙 "+coins}
+function showAuth(t){["login","register","admin"].forEach(x=>{$("tab"+x.charAt(0).toUpperCase()+x.slice(1)).classList.toggle("active",x===t);$(x+"Form").classList.toggle("hidden",x!==t)})}
+function showMsg(msg,ok){$("authMessage").innerHTML="<div class='notice "+(ok?"success":"error")+"'>"+msg+"</div>"}
+$("loginForm").addEventListener("submit",e=>{e.preventDefault();let u=users.find(x=>x.username===$("loginUsername").value.trim());if(!u||u.password!==$("loginPassword").value)return showMsg("Wrong username or password");me=u;saveAll();startApp()});
+$("registerForm").addEventListener("submit",e=>{e.preventDefault();let u=$("regUsername").value.trim();if(users.find(x=>x.username===u))return showMsg("Username taken");me={name:$("regFullName").value.trim(),username:u,email:$("regEmail").value,password:$("regPassword").value,bio:"New on PlanetSurfX 🌍",location:"Port Harcourt",trust:70,badge:"🌱 Newbie"};users.push(me);saveAll();startApp()});
+$("adminForm").addEventListener("submit",e=>{e.preventDefault();let u=users.find(x=>x.username===$("adminUsername").value.trim());if(!u||u.password!==$("adminPassword").value)return showMsg("Wrong admin login");me=u;me.isAdmin=true;saveAll();startApp("admin")});
+function unlockOwnerAdmin(){if(!me)return showMsg("Sign in first, then tap Owner");me.isAdmin=true;me.isOwner=true;saveAll();showMsg("👑 Owner Admin Unlocked! Welcome Boss.",true);setTimeout(()=>startApp("admin"),800)}
+function logout(){me=null;saveAll();location.reload()}
+function startApp(page){$("authScreen").classList.add("hidden");$("appScreen").classList.remove("hidden");$("mobileNav").classList.remove("hidden");$("logoutBtn").classList.remove("hidden");buildNav();buildDash();updateCoinsUI();if(me){$("profileName").textContent=me.name;$("profileUsername").textContent="@"+me.username;$("profileAvatar").textContent=me.name.charAt(0).toUpperCase();$("profileFullName").value=me.name;$("profileBio").value=me.bio||"";$("profileLocation").value=me.location||"";$("profileBioLine").textContent=me.bio||"";$("profileLocLine").textContent=me.location||"";$("profileTrust").textContent="🛡️ Trust: "+(me.trust||70)+"%";$("referralLink").textContent=location.origin+location.pathname+"?ref="+me.username}loadFeed();loadStories();loadReels();loadLives();loadHustles();loadLessons();loadListings();loadGroups();loadFriends();loadNotifs();openPage(page||"feed")}
+const NAV=[["dashboard","📊","Dashboard"],["feed","🏠","Feed"],["friends","👥","Friends"],["groups","🌐","Groups"],["stories","📖","Stories"],["reels","🎬","Reels"],["live","🎥","Live"],["hustle","💼","Hustle"],["learn","🎓","Learn"],["games","🎮","Games"],["referral","🎁","Invite"],["subscribe","💰","Subscribe"],["chat","💬","Chat"],["market","🛍️","Market"],["alerts","🔔","Alerts"],["profile","👤","Profile"],["admin","⚙️","Admin"]];
+function buildNav(){let h=NAV.map(n=>"<button class='navbtn' data-page='"+n[0]+"' onclick=\"openPage('"+n[0]+"')\">"+n[1]+" "+n[2]+"</button>").join("");document.querySelector(".navlist").innerHTML=h;$("mobileChips").innerHTML=NAV.map(n=>"<button onclick=\"openPage('"+n[0]+"')\">"+n[1]+" "+n[2]+"</button>").join("")}
+function buildDash(){let items=[["feed","🏠","Post"],["live","🎥","Live"],["hustle","💼","Hustle"],["learn","🎓","Learn"],["games","🎮","Games"],["referral","🎁","Invite"],["subscribe","💰","Subscribe"],["chat","💬","Chat"]];$("dashGrid").innerHTML=items.map(i=>"<button onclick=\"openPage('"+i[0]+"')\"><span>"+i[1]+"</span>"+i[2]+"</button>").join("")}
+function openPage(p){document.querySelectorAll(".page").forEach(e=>e.classList.add("hidden"));let el=$("page-"+p);if(el)el.classList.remove("hidden");document.querySelectorAll(".navbtn").forEach(b=>b.classList.toggle("active",b.dataset.page===p));document.querySelectorAll("#mobileNav button").forEach(b=>b.classList.toggle("active",b.dataset.page===p));if(p==="dashboard")buildDash();if(p==="admin")loadAdmin();if(p==="profile"&&me){$("profileName").textContent=me.name;$("profileBioLine").textContent=me.bio}updateCoinsUI();window.scrollTo(0,0)}
+function dailyCheckin(){addCoins(20,"Daily check-in")}
+function redeemCoins(){if(coins<100)return alert("You need 100 coins. You have "+coins+". Post, invite, learn to earn.");coins-=100;subs[me.username]=true;saveAll();updateCoinsUI();alert("✅ Redeemed! You can now post >30s adverts. FREE!")}
+function copyOpay(){navigator.clipboard.writeText(OPAY);alert("Opay copied: "+OPAY)}
+function copyReferral(){navigator.clipboard.writeText($("referralLink").textContent);alert("Referral link copied!")}
+function claimReferral(){invites++;addCoins(50,"Referral")}
+function inviteWhatsApp(){window.open("https://wa.me/?text="+encodeURIComponent("Join me on PlanetSurfX 🌍 "+$("referralLink").textContent)," _blank")}
+function claimChallenge(){if(weeklyPosts<5)return alert("Post "+(5-weeklyPosts)+" more times this week!");addCoins(100,"Challenge complete")}
+function votePoll(c){polls[c]++;saveAll();let t=polls.Nigeria+polls.Ghana+polls.Cameroon;$("pollResult").innerHTML="Nigeria: "+polls.Nigeria+" | Ghana: "+polls.Ghana+" | Cameroon: "+polls.Cameroon+" | Total: "+t}
+function quizAnswer(ok){if(ok){addCoins(10,"Quiz");$("quizResult").innerHTML="<p style='color:green'>✅ Correct! +10 coins</p>"}else $("quizResult").innerHTML="<p style='color:red'>Try again!</p>"}
+function createPost(){let t=$("postContent").value.trim();if(!t)return alert("Write something");posts.unshift({id:Date.now(),user:me.username,name:me.name,text:t,likes:0,comments:[],time:new Date().toLocaleString(),loc:me.location});weeklyPosts++;addCoins(10,"Post");$("postContent").value="";saveAll();loadFeed()}
+function loadFeed(){let f=$("nearFilter")?$("nearFilter").value:"all";let list=posts.filter(p=>f==="all"||p.loc===f);if(!list.length){$("feedList").innerHTML="<div class='empty'>No posts yet. Be the first to post! +10 coins</div>";return}$("feedList").innerHTML=list.map((p,i)=>"<div class='card'><div class='userline'><div class='avatar'>"+esc(p.name.charAt(0))+"</div><div><b>"+esc(p.name)+"</b> <span class='muted'>@"+esc(p.user)+" • "+esc(p.loc||"")+" • "+esc(p.time)+"</span></div></div><div class='posttext'>"+esc(p.text)+"</div><div class='post-actions'><button onclick=\"likePost("+p.id+")\">❤️ "+p.likes+"</button><button onclick=\"toggleComments("+p.id+")\">💬 "+p.comments.length+"</button><button onclick=\"reportContent('post',"+p.id+")\">🚩 Report</button><button onclick=\"sharePost("+p.id+")\">↗️ Share</button></div><div id='c-"+p.id+"' class='commentbox hidden'>"+p.comments.map(c=>"<div class='comment'><b>"+esc(c.user)+":</b> "+esc(c.text)+"</div>").join("")+"<div class='commentform'><input id='ci-"+p.id+"' placeholder='Write comment...'><button class='btn small' onclick=\"addComment("+p.id+")\">Send</button></div></div></div>").join("")}
+function likePost(id){let p=posts.find(x=>x.id===id);p.likes++;saveAll();loadFeed()}
+function toggleComments(id){$("c-"+id).classList.toggle("hidden")}
+function addComment(id){let inp=$("ci-"+id);if(!inp.value.trim())return;let p=posts.find(x=>x.id===id);p.comments.push({user:me.username,text:inp.value});saveAll();loadFeed();setTimeout(()=>{$("c-"+id).classList.remove("hidden")},100)}
+function sharePost(id){let p=posts.find(x=>x.id===id);navigator.clipboard.writeText(p.text);alert("Copied! Share on WhatsApp")}
+function applyNear(){$("nearInfo").textContent="Showing: "+$("nearFilter").value;loadFeed()}
+function createStory(){let t=$("storyContent").value.trim();if(!t)return alert("Write story");stories.unshift({user:me.username,name:me.name,text:t,time:new Date().toLocaleString()});saveAll();$("storyContent").value="";loadStories();addCoins(5,"Story")}
+function loadStories(){let all=stories.slice(0,10);$("storyRail").innerHTML=all.length?all.map(s=>"<div class='story'><b>"+esc(s.name)+"</b><span>"+esc(s.text.slice(0,40))+"</span></div>").join(""):"<div class='muted'>No stories yet</div>";$("storyList").innerHTML=stories.map(s=>"<div class='listitem'><b>"+esc(s.name)+"</b> • "+esc(s.time)+"<br>"+esc(s.text)+"</div>").join("")||"<div class='empty'>No stories</div>"}
+function checkVideoLength(inp){let f=inp.files[0];if(!f)return;let v=document.createElement("video");v.preload="metadata";v.onloadedmetadata=()=>{window.URL.revokeObjectURL(v.src);$("reelSeconds").value=Math.round(v.duration);$("reelLengthInfo").textContent="Video is "+Math.round(v.duration)+"s. "+(v.duration>30?"OVER 30s - Need ₦2,000 OR 100 coins":"FREE - Under 30s ✅")};v.src=URL.createObjectURL(f)}
+function createReel(){let s=parseInt($("reelSeconds").value||0);if(!s)return alert("Enter seconds");if(s>30&&!subs[me.username]&&!me.isAdmin){alert("⚠️ "+s+"s OVER 30s. Need ₦2,000 OR 100 coins. Opay: "+OPAY);openPage("subscribe");return}reels.unshift({user:me.username,name:me.name,cap:$("reelCaption").value,url:$("reelUrl").value,sec:s,time:new Date().toLocaleString()});saveAll();loadReels();addCoins(10,"Reel")}
+function loadReels(){$("reelList").innerHTML=reels.map(r=>"<div class='reel'><b>"+esc(r.name)+"</b> • "+r.sec+"s • "+esc(r.time)+"<br>"+esc(r.cap)+"<br>"+(r.url?"<a href='"+esc(r.url)+"' target='_blank'>▶️ Watch Video</a>":"")+"</div>").join("")||"<div class='empty'>No reels yet</div>"}
+function goLive(){let t=$("liveTitle").value||"Live on PlanetSurfX";lives.unshift({user:me.username,name:me.name,title:t,viewers:1,gifts:0,time:new Date().toLocaleString()});saveAll();loadLives();$("liveArea").innerHTML="<div class='notice success'>🔴 You are LIVE: "+esc(t)+"</div>"}
+function loadLives(){$("liveList").innerHTML=lives.map((l,i)=>"<div class='listitem'><b>🔴 "+esc(l.title)+"</b><br>By "+esc(l.name)+" • 👁️ "+l.viewers+" watching • 🎁 "+l.gifts+" gifts<br><button class='btn small gold' onclick=\"sendGift("+i+")\">🎁 Send Gift +10 coins to host</button> <button class='btn small' onclick=\"joinLive("+i+")\">Join</button></div>").join("")||"<div class='empty'>No one live now. Go Live!</div>"}
+function sendGift(i){if(coins<10)return alert("Need 10 coins");coins-=10;lives[i].gifts++;lives[i].viewers++;saveAll();updateCoinsUI();loadLives();alert("🎁 Gift sent!")}
+function joinLive(i){lives[i].viewers++;saveAll();loadLives()}
+function createHustle(){let t=$("hustleTitle").value.trim();if(!t)return alert("Enter title");hustles.unshift({user:me.username,name:me.name,title:t,desc:$("hustleDesc").value,price:$("hustlePrice").value,loc:$("hustleLoc").value,time:new Date().toLocaleString()});saveAll();loadHustles();addCoins(10,"Hustle")}
+function loadHustles(){$("hustleList").innerHTML=hustles.map(h=>"<div class='listitem'><b>"+esc(h.title)+"</b> • "+esc(h.loc)+" • "+esc(h.price)+"<br>"+esc(h.desc)+"<br><span class='muted'>By "+esc(h.name)+" • "+esc(h.time)+"</span><br><button class='btn small green' onclick=\"window.open('https://wa.me/"+WA+"?text="+encodeURIComponent("Hi, I want: "+h.title)+"','_blank')\">💚 WhatsApp Seller</button></div>").join("")||"<div class='empty'>No hustles yet. Post one!</div>"}
+function loadLessons(){$("lessonList").innerHTML=lessons.map((l,i)=>"<div class='listitem'><b>"+esc(l.t)+"</b><br>"+esc(l.d)+"<br><button class='btn small gold' onclick=\"finishLesson("+i+")\">Finish +"+l.c+" coins</button></div>").join("")}
+function finishLesson(i){addCoins(lessons[i].c,"Lesson: "+lessons[i].t)}
+function sendProofWhatsApp(){window.open("https://wa.me/"+WA+"?text="+encodeURIComponent("Hi PlanetSurfX, I paid ₦2,000 for subscription. My username: "+me.username+". Please send my PIN."),"_blank")}
+function unlockWithPin(){let pin=$("subPinInput").value.trim();if(pins[pin]===me.username||pins[pin]==="any"){subs[me.username]=true;saveAll();updateCoinsUI();$("subStatus").innerHTML="<div class='notice success'>✅ Unlocked! You are subscribed.</div>"}else $("subStatus").innerHTML="<div class='notice error'>Wrong PIN. Pay to Opay "+OPAY+" then send proof on WhatsApp.</div>"}
+function createAdvert(){let s=parseInt($("adSeconds").value||0);if(!s)return alert("Enter seconds");if(s>30&&!subs[me.username]&&!me.isAdmin){alert("⚠️ OVER 30s. Need ₦2,000 OR 100 coins");openPage("subscribe");return}let html="<div class='listitem'><b>📢 "+esc($("adTitle").value)+"</b> • "+s+"s<br>"+esc($("adDesc").value)+"<br><a href='"+esc($("adUrl").value)+"' target='_blank'>▶️ Watch Advert</a></div>";$("myAds").innerHTML=html+$("myAds").innerHTML;alert("✅ Advert published!")}
+function sendMessage(){let to=$("chatUserId").value.trim(),t=$("messageText").value.trim();if(!to||!t)return alert("Enter user ID + message");msgs.push({from:me.username,to,text:t,time:new Date().toLocaleString()});saveAll();$("messageText").value="";loadMessages()}
+function loadMessages(){let to=$("chatUserId").value.trim();currentChatUser=to;let list=msgs.filter(m=>(m.from===me.username&&m.to===to)||(m.from===to&&m.to===me.username));$("messageList").innerHTML=list.length?list.map(m=>"<div class='comment'><b>"+esc(m.from)+":</b> "+esc(m.text)+" <span class='muted'>"+esc(m.time)+" 🔒</span></div>").join(""):"<div class='empty'>No messages yet. Start chatting 🔒</div>"}
+function toggleVoice(){if(!isRecording){navigator.mediaDevices.getUserMedia({audio:true}).then(s=>{mediaRecorder=new MediaRecorder(s);audioChunks=[];mediaRecorder.ondataavailable=e=>audioChunks.push(e.data);mediaRecorder.onstop=()=>{let blob=new Blob(audioChunks,{type:"audio/webm"});let url=URL.createObjectURL(blob);msgs.push({from:me.username,to:currentChatUser||"friend",text:"🎤 Voice Note: "+url,time:new Date().toLocaleString()});saveAll();loadMessages()};mediaRecorder.start();isRecording=true;$("voiceStatus").textContent="🔴 Recording... Tap again to stop";$("voiceBtn").textContent="⏹️ Stop"}).catch(()=>alert("Mic not allowed"))}else{mediaRecorder.stop();isRecording=false;$("voiceStatus").textContent="✅ Voice note sent";$("voiceBtn").textContent="🎤 Voice Note"}}
+function createListing(){let t=$("listingTitle").value.trim();if(!t)return alert("Enter title");listings.unshift({user:me.username,name:me.name,title:t,desc:$("listingDescription").value,price:$("listingPrice").value,trust:me.trust||70});saveAll();loadListings()}
+function loadListings(){$("marketList").innerHTML=listings.map(l=>"<div class='listitem'><b>"+esc(l.title)+"</b> • "+esc(l.price)+"<br>"+esc(l.desc)+"<br>By "+esc(l.name)+" • 🛡️ Trust "+l.trust+"% <button class='btn small green' onclick=\"window.open('https://wa.me/"+WA+"?text="+encodeURIComponent("I want: "+l.title)+"','_blank')\">💚 Buy</button></div>").join("")||"<div class='empty'>No listings yet</div>"}
+function createGroup(){let n=$("groupName").value.trim();if(!n)return alert("Enter group name");groups.unshift({name:n,desc:$("groupDescription").value,members:[me.username]});saveAll();loadGroups()}
+function loadGroups(){$("groupList").innerHTML=groups.map((g,i)=>"<div class='listitem'><b>"+esc(g.name)+"</b><br>"+esc(g.desc)+"<br>"+g.members.length+" members <button class='btn small' onclick=\"joinGroup("+i+")\">Join</button></div>").join("")||"<div class='empty'>No groups yet. Create one!</div>"}
+function joinGroup(i){if(!groups[i].members.includes(me.username))groups[i].members.push(me.username);saveAll();loadGroups();alert("Joined "+groups[i].name)}
+function loadFriends(){let myFriends=users.filter(u=>u.username!==me.username).slice(0,20);$("friendList").innerHTML=myFriends.map(u=>"<div class='listitem'><div class='userline'><div class='avatar'>"+esc(u.name.charAt(0))+"</div><div><b>"+esc(u.name)+"</b> @"+esc(u.username)+" • "+esc(u.location||"")+"</div></div><button class='btn small' onclick=\"sendFriendRequest('"+u.username+"')\">+ Add Friend</button> <button class='btn small secondary' onclick=\"openChatWith('"+u.username+"')\">💬 Chat</button></div>").join("")||"<div class='empty'>No other users yet. Invite friends!</div>";$("friendRequests").innerHTML="<div class='muted'>No pending requests. Invite with your link to grow!</div>"}
+function sendFriendRequest(id){let to=id||$("friendUserId").value;if(!to)return alert("Enter user ID");notifs.unshift({text:me.name+" sent you a friend request",time:new Date().toLocaleString()});saveAll();alert("Friend request sent to "+to)}
+function openChatWith(u){$("chatUserId").value=u;openPage("chat");loadMessages()}
+function loadNotifs(){$("notificationList").innerHTML=notifs.map(n=>"<div class='listitem'>"+esc(n.text)+"<br><span class='muted'>"+esc(n.time)+"</span></div>").join("")||"<div class='empty'>No notifications yet</div>"}
+function readNotifications(){notifs=[];saveAll();loadNotifs()}
+function saveProfile(){me.name=$("profileFullName").value;me.bio=$("profileBio").value;me.location=$("profileLocation").value;let idx=users.findIndex(u=>u.username===me.username);if(idx>=0)users[idx]=me;saveAll();updateCoinsUI();$("profileName").textContent=me.name;$("profileBioLine").textContent=me.bio;$("profileLocLine").textContent=me.location;alert("Profile saved ✅")}
+function savePrivacy(){alert("🔒 Privacy saved! Messages: "+$("privacyMsg").value+" | Posts: "+$("privacyPosts").value)}
+function reportContent(type,id){let r=prompt("Why report? Type: nude / scam / hate / spam");if(!r)return;reports.unshift({type,id,reason:r,by:me.username,time:new Date().toLocaleString()});saveAll();alert("🚩 Reported. Admin will review. Thank you for keeping PlanetSurfX safe.")}
+function loadAdmin(){if(!me.isAdmin){$("adminWho").innerHTML="<div class='notice error'>You are not Admin. Tap 'I am the Owner' to unlock.</div>";return}$("adminWho").innerHTML="<div class='notice success'>👑 Admin: "+esc(me.name)+" @"+esc(me.username)+"</div>";$("adminStats").innerHTML="<p>Users: "+users.length+" | Posts: "+posts.length+" | Reports: "+reports.length+" | Lives: "+lives.length+" | Coins in system: "+coins+"</p>";$("adminReports").innerHTML=reports.map((r,i)=>"<div class='listitem'><b>"+esc(r.reason)+"</b> • "+esc(r.type)+" #"+r.id+" by "+esc(r.by)+" • "+esc(r.time)+"<br><button class='btn small red' onclick=\"deleteReported("+i+")\">🗑️ Delete Content</button> <button class='btn small secondary' onclick=\"dismissReport("+i+")\">Dismiss</button></div>").join("")||"<div class='empty'>No reports ✅</div>";$("adminUsers").innerHTML=users.map(u=>"<div class='listitem'><b>"+esc(u.name)+"</b> @"+esc(u.username)+" • Trust "+(u.trust||70)+"% "+(subs[u.username]?"✅ Subscribed":"")+ "<br><button class='btn small gold' onclick=\"generatePinFor('"+u.username+"')\">🔑 PIN</button></div>").join("")}
+function deleteReported(i){let r=reports[i];if(r.type==="post")posts=posts.filter(p=>p.id!==r.id);reports.splice(i,1);saveAll();loadAdmin();loadFeed();alert("Deleted ✅")}
+function dismissReport(i){reports.splice(i,1);saveAll();loadAdmin()}
+function generatePin(){generatePinFor($("pinForUser").value.trim()||"any")}
+function generatePinFor(user){let pin="PSX-"+Math.floor(1000+Math.random()*9000);pins[pin]=user||"any";saveAll();$("generatedPin").innerHTML="<div class='notice success'>🔑 PIN for <b>"+esc(user||"any")+"</b>: <b style='font-size:20px'>"+pin+"</b><br>Send this PIN to the user on WhatsApp. They enter it in Subscribe > Enter PIN.</div>"}
+const EMOJIS=["😀","😂","❤️","🔥","🌍","👍","🎉","🙏","😍","😎","💪","🎓","💼","🎮","🎁","🇳🇬","🇬🇭","🇨🇲"];
+function buildEmojis(){let h=EMOJIS.map(e=>"<button type='button' onclick=\"addEmoji('postContent','"+e+"')\">"+e+"</button>").join("");let h2=EMOJIS.map(e=>"<button type='button' onclick=\"addEmoji('messageText','"+e+"')\">"+e+"</button>").join("");if($("emojiPost"))$("emojiPost").innerHTML=h;if($("emojiChat"))$("emojiChat").innerHTML=h2}
+function addEmoji(id,e){let el=$(id);el.value+=e;el.focus()}
+buildEmojis();
+let savedRef=new URLSearchParams(location.search).get("ref");if(savedRef){invites++;saveAll()}
 $("year").textContent=new Date().getFullYear();
+if(me){startApp()}else{$("authScreen").classList.remove("hidden")}
+function restoreSession(){if(me)startApp()}
 restoreSession();
 </script>
 </body>
