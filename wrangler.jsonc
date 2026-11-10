@@ -1,0 +1,12 @@
+{
+  "name": "planetsurfx",
+  "main": "worker.js",
+  "compatibility_date": "2026-11-10",
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "planetsurfx_db",
+      "database_id": "c0bb28ff-1fbe-4f2e-bbdc-c5351dfc11da"
+    }
+  ]
+}
