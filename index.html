@@ -290,5 +290,41 @@ setTimeout(()=>{
   };
 },800);
 </script>
+<style>
+/* Colourful background - no more plain white */
+body{ background: linear-gradient(180deg,#0645a5 0%, #087fd2 25%, #00b9d8 55%, #eef6ff 100%) !important; }
+.shell{ background: transparent !important; }
+.sidebar{ background: linear-gradient(180deg,#ffffff 0%, #eaf4ff 100%) !important; border:2px solid #fff !important; box-shadow:0 8px 25px rgba(0,0,0,.15) !important; }
+#page-dashboard{ background: linear-gradient(160deg,#0645a5,#00b9d8,#00d4a6) !important; border-radius:18px !important; padding:14px !important; }
+#page-dashboard .card{ background: linear-gradient(180deg,#ffffff,#eaf6ff) !important; border:2px solid #fff !important; box-shadow:0 8px 20px rgba(0,0,0,.12) !important; }
+#page-dashboard .welcomebanner{ background: linear-gradient(110deg,#1a0f2e,#0645a5) !important; border:2px solid #ffbd39 !important; }
+#page-dashboard .dash-grid button{ background: linear-gradient(180deg,#fff,#ffe9a8) !important; border:2px solid #ffbd39 !important; }
+</style>
+<script>
+setTimeout(()=>{
+  // Remove ALL "More inviting than Facebook" text anywhere on page
+  function cleanText(node){
+    if(node.nodeType===3){
+      if(node.textContent.includes("More inviting than Facebook")){
+        node.textContent = node.textContent.replace(/More inviting than Facebook[^.]*\.?/g, "You earn here! ");
+        node.textContent = node.textContent.replace(/More inviting than Facebook/g, "");
+      }
+      if(node.textContent.includes("more inviting than Facebook")){
+        node.textContent = node.textContent.replace(/more inviting than Facebook[^.]*\.?/g, "You earn here! ");
+      }
+    } else if(node.nodeType===1 && node.tagName!=="SCRIPT" && node.tagName!=="STYLE"){
+      for(let c of node.childNodes) cleanText(c);
+    }
+  }
+  cleanText(document.body);
+  // Also fix it if page reloads / navigates
+  let obs = new MutationObserver(()=>{ cleanText(document.body); });
+  obs.observe(document.body,{childList:true, subtree:true});
+  // Fix welcome banner directly
+  document.querySelectorAll(".welcomebanner p").forEach(p=>{
+    if(p.textContent.includes("Facebook")) p.textContent = "Post today, Earn Coins, Get FREE Advert. You earn here!";
+  });
+},800);
+</script>
 </body>
 </html>
