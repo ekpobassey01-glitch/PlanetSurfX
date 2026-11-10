@@ -27,7 +27,7 @@ async function hashPassword(password, salt) {
   const bits = await crypto.subtle.deriveBits({
     name: "PBKDF2",
     salt,
-    iterations: 120000,
+    iterations: 100000,
     hash: "SHA-256"
   }, key, 256);
 
@@ -41,13 +41,13 @@ function randomSalt() {
 
 async function passwordHash(password) {
   const salt = randomSalt();
-  return `pbkdf2$120000$${salt}$${await hashPassword(password, Uint8Array.from(atob(salt), c => c.charCodeAt(0)))}`;
+  return `pbkdf2$100000$${salt}$${await hashPassword(password, Uint8Array.from(atob(salt), c => c.charCodeAt(0)))}`;
 }
 
 async function verifyPassword(password, stored) {
   try {
     const [algorithm, iterations, salt, expected] = stored.split("$");
-    if (algorithm !== "pbkdf2" || iterations !== "120000") return false;
+    if (algorithm !== "pbkdf2" || iterations !== "100000") return false;
     const actual = await hashPassword(
       password,
       Uint8Array.from(atob(salt), c => c.charCodeAt(0))
