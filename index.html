@@ -77,14 +77,31 @@ textarea{resize:vertical;min-height:85px}
 .profile-cover{height:100px;border-radius:12px;background:linear-gradient(110deg,#0645a5,#00bfd1);margin-bottom:-28px}
 .profile-avatar{width:66px;height:66px;border:4px solid white;font-size:23px;position:relative;margin-left:14px}
 .footer{text-align:center;color:#91a0b3;font-size:12px;padding:18px}
-@media(max-width:1050px){.shell{grid-template-columns:190px minmax(0,1fr)}.rightcol{display:none}}
+/* FIX: mobile chips + dashboard grid - so nothing is hidden on phone */
+.mobile-chips{display:none;gap:8px;overflow-x:auto;padding:8px 0;white-space:nowrap}
+.mobile-chips button{background:#fff;border:1px solid var(--line);padding:9px 14px;border-radius:20px;font-weight:700;white-space:nowrap}
+.mobile-chips button.active{background:var(--blue);color:#fff}
+.dash-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.dash-grid button{background:#f0f5fb;border:1px solid var(--line);border-radius:14px;padding:16px 8px;text-align:center;font-weight:700}
+.dash-grid button span{font-size:26px;display:block}
+@media(max-width:1050px){.shell{grid-template-columns:190px minmax(0,1fr)} /* FIX: keep rightcol visible, move it below on tablet */
+  .rightcol{display:flex}}
 @media(max-width:700px){
- .shell{display:block;padding:10px 10px 85px}.sidebar{display:none}
+ .shell{display:block;padding:10px 10px 95px}
+ /* FIX: sidebar becomes horizontal chips on phone, NOT display:none */
+ .sidebar{display:block;position:static;padding:8px;margin-bottom:10px;overflow:auto}
+ .sidebar .navbtn{display:inline-flex;width:auto;padding:9px 13px;margin:2px}
+ .sidebar hr,.sidebar .muted,.sidebar p{display:none}
  .topbar{padding:12px}.brand{font-size:20px}
- .top-actions button{padding:8px}.mobile-nav{display:flex;position:fixed;bottom:0;left:0;right:0;background:white;border-top:1px solid var(--line);z-index:30;justify-content:space-around;padding:7px 2px calc(7px + env(safe-area-inset-bottom))}
- .mobile-nav button{background:transparent;color:#60748d;font-size:10px;display:flex;flex-direction:column;align-items:center;gap:3px;min-width:0}
+ .top-actions button{padding:8px}
+ .mobile-chips{display:flex}
+ /* FIX: bottom nav scrollable with ALL pages, not just 6 */
+ .mobile-nav{display:flex;position:fixed;bottom:0;left:0;right:0;background:white;border-top:1px solid var(--line);z-index:30;justify-content:flex-start;overflow-x:auto;padding:7px 2px calc(7px + env(safe-area-inset-bottom))}
+ .mobile-nav button{background:transparent;color:#60748d;font-size:10px;display:flex;flex-direction:column;align-items:center;gap:3px;min-width:62px;flex-shrink:0}
  .mobile-nav button span{font-size:20px}.mobile-nav button.active{color:var(--blue);font-weight:bold}
  .card{padding:13px}.authbox{padding:20px}
+ /* FIX: rightcol shows on phone as cards after main */
+ .rightcol{display:flex;margin-top:10px}
 }
 </style>
 </head>
@@ -133,6 +150,8 @@ textarea{resize:vertical;min-height:85px}
  </div>
 </section>
 <div id="appScreen" class="hidden">
+ <!-- FIX: Mobile chips - all pages visible on phone -->
+ <div class="mobile-chips" id="mobileChips"></div>
  <div class="shell">
   <aside class="sidebar panel">
    <div class="navlist"></div>
@@ -141,6 +160,12 @@ textarea{resize:vertical;min-height:85px}
    <p class="muted">Connect • Share • Discover</p>
   </aside>
   <main class="main">
+   <!-- FIX: NEW Dashboard page - shows EVERYTHING in one place -->
+   <section id="page-dashboard" class="page hidden">
+    <div class="card"><h2>📊 Dashboard - Everything</h2><p class="muted">All features in one place. Nothing hidden.</p><div class="dash-grid" id="dashGrid"></div></div>
+    <div class="card"><h3>Your info</h3><div id="dashInfo"></div><button class="btn" onclick="openPage('profile')">Edit Profile →</button></div>
+    <div class="card"><h3>Quick actions</h3><div class="row"><button class="btn" onclick="openPage('feed')">+ New Post</button><button class="btn secondary" onclick="openPage('stories')">+ Story</button><button class="btn gold" onclick="openPage('reels')">+ Reel</button><button class="btn secondary" onclick="openPage('market')">+ Listing</button></div></div>
+   </section>
    <section id="page-feed" class="page">
     <div class="card">
      <div class="section-title"><h2>Stories</h2><button class="btn small secondary" onclick="openPage('stories')">View all</button></div>
@@ -153,6 +178,8 @@ textarea{resize:vertical;min-height:85px}
     </div>
     <div class="section-title"><h2>World Feed</h2><button class="btn small secondary" onclick="loadFeed()">Refresh</button></div>
     <div id="feedList"><div class="loading">Loading your feed…</div></div>
+    <!-- FIX: Right column content also shows on phone, inside feed -->
+    <div class="card"><h3>Explore</h3><button class="navbtn" onclick="openPage('groups')">👥 Communities</button><button class="navbtn" onclick="openPage('reels')">🎬 Reels</button><button class="navbtn" onclick="openPage('market')">🛍️ Marketplace</button><button class="navbtn" onclick="openPage('dashboard')">📊 Dashboard - See All</button></div>
    </section>
    <section id="page-friends" class="page hidden">
     <div class="card"><h2>Find and connect</h2><p class="muted">Send friend requests and build your community.</p><button class="btn" onclick="loadFriends()">Refresh friends</button></div>
@@ -211,7 +238,9 @@ textarea{resize:vertical;min-height:85px}
     <div class="card">
      <div class="profile-cover"></div><div id="profileAvatar" class="avatar profile-avatar">P</div>
      <h2 id="profileName" style="margin-top:12px">Your profile</h2><p id="profileUsername" class="muted"></p>
-     <h3>Edit profile</h3>
+     <p><b id="profileFriendsCount">0 friends</b> • <span id="profileBioLine">No bio yet</span> • <span id="profileLocLine"></span></p>
+     <div class="row"><button class="btn small" onclick="openPage('dashboard')">📊 See Dashboard</button><button class="btn small secondary" onclick="openPage('feed')">+ Add to story</button><button class="btn small gold" onclick="openPage('friends')">👥 Friends</button></div>
+     <h3 style="margin-top:16px">Edit profile</h3>
      <label>Full name</label><input id="profileFullName">
      <label>Bio</label><textarea id="profileBio" placeholder="Tell the world about yourself"></textarea>
      <label>Location</label><input id="profileLocation" placeholder="Your location">
@@ -224,40 +253,44 @@ textarea{resize:vertical;min-height:85px}
    </section>
   </main>
   <aside class="rightcol">
-   <div class="card"><h3>Welcome to PlanetSurfX 🌍</h3><p class="muted">A world of connections, ideas and opportunities.</p></div>
+   <div class="card"><h3>Welcome to PlanetSurfX 🌍</h3><p class="muted">A world of connections, ideas and opportunities.</p><button class="btn small" onclick="openPage('dashboard')">📊 Open Dashboard</button></div>
    <div class="card"><h3>Explore</h3>
     <button class="navbtn" onclick="openPage('groups')">👥 Communities</button>
     <button class="navbtn" onclick="openPage('reels')">🎬 Reels</button>
     <button class="navbtn" onclick="openPage('market')">🛍️ Marketplace</button>
+    <button class="navbtn" onclick="openPage('dashboard')">📊 Dashboard</button>
    </div>
    <div class="card"><h3>Community values</h3><p class="muted">Respect • Creativity • Opportunity • Connection</p></div>
   </aside>
  </div>
 </div>
 <nav id="mobileNav" class="mobile-nav hidden">
+ <button data-page="dashboard" onclick="openPage('dashboard')"><span>📊</span>Dashboard</button>
  <button data-page="feed" onclick="openPage('feed')"><span>🏠</span>Feed</button>
  <button data-page="friends" onclick="openPage('friends')"><span>👥</span>Friends</button>
  <button data-page="groups" onclick="openPage('groups')"><span>🌐</span>Groups</button>
+ <button data-page="stories" onclick="openPage('stories')"><span>⭕</span>Stories</button>
+ <button data-page="reels" onclick="openPage('reels')"><span>🎬</span>Reels</button>
  <button data-page="chat" onclick="openPage('chat')"><span>💬</span>Chat</button>
+ <button data-page="market" onclick="openPage('market')"><span>🛍️</span>Market</button>
  <button data-page="alerts" onclick="openPage('alerts')"><span>🔔</span>Alerts</button>
  <button data-page="profile" onclick="openPage('profile')"><span>👤</span>Profile</button>
+ <button data-page="admin" onclick="openPage('admin')"><span>⚙️</span>Admin</button>
 </nav>
 <div class="footer">© <span id="year"></span> PlanetSurfX. Connect Beyond Borders.</div>
 <script>
 const API="https://planetsurfx.ekpobassey01.workers.dev";
 let token=localStorage.getItem("psx_token")||"";
 let me=null,activePage="feed",currentGroup=null;
-// ===== FIX: remember open comment boxes + comments locally =====
 let openComments=new Set(JSON.parse(localStorage.getItem("psx_open_comments")||"[]"));
 let commentCache=JSON.parse(localStorage.getItem("psx_comment_cache")||"{}");
-function saveCommentState(){
-  localStorage.setItem("psx_open_comments",JSON.stringify([...openComments]));
-  localStorage.setItem("psx_comment_cache",JSON.stringify(commentCache));
-}
+let lastFriends=[],lastRequests=[];
+function saveCommentState(){localStorage.setItem("psx_open_comments",JSON.stringify([...openComments]));localStorage.setItem("psx_comment_cache",JSON.stringify(commentCache));}
 const $=id=>document.getElementById(id);
 const esc=value=>String(value??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const getId=o=>o?.id??o?.user_id??o?.userId??"";
 const displayName=o=>o?.full_name||o?.name||o?.username||"PlanetSurfX member";
+function isAdminUser(u){return !!u && (u.role==="admin"||u.is_admin===true||u.isAdmin===true||u.username==="admin"||u.role==="owner");}
 function notice(message,error=false){$("authMessage").innerHTML=`<div class="notice ${error?"error":"success"}">${esc(message)}</div>`}
 async function api(path,options={}){
  const headers={"Content-Type":"application/json",...(options.headers||{})};
@@ -281,8 +314,9 @@ function setLoggedIn(user){
  $("profileName").textContent=displayName(me);$("profileUsername").textContent=me.username?"@"+me.username:"";
  $("profileFullName").value=me.full_name||me.name||"";$("profileBio").value=me.bio||"";$("profileLocation").value=me.location||"";
  $("profileAvatar").textContent=displayName(me).charAt(0).toUpperCase();
- buildNav();openPage("feed");loadFeed();loadStories();
- if(me.role==="admin"||me.is_admin)loadAdmin();
+ $("profileBioLine").textContent=me.bio||"No bio yet";$("profileLocLine").textContent=me.location||"";
+ buildNav();buildDashboard();openPage("feed");loadFeed();loadStories();loadFriends();
+ if(isAdminUser(me))loadAdmin();
 }
 function logout(){
  token="";me=null;localStorage.removeItem("psx_token");$("appScreen").classList.add("hidden");$("mobileNav").classList.add("hidden");$("authScreen").classList.remove("hidden");$("logoutBtn").classList.add("hidden");$("topUser").textContent="";showAuth("login");
@@ -310,28 +344,36 @@ $("adminForm").addEventListener("submit",async e=>{
  token=d.token||d.session_token||"";if(!token)throw new Error("The server did not return an admin token.");localStorage.setItem("psx_token",token);setLoggedIn(d.user||{username:$("adminUsername").value,role:"admin",is_admin:true});
  }catch(err){notice(err.message,true)}
 });
-const navItems=[["feed","🏠","World Feed"],["friends","👥","Friends"],["groups","🌐","Groups"],["stories","⭕","Stories"],["reels","🎬","Reels"],["chat","💬","Messages"],["market","🛍️","Marketplace"],["alerts","🔔","Notifications"],["profile","👤","My Profile"]];
+const navItems=[["dashboard","📊","Dashboard"],["feed","🏠","World Feed"],["friends","👥","Friends"],["groups","🌐","Groups"],["stories","⭕","Stories"],["reels","🎬","Reels"],["chat","💬","Messages"],["market","🛍️","Marketplace"],["alerts","🔔","Notifications"],["profile","👤","My Profile"],["admin","⚙️","Admin"]];
 function buildNav(){
- document.querySelectorAll(".navlist").forEach(el=>el.innerHTML=navItems.map(([id,icon,label])=>`<button class="navbtn" data-page="${id}" onclick="openPage('${id}')"><span class="navicon">${icon}</span>${label}</button>`).join("")+(me?.role==="admin"||me?.is_admin?`<button class="navbtn" data-page="admin" onclick="openPage('admin')"><span class="navicon">⚙️</span>Admin</button>`:""));
+ const admin=isAdminUser(me);
+ const items=navItems.filter(([id])=>id!=="admin"||admin);
+ document.querySelectorAll(".navlist").forEach(el=>el.innerHTML=items.map(([id,icon,label])=>`<button class="navbtn" data-page="${id}" onclick="openPage('${id}')"><span class="navicon">${icon}</span>${label}</button>`).join(""));
+ const chips=document.getElementById("mobileChips");
+ if(chips) chips.innerHTML=items.map(([id,icon,label])=>`<button data-page="${id}" onclick="openPage('${id}')">${icon} ${label}</button>`).join("");
+}
+function buildDashboard(){
+ const items=navItems.filter(([id])=>id!=="admin"||isAdminUser(me));
+ const grid=document.getElementById("dashGrid");
+ if(grid) grid.innerHTML=items.map(([id,icon,label])=>`<button onclick="openPage('${id}')"><span>${icon}</span>${label}</button>`).join("");
+ const info=document.getElementById("dashInfo");
+ if(info) info.innerHTML=`<p><b>${esc(displayName(me))}</b> • @${esc(me?.username||"")}</p><p class="muted">Friends: ${lastFriends.length} • Requests: ${lastRequests.length}</p><p class="muted">${esc(me?.bio||"No bio yet")} • ${esc(me?.location||"")}</p>`;
 }
 function openPage(page){
  activePage=page;document.querySelectorAll(".page").forEach(el=>el.classList.add("hidden"));
  const target=$("page-"+page);if(target)target.classList.remove("hidden");
  document.querySelectorAll("[data-page]").forEach(el=>el.classList.toggle("active",el.dataset.page===page));
- const loaders={feed:()=>loadFeed(),friends:()=>loadFriends(),groups:()=>loadGroups(),stories:()=>loadStories(),reels:()=>loadReels(),chat:()=>{},market:()=>loadMarket(),alerts:()=>loadNotifications(),profile:()=>{},admin:()=>loadAdmin()};
+ if(page==="dashboard")buildDashboard();
+ const loaders={feed:()=>loadFeed(),friends:()=>loadFriends(),groups:()=>loadGroups(),stories:()=>loadStories(),reels:()=>loadReels(),chat:()=>{},market:()=>loadMarket(),alerts:()=>loadNotifications(),profile:()=>{},admin:()=>loadAdmin(),dashboard:()=>{}};
  if(loaders[page])loaders[page]();
 }
 function arrayFrom(d,...keys){if(Array.isArray(d))return d;for(const k of keys)if(Array.isArray(d?.[k]))return d[k];return []}
-// ===== FIXED postCard: merges server comments + local cache, keeps box open =====
 function getCommentsForPost(p){
   const id=String(getId(p));
   const serverComments=arrayFrom(p.comments);
   const cached=commentCache[id]||[];
-  // merge, avoid duplicates by content+author
   const merged=[...serverComments];
-  cached.forEach(c=>{
-    if(!merged.some(m=>(m.content||m.text)===c.content && displayName(m)===displayName(c))) merged.push(c);
-  });
+  cached.forEach(c=>{if(!merged.some(m=>(m.content||m.text)===c.content && displayName(m)===displayName(c))) merged.push(c);});
   return merged;
 }
 function postCard(p){
@@ -357,7 +399,6 @@ async function createPost(){
 }
 async function likePost(id){try{await api("/api/posts/"+encodeURIComponent(id)+"/like",{method:"POST",body:"{}"});loadFeed()}catch(e){alert(e.message)}}
 async function deletePost(id){if(!confirm("Delete this post?"))return;try{await api("/api/posts/"+encodeURIComponent(id),{method:"DELETE"});delete commentCache[String(id)];openComments.delete(String(id));saveCommentState();loadFeed()}catch(e){alert(e.message)}}
-// ===== FIXED toggle + send: keep open, save locally FIRST =====
 function toggleComments(id){
   id=String(id);
   if(openComments.has(id)) openComments.delete(id); else openComments.add(id);
@@ -367,18 +408,14 @@ function toggleComments(id){
 async function sendComment(id){
  id=String(id);
  const input=$("commentInput-"+id),content=input?.value.trim();if(!content)return;
- // 1. SAVE LOCALLY FIRST - so it shows instantly even if server is slow / does not return comments
  const myComment={content:content, full_name:displayName(me), username:me?.username||"", created_at:new Date().toISOString()};
  if(!commentCache[id]) commentCache[id]=[];
  commentCache[id].push(myComment);
  openComments.add(id);
  saveCommentState();
- // 2. Re-render immediately - you will SEE Comments (1) + your comment, box stays open
  loadFeed();
- // 3. Then send to server in background
  try{await api("/api/posts/"+encodeURIComponent(id)+"/comments",{method:"POST",body:JSON.stringify({content})});}
  catch(e){alert("Comment saved on your phone, but server said: "+e.message)}
- // 4. Final reload - cache keeps it visible even if server still returns 0
  setTimeout(()=>loadFeed(),600);
 }
 async function sendFriendRequest(){
@@ -390,8 +427,11 @@ async function loadFriends(){
  try{
   const [r,f]=await Promise.all([api("/api/friends/requests"),api("/api/friends")]);
   const requests=arrayFrom(r,"requests","friends"),friends=arrayFrom(f,"friends","users");
+  lastFriends=friends; lastRequests=requests;
+  $("profileFriendsCount").textContent=friends.length+" friends";
   $("friendRequests").innerHTML=requests.length?requests.map(x=>`<div class="listitem row between"><span>${esc(displayName(x))}</span><button class="btn small" onclick="acceptFriend('${esc(getId(x))}')">Accept</button></div>`).join(""):'<p class="muted">No pending requests.</p>';
   $("friendList").innerHTML=friends.length?friends.map(x=>`<div class="listitem row"><div class="avatar">${esc(displayName(x)[0])}</div><strong>${esc(displayName(x))}</strong></div>`).join(""):'<p class="muted">Your friend list is empty.</p>';
+  buildDashboard();
  }catch(e){$("friendRequests").innerHTML=$("friendList").innerHTML=`<p class="notice error">${esc(e.message)}</p>`}
 }
 async function acceptFriend(id){try{await api("/api/friends/accept",{method:"POST",body:JSON.stringify({request_id:id})});loadFriends()}catch(e){alert(e.message)}}
@@ -414,7 +454,7 @@ async function loadNotifications(){
 }
 async function readNotifications(){try{await api("/api/notifications/read",{method:"POST",body:"{}"});loadNotifications()}catch(e){alert(e.message)}}
 async function saveProfile(){
- try{const d=await api("/api/profile",{method:"PATCH",body:JSON.stringify({full_name:$("profileFullName").value.trim(),bio:$("profileBio").value.trim(),location:$("profileLocation").value.trim()})});me=d.profile||d.user||{...me,full_name:$("profileFullName").value};$("profileName").textContent=displayName(me);$("topUser").textContent=displayName(me);alert("Profile updated.")}
+ try{const d=await api("/api/profile",{method:"PATCH",body:JSON.stringify({full_name:$("profileFullName").value.trim(),bio:$("profileBio").value.trim(),location:$("profileLocation").value.trim()})});me=d.profile||d.user||{...me,full_name:$("profileFullName").value};$("profileName").textContent=displayName(me);$("topUser").textContent=displayName(me);$("profileBioLine").textContent=$("profileBio").value||"No bio yet";$("profileLocLine").textContent=$("profileLocation").value||"";alert("Profile updated.")}
  catch(e){alert(e.message)}
 }
 async function loadStories(){
@@ -475,7 +515,7 @@ async function createListing(){
  catch(e){alert(e.message)}
 }
 async function loadAdmin(){
- if(!(me?.role==="admin"||me?.is_admin))return;
+ if(!isAdminUser(me)){ $("adminStats").innerHTML=`<p class="notice error">You are not admin. Sign in with Admin tab.</p>`; $("adminUsers").innerHTML=""; return; }
  $("adminStats").innerHTML="Loading dashboard…";
  try{
   const d=await api("/api/admin/dashboard");const stats=d.stats||d.dashboard||d;
