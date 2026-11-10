@@ -1,445 +1,465 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#111d43">
-<title>PlanetSurfX — Connect Beyond Boundaries</title>
+<meta name="theme-color" content="#0759c7">
+<title>PlanetSurfX — Connect Beyond Borders</title>
 <style>
-:root{--blue:#2457e6;--cyan:#20c7d9;--navy:#111d43;--gold:#ffc857;--bg:#f3f6fc;--ink:#17213b;--muted:#71809b;--line:#e5eaf3;--white:#fff;--shadow:0 8px 25px #172b6010}
+:root{--blue:#0759c7;--cyan:#00bde8;--navy:#102b52;--gold:#ffbd39;--bg:#f1f6fc;--white:#fff;--muted:#718096;--line:#e4ebf4;--green:#12a875;--red:#e34c5c}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font:15px Arial,sans-serif}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:#172b4d}
 button,input,textarea,select{font:inherit}
 button{cursor:pointer;border:0}
-.hidden{display:none!important}
-.muted{color:var(--muted)}
-.small{font-size:12px}
-.btn{padding:11px 16px;border-radius:11px;background:var(--blue);color:white;font-weight:bold}
-.btn.secondary{background:#edf2ff;color:var(--blue)}
-.btn.danger{background:#fff0f1;color:#d94355}
-.btn.ghost{background:white;color:var(--muted);border:1px solid var(--line)}
-.brand{display:flex;align-items:center;gap:10px;font-weight:900;font-size:21px;color:var(--navy)}
-.logo{width:42px;height:42px;border-radius:14px;background:linear-gradient(135deg,var(--blue),var(--cyan));display:grid;place-items:center;color:white;font-size:24px}
-.brand span{color:var(--blue)}
-.field{display:grid;gap:6px;margin:13px 0}
-.field label{font-size:13px;font-weight:bold;color:#46536d}
-.field input,.field textarea,.field select{width:100%;padding:13px;border:1px solid #dce3f0;border-radius:11px;background:white;outline:none}
-.field input:focus,.field textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px #2457e61a}
-.field textarea{min-height:90px;resize:vertical}
-.auth-wrap{min-height:100vh;display:grid;place-items:center;padding:20px;background:radial-gradient(circle at 10% 10%,#2457e6,transparent 35%),radial-gradient(circle at 90% 90%,#20c7d9,transparent 30%),#111d43}
-.auth-shell{width:min(950px,100%);display:grid;grid-template-columns:1fr 1fr;background:white;border-radius:25px;overflow:hidden;box-shadow:0 25px 70px #0005}
-.hero{padding:42px;background:linear-gradient(145deg,#14234d,#2457e6 70%,#20c7d9);color:white;display:flex;flex-direction:column;justify-content:space-between;min-height:540px}
-.hero h1{font-size:clamp(32px,5vw,49px);line-height:1.05;margin:35px 0 15px}
-.hero p{line-height:1.7;color:#e3edff}
-.planet{text-align:center;font-size:100px;padding:20px}
-.auth-panel{padding:38px;display:flex;flex-direction:column;justify-content:center}
-.tabs{display:flex;gap:5px;background:#f0f3fa;padding:5px;border-radius:12px;margin:20px 0}
-.tab{flex:1;padding:11px;border-radius:9px;background:transparent;color:var(--muted);font-weight:bold}
-.tab.active{background:white;color:var(--blue);box-shadow:0 3px 12px #0001}
-.error{color:#d94355;font-size:13px;margin:8px 0}
-.notice{padding:12px;background:#eff5ff;color:#36558e;border-radius:10px;font-size:13px;margin-top:12px}
-.topbar{height:66px;background:white;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 max(15px,calc((100vw - 1200px)/2));position:sticky;top:0;z-index:10}
-.top-actions{display:flex;align-items:center;gap:10px}
-.avatar{width:39px;height:39px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,var(--blue),var(--cyan));color:white;font-weight:bold;overflow:hidden;flex-shrink:0}
-.avatar img{width:100%;height:100%;object-fit:cover}
-.layout{width:min(1200px,100%);margin:22px auto;display:grid;grid-template-columns:210px minmax(0,1fr) 250px;gap:18px;padding:0 14px}
-.sidebar,.rightbar{position:sticky;top:85px;align-self:start}
-.panel,.post,.composer,.stat{background:white;border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow)}
-.side{padding:13px}
-.side-user{display:flex;align-items:center;gap:10px;padding:10px 5px 16px;border-bottom:1px solid var(--line);margin-bottom:10px}
-.nav{width:100%;display:flex;align-items:center;gap:11px;padding:12px;border-radius:10px;background:transparent;color:#52617d;text-align:left;font-weight:bold;margin:3px 0}
-.nav.active,.nav:hover{background:#edf2ff;color:var(--blue)}
-.nav .ico{font-size:18px;width:23px;text-align:center}
+.topbar{background:linear-gradient(110deg,#0645a5,#087fd2,#00b9d8);color:white;padding:13px 4%;display:flex;align-items:center;justify-content:space-between;gap:12px;position:sticky;top:0;z-index:20;box-shadow:0 3px 14px #1235}
+.brand{font-size:23px;font-weight:900;letter-spacing:-1px}.brand span{color:#ffe18a}
+.top-actions{display:flex;gap:8px;align-items:center}
+.top-actions button{background:#ffffff22;color:white;padding:9px 12px;border-radius:20px}
+.shell{max-width:1400px;margin:auto;padding:18px;display:grid;grid-template-columns:220px minmax(0,650px) 260px;gap:18px}
+.panel,.card{background:white;border:1px solid var(--line);border-radius:16px;box-shadow:0 3px 14px #18365b0a}
+.sidebar{padding:12px;height:max-content;position:sticky;top:76px}
+.navbtn{display:flex;width:100%;align-items:center;gap:12px;padding:13px 12px;background:transparent;color:#334766;text-align:left;border-radius:11px;margin:2px 0;font-weight:700}
+.navbtn:hover,.navbtn.active{background:#eaf4ff;color:var(--blue)}
+.navicon{font-size:19px;width:23px;text-align:center}
 .main{min-width:0}
-.head{display:flex;align-items:center;justify-content:space-between;margin-bottom:15px}
-.head h2{margin:0;font-size:23px}
-.composer{padding:15px;margin-bottom:15px}
-.compose-top{display:flex;gap:10px;align-items:flex-start}
-.compose-top textarea{flex:1;border:0;outline:0;resize:vertical;min-height:60px;padding:9px}
-.compose-bottom{display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--line);padding-top:11px;margin-top:8px}
-.compose-bottom select{padding:9px;border:1px solid var(--line);border-radius:9px;background:white}
-.post{padding:16px;margin-bottom:14px}
-.post-head{display:flex;align-items:center;gap:10px}
-.post-meta{flex:1;min-width:0}
-.post-meta strong{display:block}
-.post-meta small{color:var(--muted)}
-.post-content{white-space:pre-wrap;overflow-wrap:anywhere;margin:15px 0;line-height:1.55}
-.post-actions{display:flex;gap:8px;border-top:1px solid var(--line);padding-top:9px}
-.action{padding:8px 11px;border-radius:8px;background:transparent;color:#65728d;font-weight:bold}
-.action:hover{background:#edf2ff;color:var(--blue)}
-.comment-box{display:flex;gap:7px;margin-top:10px}
-.comment-box input{flex:1;min-width:0;padding:10px;border:1px solid var(--line);border-radius:9px}
-.comment-list{font-size:13px;padding:10px}
-.comment{padding:8px 0;border-bottom:1px solid var(--line)}
-.empty{text-align:center;padding:30px 15px;color:var(--muted);background:white;border:1px dashed #dce3f0;border-radius:14px}
-.right-card{padding:15px;margin-bottom:14px}
-.right-card h3{margin:0 0 10px;font-size:15px}
-.page-card{padding:18px}
-.profile-cover{height:130px;background:linear-gradient(120deg,#14234d,#2457e6,#20c7d9);border-radius:13px}
-.profile-info{display:flex;align-items:end;gap:12px;margin:-30px 15px 18px}
-.profile-info .avatar{width:72px;height:72px;border:4px solid white;font-size:22px}
-.profile-info h2{margin:0}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.list-row{display:flex;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid var(--line)}
-.list-row:last-child{border:0}
-.grow{flex:1;min-width:0}
-.list-row strong{display:block}
-.list-row small{color:var(--muted)}
-.message-layout{display:grid;grid-template-columns:160px 1fr;gap:12px;min-height:390px}
-.message-list{border-right:1px solid var(--line);padding-right:10px}
-.conversation{display:flex;flex-direction:column;min-width:0}
-.messages{flex:1;min-height:260px;max-height:420px;overflow:auto;padding:10px}
-.bubble{max-width:80%;padding:10px 13px;border-radius:13px;margin:7px 0;background:#eef2fa;overflow-wrap:anywhere}
-.bubble.mine{background:#e8efff;color:#2149b5;margin-left:auto}
-.send-row{display:flex;gap:7px;padding-top:10px;border-top:1px solid var(--line)}
-.send-row input{flex:1;min-width:0;padding:10px;border:1px solid var(--line);border-radius:9px}
-.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
-.stat{padding:14px}
-.stat span{font-size:12px;color:var(--muted)}
-.stat strong{display:block;font-size:24px;margin-top:5px}
-.table-wrap{overflow:auto}
-table{width:100%;border-collapse:collapse;font-size:13px}
-th,td{text-align:left;padding:11px;border-bottom:1px solid var(--line);white-space:nowrap}
-th{font-size:11px;color:var(--muted)}
-.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#17213b;color:white;padding:12px 18px;border-radius:11px;z-index:50;max-width:90%;text-align:center}
+.rightcol{display:flex;flex-direction:column;gap:14px}
+.card{padding:16px;margin-bottom:14px}
+h2,h3{margin:0 0 12px}
+h2{font-size:20px}h3{font-size:16px}
+.muted{color:var(--muted);font-size:13px}
+input,textarea,select{width:100%;padding:12px;border:1px solid #dce5f0;border-radius:10px;background:#fbfdff;outline:none;margin:5px 0 10px;color:#19304f}
+input:focus,textarea:focus{border-color:#1685df;box-shadow:0 0 0 3px #1685df18}
+textarea{resize:vertical;min-height:85px}
+.btn{padding:11px 16px;border-radius:10px;background:var(--blue);color:white;font-weight:700}
+.btn:hover{filter:brightness(1.08)}
+.btn.secondary{background:#eaf3ff;color:var(--blue)}
+.btn.gold{background:var(--gold);color:#453000}
+.btn.red{background:#fff0f1;color:var(--red)}
+.btn.small{padding:8px 11px;font-size:13px}
+.btn.full{width:100%}
+.row{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.between{justify-content:space-between}
+.avatar{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#0879d4,#00c4d7);color:white;font-weight:900;flex-shrink:0}
+.userline{display:flex;gap:10px;align-items:center;margin-bottom:12px}
+.userline strong{display:block}.userline small{color:var(--muted)}
+.posttext{line-height:1.6;white-space:pre-wrap;overflow-wrap:anywhere}
+.post-actions{display:flex;gap:7px;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:10px;margin-top:12px}
+.post-actions button{background:#f0f5fb;color:#3c5573;border-radius:9px;padding:8px 11px}
+.post-actions button:hover{background:#e2f0ff;color:var(--blue)}
+.authwrap{min-height:calc(100vh - 56px);display:grid;place-items:center;padding:20px;background:radial-gradient(circle at top left,#d5f7ff,transparent 40%),linear-gradient(135deg,#eaf2ff,#fff)}
+.authbox{width:min(100%,460px);background:white;border-radius:22px;padding:25px;box-shadow:0 15px 50px #174b8b20}
+.authhero{text-align:center;margin-bottom:20px}
+.authhero .biglogo{font-size:34px;font-weight:900;color:var(--blue)}
+.authhero p{color:var(--muted)}
+.tabs{display:flex;background:#edf4fb;padding:4px;border-radius:12px;margin-bottom:18px}
+.tabs button{flex:1;padding:10px 5px;background:transparent;border-radius:9px;color:#536984;font-weight:700}
+.tabs button.active{background:white;color:var(--blue);box-shadow:0 2px 7px #1232}
+.hidden{display:none!important}
+.section-title{display:flex;align-items:center;justify-content:space-between;margin:5px 0 14px}
+.storyrail{display:flex;gap:12px;overflow-x:auto;padding:3px 0 12px}
+.story{min-width:82px;height:115px;border-radius:14px;background:linear-gradient(150deg,#0874d5,#04c5d1);color:white;padding:9px;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden}
+.story strong{font-size:12px}.story small{font-size:11px}
+.story.add{background:linear-gradient(150deg,#ffbd39,#ff7c53);color:#422700;justify-content:center;align-items:center;text-align:center}
+.listitem{padding:12px 0;border-bottom:1px solid var(--line)}
+.listitem:last-child{border-bottom:0}
+.badge{font-size:11px;background:#e9f5ff;color:#0862b9;padding:4px 8px;border-radius:20px}
+.commentbox{margin-top:12px;padding-top:10px;border-top:1px solid var(--line)}
+.comment{padding:8px 10px;background:#f4f7fb;border-radius:10px;margin:6px 0;font-size:13px}
+.commentform{display:flex;gap:7px}.commentform input{margin:0}
+.empty{text-align:center;color:var(--muted);padding:24px 8px}
+.reel{border-radius:14px;background:#142b48;color:white;padding:18px;margin:10px 0;overflow-wrap:anywhere}
+.reel a{color:#9ee8ff}
 .mobile-nav{display:none}
-@media(max-width:950px){.layout{grid-template-columns:190px minmax(0,1fr)}.rightbar{display:none}}
-@media(max-width:650px){
-.auth-shell{grid-template-columns:1fr}.hero{min-height:auto;padding:22px}.hero h1{font-size:34px;margin:20px 0 8px}.hero p{margin:0}.planet{font-size:55px;padding:5px}.auth-panel{padding:23px}
-.topbar{height:59px;padding:0 11px}.brand{font-size:17px}.layout{display:block;margin:13px auto 75px;padding:0 10px}.sidebar,.rightbar{display:none}
-.mobile-nav{display:flex;position:fixed;bottom:0;left:0;right:0;background:white;border-top:1px solid var(--line);z-index:20;justify-content:space-around;padding:6px 2px calc(6px + env(safe-area-inset-bottom))}
-.mobile-nav .nav{display:grid;justify-items:center;gap:1px;width:auto;padding:5px;font-size:10px;margin:0}.mobile-nav .ico{font-size:18px}
-.grid2{grid-template-columns:1fr}.message-layout{grid-template-columns:105px 1fr;gap:7px}.page-card{padding:13px}.stat-grid{grid-template-columns:repeat(2,1fr)}.stat{padding:11px}.stat strong{font-size:21px}
+.notice{padding:11px 13px;border-radius:10px;margin:10px 0;font-size:13px;background:#e9f7ff;color:#0759a8}
+.notice.error{background:#fff0f1;color:#b52d40}
+.notice.success{background:#e8fff5;color:#08784f}
+.loading{padding:20px;text-align:center;color:var(--muted)}
+.profile-cover{height:100px;border-radius:12px;background:linear-gradient(110deg,#0645a5,#00bfd1);margin-bottom:-28px}
+.profile-avatar{width:66px;height:66px;border:4px solid white;font-size:23px;position:relative;margin-left:14px}
+.footer{text-align:center;color:#91a0b3;font-size:12px;padding:18px}
+@media(max-width:1050px){.shell{grid-template-columns:190px minmax(0,1fr)}.rightcol{display:none}}
+@media(max-width:700px){
+ .shell{display:block;padding:10px 10px 85px}.sidebar{display:none}
+ .topbar{padding:12px}.brand{font-size:20px}
+ .top-actions button{padding:8px}.mobile-nav{display:flex;position:fixed;bottom:0;left:0;right:0;background:white;border-top:1px solid var(--line);z-index:30;justify-content:space-around;padding:7px 2px calc(7px + env(safe-area-inset-bottom))}
+ .mobile-nav button{background:transparent;color:#60748d;font-size:10px;display:flex;flex-direction:column;align-items:center;gap:3px;min-width:0}
+ .mobile-nav button span{font-size:20px}.mobile-nav button.active{color:var(--blue);font-weight:bold}
+ .card{padding:13px}.authbox{padding:20px}
 }
 </style>
 </head>
 <body>
+<header class="topbar">
+ <div class="brand">Planet<span>Surf</span>X 🌍</div>
+ <div class="top-actions">
+  <span id="topUser" class="muted" style="color:white"></span>
+  <button id="logoutBtn" class="hidden" onclick="logout()">Log out</button>
+ </div>
+</header>
 
-<section id="authScreen" class="auth-wrap">
- <div class="auth-shell">
-  <div class="hero">
-   <div>
-    <div class="brand" style="color:white"><div class="logo">✦</div>PlanetSurfX</div>
-    <h1>Connect beyond boundaries.</h1>
-    <p>Meet people, share ideas, build communities and discover opportunities across the planet.</p>
-   </div>
-   <div class="planet">🌍</div>
-   <small>One planet. Endless connections.</small>
+<section id="authScreen" class="authwrap">
+ <div class="authbox">
+  <div class="authhero">
+   <div class="biglogo">PlanetSurfX 🌍</div>
+   <h2>Connect Beyond Borders</h2>
+   <p>Meet people. Share ideas. Discover your world.</p>
   </div>
-  <div class="auth-panel">
-   <div class="brand"><div class="logo">✦</div>PlanetSurf<span>X</span></div>
-   <div class="tabs">
-    <button class="tab active" id="loginTab" onclick="showAuth('login')">Sign in</button>
-    <button class="tab" id="registerTab" onclick="showAuth('register')">Join</button>
-    <button class="tab" id="adminTab" onclick="showAuth('admin')">Admin</button>
-   </div>
-   <form id="loginForm" onsubmit="login(event)">
-    <h2>Welcome back</h2><p class="muted">Sign in to continue.</p>
-    <div class="field"><label>Username</label><input id="loginUsername" required autocomplete="username"></div>
-    <div class="field"><label>Password</label><input id="loginPassword" type="password" required autocomplete="current-password"></div>
-    <div id="loginMessage" class="error"></div>
-    <button class="btn" style="width:100%">Sign in</button>
-   </form>
-   <form id="registerForm" class="hidden" onsubmit="register(event)">
-    <h2>Create your account</h2><p class="muted">Join the PlanetSurfX community.</p>
-    <div class="field"><label>Username</label><input id="regUsername" required minlength="3" maxlength="30"></div>
-    <div class="field"><label>Full name</label><input id="regFullName" required></div>
-    <div class="field"><label>Email (optional)</label><input id="regEmail" type="email"></div>
-    <div class="field"><label>Password</label><input id="regPassword" type="password" required minlength="8"></div>
-    <div id="registerMessage" class="error"></div>
-    <button class="btn" style="width:100%">Create account</button>
-   </form>
-   <form id="adminForm" class="hidden" onsubmit="adminLogin(event)">
-    <h2>Administrator access</h2>
-    <div class="field"><label>Admin username</label><input id="adminUsername" required></div>
-    <div class="field"><label>Admin password</label><input id="adminPassword" type="password" required></div>
-    <div id="adminMessage" class="error"></div>
-    <button class="btn" style="width:100%">Open admin dashboard</button>
-    <div class="notice">Use the administrator account already created through the secure Worker setup process.</div>
-   </form>
+  <div class="tabs">
+   <button id="tabLogin" class="active" onclick="showAuth('login')">Sign in</button>
+   <button id="tabRegister" onclick="showAuth('register')">Join PlanetSurfX</button>
+   <button id="tabAdmin" onclick="showAuth('admin')">Admin</button>
   </div>
+  <div id="authMessage"></div>
+  <form id="loginForm">
+   <h3>Welcome back!</h3>
+   <label>Username</label><input id="loginUsername" required autocomplete="username" placeholder="Your username">
+   <label>Password</label><input id="loginPassword" type="password" required autocomplete="current-password" placeholder="Your password">
+   <button class="btn full">Sign in</button>
+  </form>
+  <form id="registerForm" class="hidden">
+   <h3>Create your free account</h3>
+   <label>Full name</label><input id="regFullName" required placeholder="Your full name">
+   <label>Username</label><input id="regUsername" required minlength="3" maxlength="30" placeholder="Choose a username">
+   <label>Email (optional)</label><input id="regEmail" type="email" placeholder="Email address">
+   <label>Password</label><input id="regPassword" type="password" required minlength="8" placeholder="At least 8 characters">
+   <button class="btn full">Create account</button>
+  </form>
+  <form id="adminForm" class="hidden">
+   <h3>Administrator sign in</h3>
+   <label>Admin username</label><input id="adminUsername" required>
+   <label>Password</label><input id="adminPassword" type="password" required>
+   <button class="btn full">Admin sign in</button>
+  </form>
+  <p class="muted" style="text-align:center;margin-top:18px">By joining, you agree to use PlanetSurfX responsibly.</p>
  </div>
 </section>
 
 <div id="appScreen" class="hidden">
-<header class="topbar">
- <div class="brand"><div class="logo">✦</div>PlanetSurf<span>X</span></div>
- <div class="top-actions"><span id="topUserName" class="muted small"></span><div id="topAvatar" class="avatar">P</div><button class="btn ghost" onclick="logout()">Log out</button></div>
-</header>
-<div class="layout">
- <aside class="sidebar">
-  <div class="panel side">
-   <div class="side-user"><div id="sideAvatar" class="avatar">P</div><div><strong id="sideName">Member</strong><div class="small muted" id="sideHandle">@member</div></div></div>
-   <button class="nav active" data-page="feed" onclick="openPage('feed')"><span class="ico">🏠</span>Home feed</button>
-   <button class="nav" data-page="profile" onclick="openPage('profile')"><span class="ico">👤</span>My profile</button>
-   <button class="nav" data-page="friends" onclick="openPage('friends')"><span class="ico">🤝</span>Friends</button>
-   <button class="nav" data-page="messages" onclick="openPage('messages')"><span class="ico">💬</span>Messages</button>
-   <button class="nav" data-page="notifications" onclick="openPage('notifications')"><span class="ico">🔔</span>Notifications</button>
-   <button class="nav" data-page="marketplace" onclick="openPage('marketplace')"><span class="ico">🛍️</span>Marketplace</button>
-   <button class="nav" id="adminNav" data-page="admin" onclick="openPage('admin')" style="display:none"><span class="ico">🛡️</span>Admin panel</button>
-  </div>
- </aside>
- <main class="main" id="mainContent"></main>
- <aside class="rightbar">
-  <div class="panel right-card"><h3>🌐 Your PlanetSurfX</h3><p class="muted small">A place to connect, share and discover. Be respectful and protect your account details.</p></div>
-  <div class="panel right-card"><h3>Quick guide</h3><p class="small">✍️ Share your ideas.</p><p class="small">🤝 Build connections.</p><p class="small">💬 Start conversations.</p></div>
- </aside>
+ <div class="shell">
+  <aside class="sidebar panel">
+   <div class="navlist"></div>
+   <hr style="border:0;border-top:1px solid var(--line);margin:12px 0">
+   <div class="muted">PlanetSurfX</div>
+   <p class="muted">Connect • Share • Discover</p>
+  </aside>
+  <main class="main">
+   <section id="page-feed" class="page">
+    <div class="card">
+     <div class="section-title"><h2>Stories</h2><button class="btn small secondary" onclick="openPage('stories')">View all</button></div>
+     <div id="storyRail" class="storyrail"><div class="loading">Loading stories…</div></div>
+    </div>
+    <div class="card">
+     <h2>What's happening?</h2>
+     <textarea id="postContent" placeholder="Share something with your world…"></textarea>
+     <div class="row between"><span class="muted">Your voice matters 🌍</span><button class="btn" onclick="createPost()">Publish post</button></div>
+    </div>
+    <div class="section-title"><h2>World Feed</h2><button class="btn small secondary" onclick="loadFeed()">Refresh</button></div>
+    <div id="feedList"><div class="loading">Loading your feed…</div></div>
+   </section>
+
+   <section id="page-friends" class="page hidden">
+    <div class="card"><h2>Find and connect</h2><p class="muted">Send friend requests and build your community.</p><button class="btn" onclick="loadFriends()">Refresh friends</button></div>
+    <div class="card"><h3>Friend requests</h3><div id="friendRequests"></div></div>
+    <div class="card"><h3>Your friends</h3><div id="friendList"></div></div>
+    <div class="card"><h3>Send a friend request</h3><input id="friendUserId" placeholder="Enter the user's ID"><button class="btn" onclick="sendFriendRequest()">Send request</button></div>
+   </section>
+
+   <section id="page-groups" class="page hidden">
+    <div class="card"><h2>Groups & Communities</h2><p class="muted">Find your people. Build communities around shared interests.</p>
+     <input id="groupName" placeholder="Community name">
+     <textarea id="groupDescription" placeholder="What is this group about?"></textarea>
+     <button class="btn" onclick="createGroup()">Create a group</button>
+    </div>
+    <div class="card"><h3>Discover communities</h3><div id="groupList"></div></div>
+    <div id="groupDetail" class="card hidden"></div>
+   </section>
+
+   <section id="page-stories" class="page hidden">
+    <div class="card"><h2>Stories</h2><p class="muted">Share a short update with your community.</p>
+     <textarea id="storyContent" placeholder="What would you like to share?"></textarea>
+     <button class="btn" onclick="createStory()">Share story</button>
+    </div>
+    <div class="card"><h3>Recent stories</h3><div id="storyList"></div></div>
+   </section>
+
+   <section id="page-reels" class="page hidden">
+    <div class="card"><h2>PlanetSurfX Reels</h2><p class="muted">Discover short videos shared by the community.</p>
+     <input id="reelCaption" placeholder="Video caption">
+     <input id="reelUrl" type="url" placeholder="Public video URL">
+     <button class="btn" onclick="createReel()">Share reel</button>
+     <p class="muted">This form shares a video link. Direct video uploads require a separate media-storage service.</p>
+    </div>
+    <div id="reelList"></div>
+   </section>
+
+   <section id="page-chat" class="page hidden">
+    <div class="card"><h2>Private messages</h2>
+     <label>Conversation user ID</label><input id="chatUserId" placeholder="Enter the other user's ID">
+     <button class="btn secondary" onclick="loadMessages()">Load conversation</button>
+    </div>
+    <div class="card"><div id="messageList"><div class="empty">Enter a user ID to open a conversation.</div></div>
+     <textarea id="messageText" placeholder="Write your message…"></textarea>
+     <button class="btn" onclick="sendMessage()">Send message</button>
+    </div>
+   </section>
+
+   <section id="page-market" class="page hidden">
+    <div class="card"><h2>Marketplace</h2><p class="muted">Discover products and services from the community.</p>
+     <input id="listingTitle" placeholder="Product or service title">
+     <textarea id="listingDescription" placeholder="Describe your listing"></textarea>
+     <input id="listingPrice" placeholder="Price (e.g. ₦25,000)">
+     <button class="btn" onclick="createListing()">Publish listing</button>
+    </div>
+    <div class="card"><h3>Community listings</h3><div id="marketList"></div></div>
+   </section>
+
+   <section id="page-alerts" class="page hidden">
+    <div class="card"><div class="section-title"><h2>Notifications</h2><button class="btn small secondary" onclick="readNotifications()">Mark all read</button></div><div id="notificationList"></div></div>
+   </section>
+
+   <section id="page-profile" class="page hidden">
+    <div class="card">
+     <div class="profile-cover"></div><div id="profileAvatar" class="avatar profile-avatar">P</div>
+     <h2 id="profileName" style="margin-top:12px">Your profile</h2><p id="profileUsername" class="muted"></p>
+     <h3>Edit profile</h3>
+     <label>Full name</label><input id="profileFullName">
+     <label>Bio</label><textarea id="profileBio" placeholder="Tell the world about yourself"></textarea>
+     <label>Location</label><input id="profileLocation" placeholder="Your location">
+     <button class="btn" onclick="saveProfile()">Save profile</button>
+    </div>
+   </section>
+
+   <section id="page-admin" class="page hidden">
+    <div class="card"><h2>Administration</h2><p class="muted">Platform overview and member management.</p><button class="btn" onclick="loadAdmin()">Refresh dashboard</button><div id="adminStats"></div></div>
+    <div class="card"><h3>Members</h3><div id="adminUsers"></div></div>
+   </section>
+  </main>
+
+  <aside class="rightcol">
+   <div class="card"><h3>Welcome to PlanetSurfX 🌍</h3><p class="muted">A world of connections, ideas and opportunities.</p></div>
+   <div class="card"><h3>Explore</h3>
+    <button class="navbtn" onclick="openPage('groups')">👥 Communities</button>
+    <button class="navbtn" onclick="openPage('reels')">🎬 Reels</button>
+    <button class="navbtn" onclick="openPage('market')">🛍️ Marketplace</button>
+   </div>
+   <div class="card"><h3>Community values</h3><p class="muted">Respect • Creativity • Opportunity • Connection</p></div>
+  </aside>
+ </div>
 </div>
-<nav class="mobile-nav">
- <button class="nav active" data-page="feed" onclick="openPage('feed')"><span class="ico">🏠</span>Home</button>
- <button class="nav" data-page="friends" onclick="openPage('friends')"><span class="ico">🤝</span>Friends</button>
- <button class="nav" data-page="messages" onclick="openPage('messages')"><span class="ico">💬</span>Chat</button>
- <button class="nav" data-page="notifications" onclick="openPage('notifications')"><span class="ico">🔔</span>Alerts</button>
- <button class="nav" data-page="profile" onclick="openPage('profile')"><span class="ico">👤</span>Profile</button>
+
+<nav id="mobileNav" class="mobile-nav hidden">
+ <button data-page="feed" onclick="openPage('feed')"><span>🏠</span>Feed</button>
+ <button data-page="friends" onclick="openPage('friends')"><span>👥</span>Friends</button>
+ <button data-page="groups" onclick="openPage('groups')"><span>🌐</span>Groups</button>
+ <button data-page="chat" onclick="openPage('chat')"><span>💬</span>Chat</button>
+ <button data-page="alerts" onclick="openPage('alerts')"><span>🔔</span>Alerts</button>
+ <button data-page="profile" onclick="openPage('profile')"><span>👤</span>Profile</button>
 </nav>
-</div>
-<div id="toast" class="toast hidden"></div>
+<div class="footer">© <span id="year"></span> PlanetSurfX. Connect Beyond Borders.</div>
 
 <script>
 const API="https://planetsurfx.ekpobassey01.workers.dev";
-let token=localStorage.getItem("psx_api_token")||"";
-let currentUser=null,currentRole="user",currentPage="feed",activeChat="";
-let toastTimer;
-
-function esc(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
-function initials(n){return (String(n||"P").trim().split(/\s+/).slice(0,2).map(x=>x[0]).join("")||"P").toUpperCase();}
-function avatar(name,url){return `<div class="avatar">${url?`<img src="${esc(url)}" alt="">`:esc(initials(name))}</div>`;}
-function toast(msg){const e=document.getElementById("toast");e.textContent=msg;e.classList.remove("hidden");clearTimeout(toastTimer);toastTimer=setTimeout(()=>e.classList.add("hidden"),2800);}
-function message(id,msg){document.getElementById(id).textContent=msg;}
+let token=localStorage.getItem("psx_token")||"";
+let me=null,activePage="feed",currentGroup=null;
+const $=id=>document.getElementById(id);
+const esc=value=>String(value??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const getId=o=>o?.id??o?.user_id??o?.userId??"";
+const displayName=o=>o?.full_name||o?.name||o?.username||"PlanetSurfX member";
+function notice(message,error=false){$("authMessage").innerHTML=`<div class="notice ${error?"error":"success"}">${esc(message)}</div>`}
 async function api(path,options={}){
  const headers={"Content-Type":"application/json",...(options.headers||{})};
  if(token)headers.Authorization="Bearer "+token;
- const r=await fetch(API+path,{...options,headers});
- let d={};try{d=await r.json();}catch(e){}
- if(!r.ok)throw new Error(d.error||"Request failed ("+r.status+")");
- return d;
+ const response=await fetch(API+path,{...options,headers});
+ const raw=await response.text();let data={};
+ try{data=raw?JSON.parse(raw):{}}catch{data={message:raw}}
+ if(!response.ok||data.success===false)throw new Error(data.error||data.message||"Request failed ("+response.status+")");
+ return data;
 }
-function showAuth(mode){
- ["loginForm","registerForm","adminForm"].forEach(x=>document.getElementById(x).classList.add("hidden"));
- ["loginTab","registerTab","adminTab"].forEach(x=>document.getElementById(x).classList.remove("active"));
- document.getElementById(mode+"Form").classList.remove("hidden");
- document.getElementById(mode+"Tab").classList.add("active");
+function showAuth(which){
+ ["login","register","admin"].forEach(name=>{
+  $(name+"Form").classList.toggle("hidden",name!==which);
+  $("tab"+name[0].toUpperCase()+name.slice(1)).classList.toggle("active",name===which);
+ });
+ $("authMessage").innerHTML="";
 }
-async function login(e){
- e.preventDefault();message("loginMessage","Signing in…");
- try{const d=await api("/api/login",{method:"POST",body:JSON.stringify({username:loginUsername.value.trim(),password:loginPassword.value})});token=d.token;localStorage.setItem("psx_api_token",token);await restoreSession();}
- catch(err){message("loginMessage",err.message);}
+function setLoggedIn(user){
+ me=user||{};$("authScreen").classList.add("hidden");$("appScreen").classList.remove("hidden");$("mobileNav").classList.remove("hidden");
+ $("logoutBtn").classList.remove("hidden");$("topUser").textContent=displayName(me);
+ $("profileName").textContent=displayName(me);$("profileUsername").textContent=me.username?"@"+me.username:"";
+ $("profileFullName").value=me.full_name||me.name||"";$("profileBio").value=me.bio||"";$("profileLocation").value=me.location||"";
+ $("profileAvatar").textContent=displayName(me).charAt(0).toUpperCase();
+ buildNav();openPage("feed");loadFeed();loadStories();
+ if(me.role==="admin"||me.is_admin)loadAdmin();
 }
-async function register(e){
- e.preventDefault();message("registerMessage","Creating account…");
- try{
-  const body={username:regUsername.value.trim(),full_name:regFullName.value.trim(),password:regPassword.value};
-  if(regEmail.value.trim())body.email=regEmail.value.trim();
-  const d=await api("/api/register",{method:"POST",body:JSON.stringify(body)});
-  token=d.token;localStorage.setItem("psx_api_token",token);await restoreSession();
- }catch(err){message("registerMessage",err.message);}
-}
-async function adminLogin(e){
- e.preventDefault();message("adminMessage","Checking credentials…");
- try{const d=await api("/api/admin/login",{method:"POST",body:JSON.stringify({username:adminUsername.value.trim(),password:adminPassword.value})});token=d.token;localStorage.setItem("psx_api_token",token);await restoreSession();}
- catch(err){message("adminMessage",err.message);}
+function logout(){
+ token="";me=null;localStorage.removeItem("psx_token");$("appScreen").classList.add("hidden");$("mobileNav").classList.add("hidden");$("authScreen").classList.remove("hidden");$("logoutBtn").classList.add("hidden");$("topUser").textContent="";showAuth("login");
 }
 async function restoreSession(){
- if(!token){showAuth("login");return;}
- try{
-  const d=await api("/api/me");
-  if(!d.authenticated)throw new Error("Session expired");
-  currentRole=d.role||"user";currentUser=d.profile||d.user||d;
-  document.getElementById("authScreen").classList.add("hidden");
-  document.getElementById("appScreen").classList.remove("hidden");
-  const name=currentUser.full_name||currentUser.username||"Member";
-  document.getElementById("topUserName").textContent=name;
-  document.getElementById("topAvatar").innerHTML=currentUser.avatar?`<img src="${esc(currentUser.avatar)}">`:esc(initials(name));
-  document.getElementById("sideAvatar").innerHTML=document.getElementById("topAvatar").innerHTML;
-  document.getElementById("sideName").textContent=name;
-  document.getElementById("sideHandle").textContent="@"+(currentUser.username||"member");
-  document.getElementById("adminNav").style.display=currentRole==="admin"?"flex":"none";
-  openPage(currentRole==="admin"?"admin":"feed");
- }catch(err){
-  token="";localStorage.removeItem("psx_api_token");currentUser=null;
-  document.getElementById("appScreen").classList.add("hidden");
-  document.getElementById("authScreen").classList.remove("hidden");showAuth("login");
- }
+ if(!token)return;
+ try{const d=await api("/api/me");if(d.authenticated){setLoggedIn(d.profile||d.user||d);return}}catch{}
+ token="";localStorage.removeItem("psx_token");
 }
-async function logout(){
- try{await api("/api/logout",{method:"POST",body:"{}"});}catch(e){}
- token="";localStorage.removeItem("psx_api_token");currentUser=null;
- document.getElementById("appScreen").classList.add("hidden");
- document.getElementById("authScreen").classList.remove("hidden");showAuth("login");
- toast("Signed out.");
+$("loginForm").addEventListener("submit",async e=>{
+ e.preventDefault();notice("Signing in…");
+ try{const d=await api("/api/login",{method:"POST",body:JSON.stringify({username:$("loginUsername").value.trim(),password:$("loginPassword").value})});
+ token=d.token||d.session_token||"";if(!token)throw new Error("The server did not return a login token.");localStorage.setItem("psx_token",token);setLoggedIn(d.user||d.profile||{username:$("loginUsername").value.trim()});
+ }catch(err){notice(err.message,true)}
+});
+$("registerForm").addEventListener("submit",async e=>{
+ e.preventDefault();notice("Creating your account…");
+ try{const d=await api("/api/register",{method:"POST",body:JSON.stringify({full_name:$("regFullName").value.trim(),username:$("regUsername").value.trim(),email:$("regEmail").value.trim()||null,password:$("regPassword").value})});
+ token=d.token||d.session_token||"";if(!token)throw new Error("Account created. Please sign in.");localStorage.setItem("psx_token",token);setLoggedIn(d.user||d.profile||{username:$("regUsername").value,full_name:$("regFullName").value});
+ }catch(err){notice(err.message,true)}
+});
+$("adminForm").addEventListener("submit",async e=>{
+ e.preventDefault();notice("Checking administrator account…");
+ try{const d=await api("/api/admin/login",{method:"POST",body:JSON.stringify({username:$("adminUsername").value.trim(),password:$("adminPassword").value})});
+ token=d.token||d.session_token||"";if(!token)throw new Error("The server did not return an admin token.");localStorage.setItem("psx_token",token);setLoggedIn(d.user||{username:$("adminUsername").value,role:"admin",is_admin:true});
+ }catch(err){notice(err.message,true)}
+});
+const navItems=[["feed","🏠","World Feed"],["friends","👥","Friends"],["groups","🌐","Groups"],["stories","⭕","Stories"],["reels","🎬","Reels"],["chat","💬","Messages"],["market","🛍️","Marketplace"],["alerts","🔔","Notifications"],["profile","👤","My Profile"]];
+function buildNav(){
+ document.querySelectorAll(".navlist").forEach(el=>el.innerHTML=navItems.map(([id,icon,label])=>`<button class="navbtn" data-page="${id}" onclick="openPage('${id}')"><span class="navicon">${icon}</span>${label}</button>`).join("")+(me?.role==="admin"||me?.is_admin?`<button class="navbtn" data-page="admin" onclick="openPage('admin')"><span class="navicon">⚙️</span>Admin</button>`:""));
 }
 function openPage(page){
- currentPage=page;
- document.querySelectorAll("[data-page]").forEach(b=>b.classList.toggle("active",b.dataset.page===page));
- const funcs={feed:loadFeed,profile:loadProfile,friends:loadFriends,messages:loadMessages,notifications:loadNotifications,marketplace:loadMarketplace,admin:loadAdmin};
- if(page==="admin"&&currentRole!=="admin"){toast("Administrator access required.");return;}
- if(funcs[page])funcs[page]();
+ activePage=page;document.querySelectorAll(".page").forEach(el=>el.classList.add("hidden"));
+ const target=$("page-"+page);if(target)target.classList.remove("hidden");
+ document.querySelectorAll("[data-page]").forEach(el=>el.classList.toggle("active",el.dataset.page===page));
+ const loaders={feed:()=>loadFeed(),friends:()=>loadFriends(),groups:()=>loadGroups(),stories:()=>loadStories(),reels:()=>loadReels(),chat:()=>{},market:()=>loadMarket(),alerts:()=>loadNotifications(),profile:()=>{},admin:()=>loadAdmin()};
+ if(loaders[page])loaders[page]();
 }
-function head(title,extra=""){return `<div class="head"><h2>${title}</h2>${extra}</div>`;}
-function empty(t){return `<div class="empty">${esc(t)}</div>`;}
-
-async function loadFeed(){
- const root=document.getElementById("mainContent");
- root.innerHTML=head("Home feed")+`
- <section class="composer">
-  <div class="compose-top">${avatar(currentUser.full_name||currentUser.username,currentUser.avatar)}<textarea id="postText" placeholder="What's happening on your planet?"></textarea></div>
-  <div class="compose-bottom"><select id="postVisibility"><option value="public">Public post</option><option value="friends">Friends only</option></select><button class="btn" onclick="createPost()">Publish post</button></div>
- </section><div id="feedList">${empty("Loading feed…")}</div>`;
- try{const d=await api("/api/feed?limit=50");const posts=d.posts||[];document.getElementById("feedList").innerHTML=posts.length?posts.map(postCard).join(""):empty("No public posts yet. Be the first to share!");}
- catch(e){document.getElementById("feedList").innerHTML=empty(e.message);}
-}
+function arrayFrom(d,...keys){if(Array.isArray(d))return d;for(const k of keys)if(Array.isArray(d?.[k]))return d[k];return []}
 function postCard(p){
- const own=String(p.user_id)===String(currentUser.id);
- return `<article class="post">
- <div class="post-head">${avatar(p.full_name||p.username,p.avatar)}<div class="post-meta"><strong>${esc(p.full_name||p.username||"Member")}</strong><small>@${esc(p.username||"member")} · ${esc(p.created_at||"")}</small></div>
- ${own?`<button class="btn ghost small" onclick="deletePost(${Number(p.id)})">Delete</button>`:""}</div>
- <div class="post-content">${esc(p.content)}</div>
- <div class="post-actions"><button class="action" onclick="likePost(${Number(p.id)})">♡ ${Number(p.likes)||0} Like</button><button class="action" onclick="toggleComments(${Number(p.id)})">💬 ${Number(p.comments)||0} Comments</button></div>
- <div id="comments-${Number(p.id)}" class="hidden"></div></article>`;
+ const id=getId(p),author=displayName(p),comments=arrayFrom(p.comments);
+ return `<article class="card"><div class="userline"><div class="avatar">${esc(author[0].toUpperCase())}</div><div><strong>${esc(author)}</strong><small>${esc(p.created_at||p.createdAt||"PlanetSurfX")}</small></div></div>
+ <div class="posttext">${esc(p.content||p.text||"")}</div>
+ ${p.image_url?`<img src="${esc(p.image_url)}" alt="Post image" style="width:100%;border-radius:12px;margin-top:10px">`:""}
+ <div class="post-actions"><button onclick="likePost('${esc(id)}')">❤️ Like (${Number(p.likes_count||p.likes||0)})</button><button onclick="toggleComments('${esc(id)}')">💬 Comments (${Number(p.comments_count||comments.length)})</button>${String(p.user_id||p.author_id||"")===String(getId(me))?`<button onclick="deletePost('${esc(id)}')">🗑 Delete</button>`:""}</div>
+ <div id="comments-${esc(id)}" class="commentbox hidden">${comments.map(c=>`<div class="comment"><strong>${esc(displayName(c))}:</strong> ${esc(c.content||c.text)}</div>`).join("")}<div class="commentform"><input id="commentInput-${esc(id)}" placeholder="Write a comment…"><button class="btn small" onclick="sendComment('${esc(id)}')">Send</button></div></div></article>`;
+}
+async function loadFeed(){
+ $("feedList").innerHTML='<div class="loading">Loading posts…</div>';
+ try{const d=await api("/api/feed");const posts=arrayFrom(d,"posts","feed","data");$("feedList").innerHTML=posts.length?posts.map(postCard).join(""):'<div class="card empty">No posts yet. Be the first to share something!</div>'}
+ catch(e){$("feedList").innerHTML=`<div class="card notice error">${esc(e.message)}</div>`}
 }
 async function createPost(){
- const content=document.getElementById("postText").value.trim();if(!content)return toast("Write something first.");
- try{await api("/api/posts",{method:"POST",body:JSON.stringify({content,visibility:document.getElementById("postVisibility").value})});toast("Post published.");loadFeed();}
- catch(e){toast(e.message);}
+ const content=$("postContent").value.trim();if(!content)return alert("Write something before publishing.");
+ try{await api("/api/posts",{method:"POST",body:JSON.stringify({content})});$("postContent").value="";loadFeed()}
+ catch(e){alert(e.message)}
 }
-async function likePost(id){try{await api(`/api/posts/${id}/like`,{method:"POST",body:"{}"});loadFeed();}catch(e){toast(e.message);}}
-async function deletePost(id){if(!confirm("Delete this post?"))return;try{await api(`/api/posts/${id}`,{method:"DELETE"});toast("Post deleted.");loadFeed();}catch(e){toast(e.message);}}
-async function toggleComments(id){
- const box=document.getElementById("comments-"+id);
- if(!box.classList.contains("hidden")){box.classList.add("hidden");return;}
- box.classList.remove("hidden");box.innerHTML=empty("Loading comments…");
- try{
-  const d=await api(`/api/posts/${id}/comments`);
-  box.innerHTML=`<div class="comment-list">${(d.comments||[]).map(c=>`<div class="comment"><strong>${esc(c.full_name||c.username||"Member")}</strong> ${esc(c.content)}</div>`).join("")||"No comments yet."}</div><div class="comment-box"><input id="comment-${id}" placeholder="Write a comment…"><button class="btn" onclick="sendComment(${id})">Send</button></div>`;
- }catch(e){box.innerHTML=empty(e.message);}
-}
+async function likePost(id){try{await api("/api/posts/"+encodeURIComponent(id)+"/like",{method:"POST",body:"{}"});loadFeed()}catch(e){alert(e.message)}}
+async function deletePost(id){if(!confirm("Delete this post?"))return;try{await api("/api/posts/"+encodeURIComponent(id),{method:"DELETE"});loadFeed()}catch(e){alert(e.message)}}
+function toggleComments(id){$("comments-"+id)?.classList.toggle("hidden")}
 async function sendComment(id){
- const input=document.getElementById("comment-"+id),content=input.value.trim();if(!content)return;
- try{await api(`/api/posts/${id}/comments`,{method:"POST",body:JSON.stringify({content})});toast("Comment added.");loadFeed();}
- catch(e){toast(e.message);}
-}
-
-async function loadProfile(){
- document.getElementById("mainContent").innerHTML=head("My profile")+`
- <section class="panel page-card"><div class="profile-cover"></div>
- <div class="profile-info">${avatar(currentUser.full_name||currentUser.username,currentUser.avatar)}<div><h2>${esc(currentUser.full_name||currentUser.username)}</h2><span class="muted">@${esc(currentUser.username)}</span></div></div>
- <div style="max-width:600px"><h3>Edit your profile</h3>
- <div class="field"><label>Full name</label><input id="profileName" value="${esc(currentUser.full_name||"")}"></div>
- <div class="field"><label>About you</label><textarea id="profileBio">${esc(currentUser.bio||"")}</textarea></div>
- <div class="field"><label>Avatar image URL</label><input id="profileAvatar" value="${esc(currentUser.avatar||"")}" placeholder="https://…"></div>
- <div class="field"><label>Cover image URL</label><input id="profileCover" value="${esc(currentUser.cover||"")}" placeholder="https://…"></div>
- <div class="field"><label>Location</label><input id="profileLocation" value="${esc(currentUser.location||"")}"></div>
- <button class="btn" onclick="saveProfile()">Save profile</button></div></section>`;
-}
-async function saveProfile(){
- const body={full_name:document.getElementById("profileName").value.trim(),bio:document.getElementById("profileBio").value,avatar:document.getElementById("profileAvatar").value.trim(),cover:document.getElementById("profileCover").value.trim(),location:document.getElementById("profileLocation").value.trim()};
- try{await api("/api/profile",{method:"PATCH",body:JSON.stringify(body)});currentUser={...currentUser,...body};toast("Profile updated.");loadProfile();}
- catch(e){toast(e.message);}
-}
-
-async function loadFriends(){
- const root=document.getElementById("mainContent");
- root.innerHTML=head("Friends")+`
- <section class="panel page-card"><h3>Find a member</h3><div class="comment-box"><input id="friendUsername" placeholder="Enter their exact username"><button class="btn" onclick="sendFriendRequest()">Send request</button></div></section>
- <section class="panel page-card" style="margin-top:13px"><h3>Friend requests</h3><div id="friendRequests">${empty("Loading…")}</div></section>
- <section class="panel page-card" style="margin-top:13px"><h3>Your friends</h3><div id="friendsList">${empty("Loading…")}</div></section>`;
- try{
-  const [r,f]=await Promise.all([api("/api/friends/requests"),api("/api/friends")]);
-  const requests=r.requests||[],friends=f.friends||[];
-  document.getElementById("friendRequests").innerHTML=requests.length?requests.map(x=>`<div class="list-row">${avatar(x.full_name||x.username,x.avatar)}<div class="grow"><strong>${esc(x.full_name||x.username)}</strong><small>@${esc(x.username)}</small></div><button class="btn" onclick="acceptFriend(${Number(x.id)})">Accept</button></div>`).join(""):empty("No pending requests.");
-  document.getElementById("friendsList").innerHTML=friends.length?friends.map(x=>`<div class="list-row">${avatar(x.full_name||x.username,x.avatar)}<div class="grow"><strong>${esc(x.full_name||x.username)}</strong><small>@${esc(x.username)}</small></div><button class="btn secondary" onclick="startChat('${esc(x.username)}')">Message</button></div>`).join(""):empty("Your friends will appear here.");
- }catch(e){document.getElementById("friendRequests").innerHTML=empty(e.message);}
+ const input=$("commentInput-"+id),content=input?.value.trim();if(!content)return;
+ try{await api("/api/posts/"+encodeURIComponent(id)+"/comments",{method:"POST",body:JSON.stringify({content})});loadFeed()}catch(e){alert(e.message)}
 }
 async function sendFriendRequest(){
- const username=document.getElementById("friendUsername").value.trim();if(!username)return toast("Enter a username.");
- try{await api("/api/friends/request",{method:"POST",body:JSON.stringify({username})});toast("Request sent.");loadFriends();}
- catch(e){toast(e.message);}
+ const id=$("friendUserId").value.trim();if(!id)return alert("Enter a user ID.");
+ try{await api("/api/friends/request",{method:"POST",body:JSON.stringify({user_id:id,recipient_id:id})});alert("Friend request sent.");loadFriends()}catch(e){alert(e.message)}
 }
-async function acceptFriend(id){
- try{await api("/api/friends/accept",{method:"POST",body:JSON.stringify({request_id:id})});toast("Friend request accepted.");loadFriends();}
- catch(e){toast(e.message);}
+async function loadFriends(){
+ $("friendRequests").innerHTML="Loading…";$("friendList").innerHTML="Loading…";
+ try{
+  const [r,f]=await Promise.all([api("/api/friends/requests"),api("/api/friends")]);
+  const requests=arrayFrom(r,"requests","friends"),friends=arrayFrom(f,"friends","users");
+  $("friendRequests").innerHTML=requests.length?requests.map(x=>`<div class="listitem row between"><span>${esc(displayName(x))}</span><button class="btn small" onclick="acceptFriend('${esc(getId(x))}')">Accept</button></div>`).join(""):'<p class="muted">No pending requests.</p>';
+  $("friendList").innerHTML=friends.length?friends.map(x=>`<div class="listitem row"><div class="avatar">${esc(displayName(x)[0])}</div><strong>${esc(displayName(x))}</strong></div>`).join(""):'<p class="muted">Your friend list is empty.</p>';
+ }catch(e){$("friendRequests").innerHTML=$("friendList").innerHTML=`<p class="notice error">${esc(e.message)}</p>`}
 }
-function startChat(username){activeChat=username;openPage("messages");}
-
+async function acceptFriend(id){try{await api("/api/friends/accept",{method:"POST",body:JSON.stringify({request_id:id})});loadFriends()}catch(e){alert(e.message)}}
 async function loadMessages(){
- document.getElementById("mainContent").innerHTML=head("Messages")+`
- <section class="panel page-card"><div class="message-layout">
- <div class="message-list"><strong>Start chat</strong><div class="field"><input id="chatUsername" placeholder="Username" value="${esc(activeChat)}"><button class="btn secondary" onclick="openChat()">Open</button></div><small class="muted">Enter a member's username.</small></div>
- <div class="conversation"><strong id="chatTitle">${activeChat?"@"+esc(activeChat):"Choose a conversation"}</strong><div class="messages" id="messageItems">${empty("Choose a username to load messages.")}</div>
- <div class="send-row"><input id="messageText" placeholder="Write a message…" ${activeChat?"":"disabled"}><button class="btn" onclick="sendMessage()" ${activeChat?"":"disabled"}>Send</button></div></div>
- </div></section>`;
- if(activeChat)await fetchConversation();
-}
-function openChat(){activeChat=document.getElementById("chatUsername").value.trim();if(!activeChat)return toast("Enter a username.");loadMessages();}
-async function fetchConversation(){
- const box=document.getElementById("messageItems");
- try{const d=await api("/api/messages?username="+encodeURIComponent(activeChat));box.innerHTML=(d.messages||[]).map(m=>`<div class="bubble ${String(m.sender_id)===String(currentUser.id)?"mine":""}">${esc(m.content)}<div class="small muted">${esc(m.created_at||"")}</div></div>`).join("")||empty("No messages yet. Say hello!");box.scrollTop=box.scrollHeight;}
- catch(e){box.innerHTML=empty(e.message);}
+ const id=$("chatUserId").value.trim();if(!id)return alert("Enter the other user's ID.");
+ $("messageList").innerHTML="Loading conversation…";
+ try{const d=await api("/api/messages?user_id="+encodeURIComponent(id));const messages=arrayFrom(d,"messages","data");
+ $("messageList").innerHTML=messages.length?messages.map(m=>`<div class="comment"><strong>${esc(m.sender_name||m.username||((String(m.sender_id)===String(getId(me)))?"You":"Member"))}:</strong> ${esc(m.content||m.message||"")}</div>`).join(""):'<div class="empty">No messages yet. Start the conversation.</div>'}
+ catch(e){$("messageList").innerHTML=`<div class="notice error">${esc(e.message)}</div>`}
 }
 async function sendMessage(){
- const input=document.getElementById("messageText"),content=input.value.trim();if(!activeChat||!content)return;
- try{await api("/api/messages",{method:"POST",body:JSON.stringify({username:activeChat,content})});input.value="";await fetchConversation();}
- catch(e){toast(e.message);}
+ const id=$("chatUserId").value.trim(),content=$("messageText").value.trim();if(!id||!content)return alert("Enter a user ID and a message.");
+ try{await api("/api/messages",{method:"POST",body:JSON.stringify({recipient_id:id,user_id:id,content})});$("messageText").value="";loadMessages()}catch(e){alert(e.message)}
 }
-
 async function loadNotifications(){
- const root=document.getElementById("mainContent");
- root.innerHTML=head("Notifications",`<button class="btn secondary" onclick="markNotificationsRead()">Mark all read</button>`)+`<section class="panel page-card" id="notificationList">${empty("Loading notifications…")}</section>`;
- try{
-  const d=await api("/api/notifications"),items=d.notifications||[];
-  document.getElementById("notificationList").innerHTML=items.length?items.map(n=>`<div class="list-row"><div class="avatar">🔔</div><div class="grow"><strong>${esc(n.title||n.message||"Notification")}</strong><small>${esc(n.created_at||"")}</small></div></div>`).join(""):empty("You're all caught up.");
- }catch(e){document.getElementById("notificationList").innerHTML=empty(e.message);}
+ $("notificationList").innerHTML="Loading…";
+ try{const d=await api("/api/notifications");const list=arrayFrom(d,"notifications","data");
+ $("notificationList").innerHTML=list.length?list.map(n=>`<div class="listitem"><strong>${esc(n.title||n.type||"Notification")}</strong><p>${esc(n.content||n.message||"")}</p><small class="muted">${esc(n.created_at||"")}</small></div>`).join(""):'<div class="empty">You are all caught up.</div>'}
+ catch(e){$("notificationList").innerHTML=`<p class="notice error">${esc(e.message)}</p>`}
 }
-async function markNotificationsRead(){
- try{await api("/api/notifications/read",{method:"POST",body:"{}"});toast("Notifications marked read.");loadNotifications();}
- catch(e){toast(e.message);}
+async function readNotifications(){try{await api("/api/notifications/read",{method:"POST",body:"{}"});loadNotifications()}catch(e){alert(e.message)}}
+async function saveProfile(){
+ try{const d=await api("/api/profile",{method:"PATCH",body:JSON.stringify({full_name:$("profileFullName").value.trim(),bio:$("profileBio").value.trim(),location:$("profileLocation").value.trim()})});me=d.profile||d.user||{...me,full_name:$("profileFullName").value};$("profileName").textContent=displayName(me);$("topUser").textContent=displayName(me);alert("Profile updated.")}
+ catch(e){alert(e.message)}
 }
-
-async function loadMarketplace(){
- const root=document.getElementById("mainContent");
- root.innerHTML=head("Marketplace")+`
- <section class="panel page-card"><h3>List an item or service</h3><div class="grid2">
- <div class="field"><label>Title</label><input id="listingTitle" placeholder="What are you offering?"></div>
- <div class="field"><label>Price</label><input id="listingPrice" placeholder="e.g. ₦25,000"></div>
- <div class="field"><label>Category</label><input id="listingCategory" placeholder="Electronics, fashion…"></div>
- <div class="field"><label>Location</label><input id="listingLocation" placeholder="City or area"></div></div>
- <div class="field"><label>Description</label><textarea id="listingDescription"></textarea></div>
- <button class="btn" onclick="createListing()">Publish listing</button></section>
- <div id="marketList" style="margin-top:14px">${empty("Loading marketplace…")}</div>`;
- try{
-  const d=await api("/api/marketplace"),items=d.listings||[];
-  document.getElementById("marketList").innerHTML=items.length?items.map(x=>`<article class="post"><h3>${esc(x.title)}</h3><p class="muted small">${esc(x.category||"General")} · ${esc(x.location||"Location not specified")}</p><p>${esc(x.description||"")}</p><strong>${esc(x.price||"Contact seller")}</strong><p class="small muted">Seller: ${esc(x.full_name||x.username||"Member")}</p></article>`).join(""):empty("No listings yet.");
- }catch(e){document.getElementById("marketList").innerHTML=empty(e.message);}
+async function loadStories(){
+ try{const d=await api("/api/stories");const stories=arrayFrom(d,"stories","data");
+ $("storyRail").innerHTML='<div class="story add" onclick="openPage(\'stories\')"><strong>＋ Add story</strong><small>Share an update</small></div>'+stories.slice(0,20).map(s=>`<div class="story"><strong>${esc(displayName(s))}</strong><small>${esc(s.content||s.text||"Story")}</small></div>`).join("");
+ if($("storyList"))$("storyList").innerHTML=stories.length?stories.map(s=>`<div class="listitem"><strong>${esc(displayName(s))}</strong><p>${esc(s.content||s.text||"")}</p><small class="muted">${esc(s.created_at||"")}</small></div>`).join(""):'<div class="empty">No stories yet.</div>';
+ }catch(e){$("storyRail").innerHTML='<div class="muted">Stories are currently unavailable.</div>';if($("storyList"))$("storyList").innerHTML=`<p class="notice error">${esc(e.message)}</p>`}
+}
+async function createStory(){
+ const content=$("storyContent").value.trim();if(!content)return alert("Write a story first.");
+ try{await api("/api/stories",{method:"POST",body:JSON.stringify({content})});$("storyContent").value="";loadStories();alert("Story shared.")}
+ catch(e){alert(e.message)}
+}
+async function loadReels(){
+ $("reelList").innerHTML="Loading reels…";
+ try{const d=await api("/api/reels");const reels=arrayFrom(d,"reels","data");
+ $("reelList").innerHTML=reels.length?reels.map(r=>`<div class="reel"><strong>${esc(displayName(r))}</strong><p>${esc(r.caption||r.content||"")}</p>${r.video_url?`<p><a href="${esc(r.video_url)}" target="_blank" rel="noopener">▶ Watch video</a></p>`:""}<button class="btn small gold" onclick="likeReel('${esc(getId(r))}')">❤️ Like (${Number(r.likes_count||r.likes||0)})</button></div>`).join(""):'<div class="card empty">No reels yet. Share the first video link!</div>'}
+ catch(e){$("reelList").innerHTML=`<div class="card notice error">${esc(e.message)}</div>`}
+}
+async function createReel(){
+ const video_url=$("reelUrl").value.trim(),caption=$("reelCaption").value.trim();if(!video_url)return alert("Enter a public video URL.");
+ try{await api("/api/reels",{method:"POST",body:JSON.stringify({video_url,caption})});$("reelUrl").value="";$("reelCaption").value="";loadReels();alert("Reel shared.")}
+ catch(e){alert("Could not share reel: "+e.message)}
+}
+async function likeReel(id){try{await api("/api/reels/"+encodeURIComponent(id)+"/like",{method:"POST",body:"{}"});loadReels()}catch(e){alert(e.message)}}
+async function loadGroups(){
+ $("groupList").innerHTML="Loading communities…";
+ try{const d=await api("/api/groups");const groups=arrayFrom(d,"groups","data");
+ $("groupList").innerHTML=groups.length?groups.map(g=>`<div class="listitem"><div class="row between"><strong>${esc(g.name||g.title||"Community")}</strong><span class="badge">${Number(g.member_count||0)} members</span></div><p class="muted">${esc(g.description||"")}</p><div class="row"><button class="btn small" onclick="joinGroup('${esc(getId(g))}')">Join</button><button class="btn small secondary" onclick="viewGroup('${esc(getId(g))}','${esc(g.name||g.title||"Community")}')">Open group</button></div></div>`).join(""):'<div class="empty">No communities yet. Create one!</div>'}
+ catch(e){$("groupList").innerHTML=`<div class="notice error">${esc(e.message)}</div>`}
+}
+async function createGroup(){
+ const name=$("groupName").value.trim(),description=$("groupDescription").value.trim();if(!name)return alert("Enter a group name.");
+ try{await api("/api/groups",{method:"POST",body:JSON.stringify({name,description})});$("groupName").value="";$("groupDescription").value="";loadGroups();alert("Group created.")}
+ catch(e){alert(e.message)}
+}
+async function joinGroup(id){try{await api("/api/groups/"+encodeURIComponent(id)+"/join",{method:"POST",body:"{}"});alert("Group joined.");loadGroups()}catch(e){alert(e.message)}}
+async function viewGroup(id,name){
+ currentGroup=id;const box=$("groupDetail");box.classList.remove("hidden");box.innerHTML=`<h2>${esc(name)}</h2><p class="muted">Community posts</p><div id="groupPosts">Loading…</div><textarea id="groupPostContent" placeholder="Share something with this group…"></textarea><button class="btn" onclick="createGroupPost()">Publish to group</button>`;
+ try{const d=await api("/api/groups/"+encodeURIComponent(id)+"/posts");const posts=arrayFrom(d,"posts","data");
+ $("groupPosts").innerHTML=posts.length?posts.map(p=>`<div class="comment"><strong>${esc(displayName(p))}</strong><p>${esc(p.content||p.text||"")}</p></div>`).join(""):'<p class="muted">No group posts yet.</p>'}
+ catch(e){$("groupPosts").innerHTML=`<p class="notice error">${esc(e.message)}</p>`}
+}
+async function createGroupPost(){
+ const content=$("groupPostContent")?.value.trim();if(!currentGroup||!content)return alert("Write a group post first.");
+ try{await api("/api/groups/"+encodeURIComponent(currentGroup)+"/posts",{method:"POST",body:JSON.stringify({content})});viewGroup(currentGroup,"Group posts")}
+ catch(e){alert(e.message)}
+}
+async function loadMarket(){
+ $("marketList").innerHTML="Loading listings…";
+ try{const d=await api("/api/marketplace");const listings=arrayFrom(d,"listings","items","data");
+ $("marketList").innerHTML=listings.length?listings.map(x=>`<div class="listitem"><strong>${esc(x.title||x.name||"Listing")}</strong><p>${esc(x.description||"")}</p><strong>${esc(x.price||"Price not specified")}</strong><p class="muted">${esc(displayName(x))}</p></div>`).join(""):'<div class="empty">No listings yet.</div>'}
+ catch(e){$("marketList").innerHTML=`<p class="notice error">${esc(e.message)}</p>`}
 }
 async function createListing(){
- const body={title:document.getElementById("listingTitle").value.trim(),price:document.getElementById("listingPrice").value.trim(),category:document.getElementById("listingCategory").value.trim(),location:document.getElementById("listingLocation").value.trim(),description:document.getElementById("listingDescription").value.trim()};
- if(!body.title)return toast("Enter a listing title.");
- try{await api("/api/marketplace",{method:"POST",body:JSON.stringify(body)});toast("Listing published.");loadMarketplace();}
- catch(e){toast(e.message);}
+ const title=$("listingTitle").value.trim(),description=$("listingDescription").value.trim(),price=$("listingPrice").value.trim();if(!title)return alert("Enter a listing title.");
+ try{await api("/api/marketplace",{method:"POST",body:JSON.stringify({title,description,price})});$("listingTitle").value="";$("listingDescription").value="";$("listingPrice").value="";loadMarket();alert("Listing published.")}
+ catch(e){alert(e.message)}
 }
-
 async function loadAdmin(){
- const root=document.getElementById("mainContent");
- root.innerHTML=head("Admin dashboard")+`
- <div class="stat-grid"><div class="stat"><span>Total members</span><strong id="statUsers">—</strong></div><div class="stat"><span>Posts</span><strong id="statPosts">—</strong></div><div class="stat"><span>Listings</span><strong id="statListings">—</strong></div><div class="stat"><span>Messages</span><strong id="statMessages">—</strong></div></div>
- <section class="panel page-card"><div class="head"><h3>Manage members</h3><button class="btn secondary" onclick="loadAdmin()">Refresh</button></div><div class="table-wrap" id="adminUsers">${empty("Loading members…")}</div></section>`;
+ if(!(me?.role==="admin"||me?.is_admin))return;
+ $("adminStats").innerHTML="Loading dashboard…";
  try{
-  const [s,u]=await Promise.all([api("/api/admin/dashboard"),api("/api/admin/users")]);
-  document.getElementById("statUsers").textContent=s.users??0;
-  document.getElementById("statPosts").textContent=s.posts??0;
-  document.getElementById("statListings").textContent=s.listings??0;
-  document.getElementById("statMessages").textContent=s.messages??0;
-  const users=u.users||[];
-  document.getElementById("adminUsers").innerHTML=users.length?`<table><thead><tr><th>Member</th><th>Username</th><th>Status</th><th>Action</th></tr></thead><tbody>${users.map(x=>`<tr><td>${esc(x.full_name||x.username)}</td><td>@${esc(x.username)}</td><td>${esc(x.status||"active")}</td><td><button class="btn ${x.status==="suspended"?"secondary":"danger"}" onclick="setUserStatus(${Number(x.id)},'${x.status==="suspended"?"active":"suspended"}')">${x.status==="suspended"?"Activate":"Suspend"}</button></td></tr>`).join("")}</tbody></table>`:empty("No members found.");
- }catch(e){document.getElementById("adminUsers").innerHTML=empty(e.message);}
+  const d=await api("/api/admin/dashboard");const stats=d.stats||d.dashboard||d;
+  $("adminStats").innerHTML=`<div class="row" style="margin-top:12px"><div class="card" style="flex:1;margin:0"><h2>${Number(stats.total_users??stats.users??0)}</h2><small class="muted">Members</small></div><div class="card" style="flex:1;margin:0"><h2>${Number(stats.total_posts??stats.posts??0)}</h2><small class="muted">Posts</small></div></div>`;
+  const u=await api("/api/admin/users");const users=arrayFrom(u,"users","data");
+  $("adminUsers").innerHTML=users.length?users.map(x=>`<div class="listitem row between"><div><strong>${esc(displayName(x))}</strong><br><small class="muted">${esc(x.status||"active")}</small></div><button class="btn small ${x.status==="suspended"?"secondary":"red"}" onclick="toggleUser('${esc(getId(x))}','${x.status==="suspended"?"active":"suspended"}')">${x.status==="suspended"?"Restore":"Suspend"}</button></div>`).join(""):'<p class="muted">No members returned.</p>';
+ }catch(e){$("adminStats").innerHTML=`<p class="notice error">${esc(e.message)}</p>`}
 }
-async function setUserStatus(id,status){
- if(!confirm((status==="suspended"?"Suspend":"Activate")+" this member?"))return;
- try{await api(`/api/admin/users/${id}`,{method:"PATCH",body:JSON.stringify({status})});toast("Member status updated.");loadAdmin();}
- catch(e){toast(e.message);}
-}
-window.addEventListener("DOMContentLoaded",restoreSession);
+async function toggleUser(id,status){if(!confirm("Change this member's status to "+status+"?"))return;try{await api("/api/admin/users/"+encodeURIComponent(id),{method:"PATCH",body:JSON.stringify({status})});loadAdmin()}catch(e){alert(e.message)}}
+$("year").textContent=new Date().getFullYear();
+restoreSession();
 </script>
 </body>
 </html>
