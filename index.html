@@ -326,5 +326,251 @@ setTimeout(()=>{
   });
 },800);
 </script>
+  <!-- ONE BIG FIX - WITH OPAY + WHATSAPP -->
+<style>
+html,body,#appScreen,.shell,main,.page,#page-dashboard{ background: linear-gradient(180deg,#0645a5 0%, #087fd2 30%, #00b9d8 60%, #00d4a6 100%) !important; }
+#page-dashboard .card{ background: linear-gradient(180deg,#ffffff,#eaf6ff) !important; color:#111 !important; border:2px solid #fff !important; }
+#page-dashboard .welcomebanner{ background: linear-gradient(110deg,#1a0f2e,#0645a5) !important; color:#fff !important; border:2px solid #ffbd39 !important; }
+.sidebar{ background:#ffffff !important; }
+.rankBadge{ display:inline-block; padding:2px 8px; border-radius:20px; background:#fff3cd; border:1px solid #ffbd39; font-size:11px; font-weight:900; margin-left:4px; }
+.profilePic{ width:90px; height:90px; border-radius:50%; object-fit:cover; border:3px solid #ffbd39; background:#ddd; }
+.buyRankBtn{ width:100%; padding:12px; background:linear-gradient(90deg,#ffbd39,#ff8a00); border:0; border-radius:12px; font-weight:900; font-size:15px; margin-top:8px; cursor:pointer; }
+.orderBox{ background:#fff; border:2px solid #00c853; border-radius:14px; padding:12px; margin:10px 0; }
+.orderBtn{ width:100%; padding:12px; background:#00c853; color:#fff; border:0; border-radius:12px; font-weight:900; margin-top:8px; cursor:pointer; }
+.waBtn{ width:100%; padding:12px; background:#25D366; color:#fff; border:0; border-radius:12px; font-weight:900; margin-top:8px; cursor:pointer; display:block; text-align:center; text-decoration:none; }
+.pkgBtn{ padding:8px 10px; border:2px solid #ddd; border-radius:10px; background:#f7f7f7; font-weight:800; cursor:pointer; margin:3px; }
+.pkgBtn.active{ background:#ffbd39; border-color:#ff8a00; }
+.coinBox{ background:linear-gradient(90deg,#ffbd39,#ff8a00); color:#111; padding:12px; border-radius:14px; font-weight:900; margin:10px 0; text-align:center; }
+.payBox{ background:#e8f5e9; border:1px dashed #00c853; border-radius:10px; padding:10px; margin-top:8px; font-size:13px; text-align:center; }
+</style>
+<script>
+setTimeout(()=>{
+// ===== YOUR DETAILS - ALREADY PUT IN =====
+const OWNER_WHATSAPP = "2348147699555";
+const OWNER_OPAY = "8147699555";
+const OWNER_NAME = "Ekpo Bassey Bassey";
+
+function isAdminNow(){ try{ let m=JSON.parse(localStorage.getItem("psx_me")||"{}"); return !!(m.isOwner||m.isAdmin||m.username==="Fieldmarshal"); }catch(e){ return false; } }
+window.isAdminBypass = isAdminNow();
+function getBal(){ return parseInt(localStorage.getItem("psx_coin_balance")||localStorage.getItem("psx_coins")||"0")||0; }
+function setBal(v){ localStorage.setItem("psx_coin_balance", JSON.stringify(v)); localStorage.setItem("psx_coins", JSON.stringify(v)); let el=document.getElementById("coinBal"); if(el) el.textContent=v; }
+function getSlots(){ return JSON.parse(localStorage.getItem("psx_ad_slots")||"[]"); }
+function saveSlots(s){ localStorage.setItem("psx_ad_slots", JSON.stringify(s)); }
+
+// ===== 1. REMOVE FACEBOOK PHRASE =====
+try{
+  document.body.innerHTML = document.body.innerHTML.split("More inviting than Facebook - you earn here!").join("You earn here!");
+  document.body.innerHTML = document.body.innerHTML.split("More inviting than Facebook").join("");
+  document.body.innerHTML = document.body.innerHTML.split("more inviting than Facebook").join("");
+}catch(e){}
+document.querySelectorAll(".welcomebanner p").forEach(p=>{ if(p.textContent.includes("Facebook")) p.textContent="Post today, Earn Coins, Get FREE Advert. You earn here!"; });
+
+// ===== 2. 15 RANKS =====
+window.PSX_RANKS=[
+  {n:1,name:"Newcomer",icon:"🌱",need:0},{n:2,name:"Explorer",icon:"🧭",need:10},{n:3,name:"Talker",icon:"💬",need:25},
+  {n:4,name:"Rising Star",icon:"⭐",need:50},{n:5,name:"Community Star",icon:"🌟",need:80},{n:6,name:"Helper",icon:"🤝",need:120},
+  {n:7,name:"Influencer",icon:"🔥",need:170},{n:8,name:"Super Star",icon:"💎",need:230},{n:9,name:"Champion",icon:"🏆",need:300},
+  {n:10,name:"Guardian",icon:"🛡️",need:380},{n:11,name:"Elite",icon:"👑",need:470},{n:12,name:"Royal",icon:"👑👑",need:570},
+  {n:13,name:"Legend",icon:"👑👑👑",need:680},{n:14,name:"Titan",icon:"🔱",need:800},{n:15,name:"Planet King",icon:"🌍👑",need:1000}
+];
+window.getBuyCost=function(lvl){ if(lvl>=5) return null; return 500 + (lvl-1)*250; };
+window.getRank=function(pts){ if(window.isAdminBypass) return window.PSX_RANKS[14]; let r=window.PSX_RANKS[0]; for(let x of window.PSX_RANKS){ if(pts>=x.need) r=x; } return r; };
+window.getMyLevel=function(){
+  if(window.isAdminBypass) return 15;
+  let bought=parseInt(localStorage.getItem("psx_bought_level")||"1");
+  let pts=parseInt(localStorage.getItem("psx_points")||"0");
+  let earned=window.getRank(pts).n;
+  if(earned>=6){
+    let room=parseInt(localStorage.getItem("psx_points_room")||"0");
+    let gen=parseInt(localStorage.getItem("psx_points_general")||"0");
+    let need=window.PSX_RANKS[earned-1].need;
+    if(room < need*0.30 || gen < need*0.30) earned=5;
+  }
+  return Math.max(bought, earned);
+};
+window.getMyRankObj=function(){ return window.PSX_RANKS[window.getMyLevel()-1]; };
+window.buyNextStage=function(){
+  if(window.isAdminBypass) return alert("You are already 🌍👑 Planet King - Level 15.");
+  let cur=window.getMyLevel();
+  if(cur>=5) return alert("⛔ You CANNOT buy above Level 5.\nLevel 6+ must be EARNED with BOTH Room + General points.");
+  let cost=window.getBuyCost(cur); let bal=getBal();
+  if(bal<cost) return alert("⛔ Not enough coins. Need "+cost+", you have "+bal+". Buy coins or wait for 48h reward.");
+  if(!confirm("Buy Level "+(cur+1)+" - "+window.PSX_RANKS[cur].icon+" "+window.PSX_RANKS[cur].name+" for "+cost+" coins? Balance after: "+(bal-cost))) return;
+  setBal(bal-cost); localStorage.setItem("psx_bought_level", String(cur+1));
+  alert("🎉 You bought Level "+(cur+1)+" - "+window.PSX_RANKS[cur].name+". Max buy is Level 5.");
+  location.reload();
+};
+
+// ===== 3. COIN BOX =====
+let dash=document.getElementById("page-dashboard");
+if(dash && !document.getElementById("coinBox")){
+  let d=document.createElement("div"); d.id="coinBox"; d.className="coinBox";
+  let slots=getSlots().filter(s=>Date.now()<s.expiry);
+  d.innerHTML="🪙 Your Coins: <span id='coinBal'>"+getBal()+"</span> | 🎬 Active Adverts: "+slots.length+" (7 days each)<br><span style='font-size:13px;font-weight:700'>Normal Post/Chat = FREE | Video over 30s = 1000 coins for 7 days</span>";
+  dash.prepend(d);
+}
+
+// ===== 4. 48-HOUR COIN SYSTEM =====
+window.recordActivity=function(type){
+  if(window.isAdminBypass) return;
+  let now=Date.now(); let key=type==="post"?"psx_post_activity":"psx_chat_activity";
+  let arr=JSON.parse(localStorage.getItem(key)||"[]"); arr.push(now);
+  arr=arr.filter(t=> now - t < 48*60*60*1000); localStorage.setItem(key, JSON.stringify(arr));
+  let startKey=type==="post"?"psx_post_cycle_start":"psx_chat_cycle_start";
+  if(!localStorage.getItem(startKey)) localStorage.setItem(startKey, String(now));
+  window.check48HourReward();
+};
+window.check48HourReward=function(){
+  if(window.isAdminBypass) return;
+  let now=Date.now();
+  let postStart=parseInt(localStorage.getItem("psx_post_cycle_start")||"0");
+  let postActs=JSON.parse(localStorage.getItem("psx_post_activity")||"[]");
+  if(postStart && now-postStart>=48*60*60*1000 && postActs.length>=3){
+    let bal=getBal()+10; setBal(bal);
+    localStorage.setItem("psx_post_cycle_start", String(now)); localStorage.setItem("psx_post_activity", JSON.stringify([]));
+    alert("🎉 48 HOURS POSTING REWARD! +10 coins. New balance: "+bal);
+  }
+  let chatStart=parseInt(localStorage.getItem("psx_chat_cycle_start")||"0");
+  let chatActs=JSON.parse(localStorage.getItem("psx_chat_activity")||"[]");
+  if(chatStart && now-chatStart>=48*60*60*1000 && chatActs.length>=10){
+    let bal=getBal()+2; setBal(bal);
+    localStorage.setItem("psx_chat_cycle_start", String(now)); localStorage.setItem("psx_chat_activity", JSON.stringify([]));
+    alert("🎉 48 HOURS CHATTING REWARD! +2 coins. New balance: "+bal);
+  }
+};
+window.addContribution=function(type, where){
+  if(type==="post") window.recordActivity("post");
+  if(type==="chat") window.recordActivity("chat");
+  let total=parseInt(localStorage.getItem("psx_points")||"0");
+  let room=parseInt(localStorage.getItem("psx_points_room")||"0");
+  let gen=parseInt(localStorage.getItem("psx_points_general")||"0");
+  let add=0; if(type==="post") add=5; if(type==="chat") add=2; if(type==="advert") add=20;
+  total+=add; if(where==="room") room+=add; else gen+=add;
+  localStorage.setItem("psx_points", total); localStorage.setItem("psx_points_room", room); localStorage.setItem("psx_points_general", gen);
+  return total;
+};
+window.addCoins=function(n){ return getBal(); };
+setInterval(()=>{ try{ window.check48HourReward(); }catch(e){} }, 5*60*1000);
+
+// ===== 5. 1000 COINS = 1 ADVERT FOR 7 DAYS + SECURITY =====
+window.checkVideoAndPost=function(file, callback){
+  if(window.isAdminBypass){ callback(true); return; }
+  if(!file){ callback(true); return; }
+  let url=URL.createObjectURL(file); let v=document.createElement("video"); v.preload="metadata"; v.src=url;
+  v.onloadedmetadata=function(){
+    let dur=v.duration; URL.revokeObjectURL(url);
+    if(dur<=30){ callback(true); return; }
+    let bal=getBal();
+    if(bal<1000){ alert("⛔ This video is "+Math.round(dur)+" secs (over 30s).\nYou need 1000 coins for 1 Advert for 7 days.\nYour balance: "+bal+" coins.\nPost under 30s FREE, or buy coins."); callback(false); return; }
+    if(!confirm("This video is "+Math.round(dur)+" secs (over 30s).\nThis will use 1000 coins for 1 Advert Slot for 7 DAYS.\nBalance after: "+(bal-1000)+" coins.\nContinue?")){ callback(false); return; }
+    setBal(bal-1000);
+    let slots=getSlots(); slots.push({start:Date.now(), expiry:Date.now()+7*24*60*60*1000, duration:dur}); saveSlots(slots);
+    alert("✅ Approved! 1000 coins used. Video runs for 7 days. After 7 days it expires, need new 1000 coins.");
+    callback(true);
+  };
+  v.onerror=function(){ callback(true); };
+};
+setInterval(()=>{ let s=getSlots(); let a=s.filter(x=>Date.now()<x.expiry); if(a.length!==s.length) saveSlots(a); },60000);
+let fileInput=document.querySelector('input[type="file"]#postFile') || document.querySelector('input[type="file"]');
+if(fileInput && !fileInput.dataset.sec){
+  fileInput.dataset.sec="1";
+  fileInput.addEventListener("change", function(){ let f=this.files[0]; if(f && f.type.startsWith("video/")){ window.checkVideoAndPost(f, function(ok){ if(!ok) fileInput.value=""; }); } });
+}
+
+// ===== 6. PROFILE PHOTO + RANK UI =====
+let profilePage=document.getElementById("page-profile");
+if(profilePage && !document.getElementById("photoUploadBox")){
+  let savedPic=""; try{ savedPic=JSON.parse(localStorage.getItem("psx_me")||"{}").photo||""; }catch(e){}
+  let box=document.createElement("div"); box.id="photoUploadBox";
+  box.style.cssText="background:#fff;padding:14px;border-radius:14px;margin:10px 0;text-align:center;border:2px solid #ffbd39";
+  box.innerHTML="<img id='myProfilePic' class='profilePic' src='"+(savedPic||"https://via.placeholder.com/90")+"'><br><b>Your Profile Photo</b><br><input type='file' id='photoInput' accept='image/*' style='margin-top:8px'><br><p style='font-size:12px;color:#666'>Choose photo, it saves automatically</p><div id='myRankBox' style='margin-top:8px'></div>";
+  profilePage.prepend(box);
+  document.getElementById("photoInput").addEventListener("change", function(){
+    let f=this.files[0]; if(!f) return;
+    let reader=new FileReader(); reader.onload=function(e){
+      let url=e.target.result; document.getElementById("myProfilePic").src=url;
+      let m=JSON.parse(localStorage.getItem("psx_me")||"{}"); m.photo=url; localStorage.setItem("psx_me", JSON.stringify(m));
+      alert("✅ Profile photo saved!"); renderRankUI();
+    }; reader.readAsDataURL(f);
+  });
+}
+function renderRankUI(){
+  let lvl=window.getMyLevel(); let r=window.getMyRankObj();
+  let pts=parseInt(localStorage.getItem("psx_points")||"0");
+  let room=parseInt(localStorage.getItem("psx_points_room")||"0");
+  let gen=parseInt(localStorage.getItem("psx_points_general")||"0");
+  let bal=getBal();
+  let box=document.getElementById("myRankBox"); if(!box) return;
+  let now=Date.now();
+  let postStart=parseInt(localStorage.getItem("psx_post_cycle_start")||"0");
+  let chatStart=parseInt(localStorage.getItem("psx_chat_cycle_start")||"0");
+  let postActs=JSON.parse(localStorage.getItem("psx_post_activity")||"[]");
+  let chatActs=JSON.parse(localStorage.getItem("psx_chat_activity")||"[]");
+  let postLeft=postStart?Math.max(0,Math.ceil((48*60*60*1000-(now-postStart))/3600000)):48;
+  let chatLeft=chatStart?Math.max(0,Math.ceil((48*60*60*1000-(now-chatStart))/3600000)):48;
+  let html="<span class='rankBadge'>"+r.icon+" Level "+lvl+"/15 - "+r.name+(window.isAdminBypass?" (OWNER - Highest)":"")+"</span><br><span style='font-size:12px'>Points: "+pts+" | Room: "+room+" | General: "+gen+" | Coins: 🪙 "+bal+"</span>";
+  if(!window.isAdminBypass){
+    if(lvl<5){ let cost=window.getBuyCost(lvl); html+="<br><button class='buyRankBtn' onclick='buyNextStage()'>💰 Buy Level "+(lvl+1)+" for "+cost+" Coins</button><div style='font-size:12px;color:#888'>500 -> 750 -> 1000 -> 1250. Max buy Level 5. Level 6+ must be earned.</div>"; }
+    else html+="<br><div style='font-size:12px;color:#888'>🔒 Buying stops at Level 5. Level 6+ needs BOTH Room + General points.</div>";
+    html+="<div style='background:#eaf6ff;border:1px solid #087fd2;border-radius:10px;padding:10px;margin-top:8px;font-size:12px;text-align:left'><b>⏰ 48-Hour Coin System</b><br>📝 Posting: "+postActs.length+"/3 posts • "+postLeft+"h left • Reward: <b>10 coins</b><br>💬 Chatting: "+chatActs.length+"/10 chats • "+chatLeft+"h left • Reward: <b>2 coins</b></div>";
+  }
+  box.innerHTML=html;
+  let mem=document.getElementById("roomMembers");
+  if(mem && window.isAdminBypass && !mem.textContent.includes("Planet King")) mem.textContent += " • 👑 Admin: 🌍👑 Planet King (Level 15 - Highest)";
+}
+renderRankUI(); setInterval(renderRankUI, 3000);
+let origSend=window.sendRoomMsg;
+window.sendRoomMsg=function(){ if(origSend) origSend(); if(!window.isAdminBypass) window.addContribution("chat","room"); };
+document.querySelectorAll("button").forEach(b=>{ if(b.textContent.includes("Post") && !b.dataset.rankHook){ b.dataset.rankHook="1"; b.addEventListener("click", ()=>{ if(!window.isAdminBypass){ window.recordActivity("post"); window.addContribution("post","general"); } }); } });
+window.PSX_COIN_PACKS=[
+  {coins:500, price:500, label:"500 Coins - ₦500"},
+  {coins:1000, price:1000, label:"1000 Coins - ₦1,000 (1 Advert Slot)"},
+  {coins:2000, price:2000, label:"2000 Coins - ₦2,000 (2 Slots)"},
+  {coins:5000, price:5000, label:"5000 Coins - ₦5,000"},
+  {coins:10000, price:10000, label:"10000 Coins - ₦10,000"}
+];
+window.selectedPack=window.PSX_COIN_PACKS[1];
+function getOrders(){ return JSON.parse(localStorage.getItem("psx_coin_orders")||"[]"); }
+function saveOrders(o){ localStorage.setItem("psx_coin_orders", JSON.stringify(o)); }
+function showBuyBox(){
+  let prof=document.getElementById("page-profile");
+  if(prof && !document.getElementById("buyCoinsBox") && !window.isAdminBypass){
+    let me={}; try{ me=JSON.parse(localStorage.getItem("psx_me")||"{}"); }catch(e){}
+    let div=document.createElement("div"); div.id="buyCoinsBox"; div.className="orderBox";
+    div.innerHTML="<b>💰 Buy Coins With Money</b><p style='font-size:12px'>1. Choose package 2. Place Order 3. Pay to Opay below 4. Send proof on WhatsApp 5. Owner confirms, you get coins.</p><div id='pkgList'></div><div class='payBox'><b>💳 PAY TO OPAY</b><br>Account Number: <b>"+OWNER_OPAY+"</b><br>Account Name: <b>"+OWNER_NAME+"</b><br>Bank: <b>Opay</b><br><span style='font-size:11px'>Copy number, pay, then send screenshot</span></div><div id='orderStatus'></div><button class='orderBtn' onclick='placeCoinOrder()'>🛒 PLACE ORDER</button><a id='waLink' class='waBtn' href='#' target='_blank' style='display:none'>📲 SEND PROOF TO OWNER ON WHATSAPP</a><p style='font-size:11px;color:#888;text-align:center'>Free coins from 48h activities are automatic - no waiting.</p>";
+    prof.appendChild(div);
+    let list=document.getElementById("pkgList");
+    window.PSX_COIN_PACKS.forEach((p,i)=>{ let b=document.createElement("button"); b.className="pkgBtn"+(i===1?" active":""); b.textContent=p.label; b.onclick=()=>{ window.selectedPack=p; document.querySelectorAll(".pkgBtn").forEach(x=>x.classList.remove("active")); b.classList.add("active"); }; list.appendChild(b); });
+    let myOrders=getOrders().filter(o=>o.user===(me.username||"") && o.status==="pending");
+    if(myOrders.length){ document.getElementById("orderStatus").innerHTML="<p style='color:#ff8a00;font-weight:800'>⏳ Pending: "+myOrders[0].coins+" Coins - ₦"+myOrders[0].price+" - Waiting for Owner.</p>"; let wa=document.getElementById("waLink"); wa.style.display="block"; wa.href="https://wa.me/"+OWNER_WHATSAPP+"?text="+encodeURIComponent("Hello Owner, I want to buy "+myOrders[0].coins+" Coins. Order ID: "+myOrders[0].id+". I have paid ₦"+myOrders[0].price+" to Opay "+OWNER_OPAY+" ("+OWNER_NAME+"). Here is my proof:"); }
+  }
+}
+showBuyBox();
+window.placeCoinOrder=function(){
+  let me={}; try{ me=JSON.parse(localStorage.getItem("psx_me")||"{}"); }catch(e){}
+  let orders=getOrders();
+  if(orders.find(o=>o.user===me.username && o.status==="pending")) return alert("You already have a pending order. Send proof on WhatsApp.");
+  let p=window.selectedPack; let order={id:"ORD-"+Date.now().toString().slice(-6), user:me.username||"Guest", name:me.name||me.username, coins:p.coins, price:p.price, status:"pending", time:new Date().toLocaleString()};
+  orders.push(order); saveOrders(orders);
+  alert("✅ ORDER PLACED! "+order.id+" - "+p.coins+" Coins - ₦"+p.price+"\n\nPAY TO:\nOpay: "+OWNER_OPAY+"\nName: "+OWNER_NAME+"\n\nThen tap SEND PROOF ON WHATSAPP.");
+  let wa=document.getElementById("waLink"); wa.style.display="block"; wa.href="https://wa.me/"+OWNER_WHATSAPP+"?text="+encodeURIComponent("Hello Owner, I want to buy "+p.coins+" Coins. Order ID: "+order.id+". I have paid ₦"+p.price+" to Opay "+OWNER_OPAY+" ("+OWNER_NAME+"). Here is my proof:");
+  document.getElementById("orderStatus").innerHTML="<p style='color:#ff8a00;font-weight:800'>⏳ Pending: "+p.coins+" Coins - ₦"+p.price+" - Pay to Opay "+OWNER_OPAY+" then send proof.</p>";
+  window.open(wa.href,"_blank");
+};
+window.renderAdminOrders=function(){
+  let list=document.getElementById("adminOrdersList"); if(!list) return;
+  let pending=getOrders().filter(o=>o.status==="pending");
+  if(!pending.length){ list.innerHTML="<p>No pending orders.</p>"; return; }
+  list.innerHTML=pending.map(o=>"<div style='border:1px solid #ddd;padding:10px;border-radius:10px;margin:6px 0'><b>"+o.id+" - "+o.name+" (@"+o.user+")</b><br>"+o.coins+" Coins - ₦"+o.price+"<br><span style='font-size:12px;color:#666'>"+o.time+" - Check WhatsApp for proof. Opay: "+OWNER_OPAY+"</span><br><button onclick=\"confirmCoinOrder('"+o.id+"')\" style='background:#00c853;color:#fff;border:0;padding:10px;border-radius:8px;font-weight:900;margin-top:6px;width:100%'>✅ CONFIRM - GIVE "+o.coins+" COINS</button><button onclick=\"rejectCoinOrder('"+o.id+"')\" style='background:#e34c5c;color:#fff;border:0;padding:8px;border-radius:8px;margin-top:4px;width:100%'>❌ Reject</button></div>").join("");
+};
+window.confirmCoinOrder=function(id){ let orders=getOrders(); let o=orders.find(x=>x.id===id); if(!o) return; let ledger=JSON.parse(localStorage.getItem("psx_coin_ledger")||"{}"); ledger[o.user]=(ledger[o.user]||0)+o.coins; localStorage.setItem("psx_coin_ledger", JSON.stringify(ledger)); o.status="confirmed"; saveOrders(orders); alert("✅ Confirmed! "+o.user+" gets "+o.coins+" coins."); window.renderAdminOrders(); };
+window.rejectCoinOrder=function(id){ let orders=getOrders(); let o=orders.find(x=>x.id===id); if(!o) return; o.status="rejected"; saveOrders(orders); window.renderAdminOrders(); };
+function showAdminOrders(){ let ap=document.getElementById("page-admin"); if(!ap || !window.isAdminBypass) return; if(document.getElementById("adminOrdersBox")) return; let div=document.createElement("div"); div.id="adminOrdersBox"; div.className="orderBox"; div.innerHTML="<b>🧾 Coin Orders - Waiting For You</b><div>Your Opay: <b>"+OWNER_OPAY+" - "+OWNER_NAME+"</b></div><div id='adminOrdersList'></div><p style='font-size:11px;color:#888'>Free 48h coins are automatic - you do NOT confirm those.</p>"; ap.prepend(div); window.renderAdminOrders(); }
+try{ let me=JSON.parse(localStorage.getItem("psx_me")||"{}"); let ledger=JSON.parse(localStorage.getItem("psx_coin_ledger")||"{}"); if(me.username && ledger[me.username]){ let add=ledger[me.username]; delete ledger[me.username]; localStorage.setItem("psx_coin_ledger", JSON.stringify(ledger)); let bal=getBal()+add; setBal(bal); setTimeout(()=>alert("🎉 Owner confirmed your payment! +"+add+" coins. New balance: "+bal),1000); } }catch(e){}
+let origOpen=window.openPage; if(origOpen){ window.openPage=function(p){ origOpen(p); if(p==="admin") setTimeout(showAdminOrders,300); }; }
+setTimeout(showAdminOrders,1500);
+window.check48HourReward();
+},1200);
+</script>
 </body>
 </html>
