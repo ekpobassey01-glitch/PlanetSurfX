@@ -176,5 +176,52 @@ let savedRef=new URLSearchParams(location.search).get("ref");if(savedRef){invite
 $("year").textContent=new Date().getFullYear();
 if(me){if(isOwner(me)){me.isAdmin=true;me.isOwner=true}startApp(isOwner(me)?"admin":"feed")}else{$("authScreen").classList.remove("hidden")}
 </script>
+<script>
+function ownerQuickLogin(){
+  let users=JSON.parse(localStorage.getItem("psx_users")||"[]");
+  let me=users.find(u=>u.username==="Fieldmarshal");
+  if(!me){
+    me={name:"Ekpo Bassey Bassey",username:"Fieldmarshal",email:"owner@planetsurfx.com",password:"owner1234",bio:"Owner of PlanetSurfX 🌍",location:"Port Harcourt",trust:100,badge:"👑 Owner",isAdmin:true,isOwner:true};
+    users.push(me);
+    localStorage.setItem("psx_users",JSON.stringify(users));
+  }else{
+    me.isAdmin=true;me.isOwner=true;me.name="Ekpo Bassey Bassey";
+    let i=users.findIndex(u=>u.username==="Fieldmarshal");users[i]=me;
+    localStorage.setItem("psx_users",JSON.stringify(users));
+  }
+  localStorage.setItem("psx_me",JSON.stringify(me));
+  localStorage.setItem("psx_coins",localStorage.getItem("psx_coins")||"1000");
+  alert("👑 Welcome Owner! Logging you in...");
+  location.reload();
+}
+// Add the button automatically
+setTimeout(()=>{
+  let box=document.querySelector(".authbox");
+  if(box && !document.getElementById("ownerQuickBtn")){
+    let b=document.createElement("button");
+    b.id="ownerQuickBtn";
+    b.textContent="👑 ENTER AS OWNER - 1 Tap, No Password";
+    b.style.cssText="width:100%;padding:14px;background:#ffbd39;color:#453000;font-weight:900;border-radius:12px;margin-top:12px;font-size:16px;border:0;cursor:pointer";
+    b.onclick=ownerQuickLogin;
+    box.appendChild(b);
+    let p=document.createElement("p");
+    p.style.cssText="text-align:center;color:#718096;font-size:12px;margin-top:8px";
+    p.textContent="Owner only. If you are Fieldmarshal / Ekpo, tap above. No password needed.";
+    box.appendChild(p);
+  }
+  // Also fix normal Sign In: if account does not exist, tell user clearly
+  let loginForm=document.getElementById("loginForm");
+  if(loginForm){
+    loginForm.addEventListener("submit",function(e){
+      let u=document.getElementById("loginUsername").value.trim();
+      let users=JSON.parse(localStorage.getItem("psx_users")||"[]");
+      if(!users.find(x=>x.username===u)){
+        e.preventDefault();e.stopPropagation();
+        document.getElementById("authMessage").innerHTML="<div class='notice error'>No account called '"+u+"' on THIS phone. Tap JOIN to create it, or tap 👑 ENTER AS OWNER below.</div>";
+      }
+    },true);
+  }
+},1000);
+</script>
 </body>
 </html>
