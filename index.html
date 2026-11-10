@@ -1,280 +1,445 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PlanetSurfX - Like Your Video</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#111d43">
+<title>PlanetSurfX — Connect Beyond Boundaries</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}body{background:#f0f2f5;padding-bottom:65px}body.dark{background:#18191a;color:#eee}body.dark .card,body.dark .top,body.dark .bottom,body.dark .auth-box,body.dark .profile-header{background:#242526;color:#eee}button{cursor:pointer;border:none}
-.top{position:sticky;top:0;background:#fff;z-index:99;padding:8px 10px;display:none;align-items:center;gap:8px;box-shadow:0 1px 3px rgba(0,0,0,.1)}.top h1{color:#0a8a3a;font-size:22px}.top input{flex:1;padding:9px 12px;border-radius:20px;border:none;background:#f0f2f5}
-.card{background:#fff;padding:12px;margin:8px 8px 0;border-radius:10px;box-shadow:0 1px 2px rgba(0,0,0,.08)}
-.avatar{width:38px;height:38px;border-radius:50%;background:#0a8a3a;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:bold;overflow:hidden;flex-shrink:0}.avatar img{width:100%;height:100%;object-fit:cover}
-.cover{height:180px;background-size:cover;background-position:center;position:relative;border-radius:10px 10px 0 0}.cover-btn{position:absolute;bottom:10px;right:10px;background:#fff;padding:8px 12px;border-radius:8px;font-weight:bold}
-.profile-header{background:#fff;margin:0 8px 8px;border-radius:0 0 10px 10px;padding:0 12px 12px}.profile-pic{width:110px;height:110px;border-radius:50%;border:4px solid #fff;margin-top:-55px;background:#0a8a3a;color:#fff;display:flex;align-items:center;justify-content:center;font-size:40px;font-weight:bold;overflow:hidden}.profile-pic img{width:100%;height:100%;object-fit:cover}
-.friends-row{display:flex;margin:8px 0}.friends-row .avatar{width:32px;height:32px;border:2px solid #fff;margin-left:-8px;font-size:12px}.friends-row .avatar:first-child{margin-left:0}
-.profile-tabs{display:flex;gap:4px;overflow:auto;border-top:1px solid #eee;margin-top:10px;padding-top:8px}.profile-tabs button{padding:8px 14px;border-radius:20px;background:#e4e6eb;font-weight:bold;white-space:nowrap}.profile-tabs button.active{background:#0a8a3a;color:#fff}
-.stories{display:flex;gap:8px;overflow:auto;padding:8px}.story{min-width:105px;height:175px;border-radius:10px;color:#fff;padding:8px;display:flex;align-items:flex-end;font-weight:bold;background-size:cover;background-position:center}
-.post-img{width:100%;border-radius:8px;margin:8px 0;max-height:400px;object-fit:cover}.actions{display:flex;justify-content:space-between;border-top:1px solid #eee;padding-top:8px;color:#555}
-.bottom{position:fixed;bottom:0;left:0;right:0;background:#fff;display:none;justify-content:space-around;padding:8px 0;border-top:1px solid #ddd;z-index:99}.bottom button{background:none;font-size:22px;position:relative}.bottom button.active{color:#0a8a3a}.badge{background:#e41e3f;color:#fff;font-size:10px;padding:2px 6px;border-radius:10px;position:absolute;top:-4px;right:-8px}
-.btn-green{background:#0a8a3a;color:#fff;padding:12px;width:100%;border-radius:8px;font-weight:bold}.btn-blue{background:#1877f2;color:#fff;padding:11px 18px;border-radius:8px;font-weight:bold}.btn-light{background:#e4e6eb;padding:9px 12px;border-radius:8px;font-weight:bold}.btn-gold{background:#f59e0b;color:#fff;padding:8px 12px;border-radius:20px;font-weight:bold}.btn-dark{background:#111;color:#fff;padding:9px 12px;border-radius:20px;font-weight:bold}.btn-purple{background:#7c3aed;color:#fff;padding:11px;width:100%;border-radius:8px;font-weight:bold}.btn-red{background:#dc2626;color:#fff;padding:10px;border-radius:8px;font-weight:bold}
-input,select,textarea{width:100%;padding:11px;margin:6px 0;border:1px solid #ddd;border-radius:8px}.hidden{display:none!important}
-.tabs{display:flex;gap:6px;flex-wrap:wrap;margin:8px}.tabs button{padding:8px 12px;border-radius:20px;background:#e4e6eb;font-weight:bold}.tabs button.active{background:#0a8a3a;color:#fff}
-.msg{max-width:75%;padding:9px 12px;border-radius:18px;margin:6px 0}.msg.me{background:#0a8a3a;color:#fff;margin-left:auto;border-bottom-right-radius:4px}.msg.other{background:#e4e6eb;margin-right:auto;border-bottom-left-radius:4px}.ticks{font-size:11px}.ticks.blue{color:#1877f2;font-weight:bold}.ticks.grey{color:#ccc}
-.emoji-row{display:flex;gap:6px;flex-wrap:wrap;font-size:22px}.emoji-row span{cursor:pointer;background:#f0f2f5;padding:6px 10px;border-radius:20px}
-.chat-input{display:flex;gap:6px;align-items:center;padding:8px;background:#fff;position:sticky;bottom:55px}.chat-input input{flex:1;border-radius:20px}.voice-btn{background:#e41e3f;color:#fff;width:42px;height:42px;border-radius:50%;font-size:18px;flex-shrink:0}
-.saved-box{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:10px;margin:8px 0}
-.friend-card{display:flex;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid #f0f0f0}.friend-card .avatar{width:52px;height:52px}
-.dash-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.dash-grid div{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:12px;text-align:center}
-#adminView{background:#0f172a;color:#fff;min-height:100vh;padding:15px;display:none}#adminView .card{background:#1e293b;color:#fff}#adminView input{background:#0f172a;color:#fff;border:1px solid #334155}
-#auth{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}.auth-box{background:#fff;padding:20px;border-radius:12px;width:100%;max-width:400px;text-align:center}.auth-box input{padding:13px}
-#secretBtn{position:fixed;bottom:75px;right:15px;width:48px;height:48px;border-radius:50%;background:#111;color:#fff;font-size:20px;display:none;z-index:999}
-#anonBanner{background:#111;color:#fff;padding:8px;text-align:center;display:none;font-size:12px}
-.money-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}.money-grid div{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:10px;text-align:center}.ad-plan{border:2px solid #0a8a3a;border-radius:10px;padding:12px;margin:8px 0}.market-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.m-item{border:1px solid #eee;border-radius:10px;overflow:hidden}.m-item img{width:100%;height:130px;object-fit:cover}.m-item div{padding:8px}
+:root{--blue:#2457e6;--cyan:#20c7d9;--navy:#111d43;--gold:#ffc857;--bg:#f3f6fc;--ink:#17213b;--muted:#71809b;--line:#e5eaf3;--white:#fff;--shadow:0 8px 25px #172b6010}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px Arial,sans-serif}
+button,input,textarea,select{font:inherit}
+button{cursor:pointer;border:0}
+.hidden{display:none!important}
+.muted{color:var(--muted)}
+.small{font-size:12px}
+.btn{padding:11px 16px;border-radius:11px;background:var(--blue);color:white;font-weight:bold}
+.btn.secondary{background:#edf2ff;color:var(--blue)}
+.btn.danger{background:#fff0f1;color:#d94355}
+.btn.ghost{background:white;color:var(--muted);border:1px solid var(--line)}
+.brand{display:flex;align-items:center;gap:10px;font-weight:900;font-size:21px;color:var(--navy)}
+.logo{width:42px;height:42px;border-radius:14px;background:linear-gradient(135deg,var(--blue),var(--cyan));display:grid;place-items:center;color:white;font-size:24px}
+.brand span{color:var(--blue)}
+.field{display:grid;gap:6px;margin:13px 0}
+.field label{font-size:13px;font-weight:bold;color:#46536d}
+.field input,.field textarea,.field select{width:100%;padding:13px;border:1px solid #dce3f0;border-radius:11px;background:white;outline:none}
+.field input:focus,.field textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px #2457e61a}
+.field textarea{min-height:90px;resize:vertical}
+.auth-wrap{min-height:100vh;display:grid;place-items:center;padding:20px;background:radial-gradient(circle at 10% 10%,#2457e6,transparent 35%),radial-gradient(circle at 90% 90%,#20c7d9,transparent 30%),#111d43}
+.auth-shell{width:min(950px,100%);display:grid;grid-template-columns:1fr 1fr;background:white;border-radius:25px;overflow:hidden;box-shadow:0 25px 70px #0005}
+.hero{padding:42px;background:linear-gradient(145deg,#14234d,#2457e6 70%,#20c7d9);color:white;display:flex;flex-direction:column;justify-content:space-between;min-height:540px}
+.hero h1{font-size:clamp(32px,5vw,49px);line-height:1.05;margin:35px 0 15px}
+.hero p{line-height:1.7;color:#e3edff}
+.planet{text-align:center;font-size:100px;padding:20px}
+.auth-panel{padding:38px;display:flex;flex-direction:column;justify-content:center}
+.tabs{display:flex;gap:5px;background:#f0f3fa;padding:5px;border-radius:12px;margin:20px 0}
+.tab{flex:1;padding:11px;border-radius:9px;background:transparent;color:var(--muted);font-weight:bold}
+.tab.active{background:white;color:var(--blue);box-shadow:0 3px 12px #0001}
+.error{color:#d94355;font-size:13px;margin:8px 0}
+.notice{padding:12px;background:#eff5ff;color:#36558e;border-radius:10px;font-size:13px;margin-top:12px}
+.topbar{height:66px;background:white;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 max(15px,calc((100vw - 1200px)/2));position:sticky;top:0;z-index:10}
+.top-actions{display:flex;align-items:center;gap:10px}
+.avatar{width:39px;height:39px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,var(--blue),var(--cyan));color:white;font-weight:bold;overflow:hidden;flex-shrink:0}
+.avatar img{width:100%;height:100%;object-fit:cover}
+.layout{width:min(1200px,100%);margin:22px auto;display:grid;grid-template-columns:210px minmax(0,1fr) 250px;gap:18px;padding:0 14px}
+.sidebar,.rightbar{position:sticky;top:85px;align-self:start}
+.panel,.post,.composer,.stat{background:white;border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow)}
+.side{padding:13px}
+.side-user{display:flex;align-items:center;gap:10px;padding:10px 5px 16px;border-bottom:1px solid var(--line);margin-bottom:10px}
+.nav{width:100%;display:flex;align-items:center;gap:11px;padding:12px;border-radius:10px;background:transparent;color:#52617d;text-align:left;font-weight:bold;margin:3px 0}
+.nav.active,.nav:hover{background:#edf2ff;color:var(--blue)}
+.nav .ico{font-size:18px;width:23px;text-align:center}
+.main{min-width:0}
+.head{display:flex;align-items:center;justify-content:space-between;margin-bottom:15px}
+.head h2{margin:0;font-size:23px}
+.composer{padding:15px;margin-bottom:15px}
+.compose-top{display:flex;gap:10px;align-items:flex-start}
+.compose-top textarea{flex:1;border:0;outline:0;resize:vertical;min-height:60px;padding:9px}
+.compose-bottom{display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--line);padding-top:11px;margin-top:8px}
+.compose-bottom select{padding:9px;border:1px solid var(--line);border-radius:9px;background:white}
+.post{padding:16px;margin-bottom:14px}
+.post-head{display:flex;align-items:center;gap:10px}
+.post-meta{flex:1;min-width:0}
+.post-meta strong{display:block}
+.post-meta small{color:var(--muted)}
+.post-content{white-space:pre-wrap;overflow-wrap:anywhere;margin:15px 0;line-height:1.55}
+.post-actions{display:flex;gap:8px;border-top:1px solid var(--line);padding-top:9px}
+.action{padding:8px 11px;border-radius:8px;background:transparent;color:#65728d;font-weight:bold}
+.action:hover{background:#edf2ff;color:var(--blue)}
+.comment-box{display:flex;gap:7px;margin-top:10px}
+.comment-box input{flex:1;min-width:0;padding:10px;border:1px solid var(--line);border-radius:9px}
+.comment-list{font-size:13px;padding:10px}
+.comment{padding:8px 0;border-bottom:1px solid var(--line)}
+.empty{text-align:center;padding:30px 15px;color:var(--muted);background:white;border:1px dashed #dce3f0;border-radius:14px}
+.right-card{padding:15px;margin-bottom:14px}
+.right-card h3{margin:0 0 10px;font-size:15px}
+.page-card{padding:18px}
+.profile-cover{height:130px;background:linear-gradient(120deg,#14234d,#2457e6,#20c7d9);border-radius:13px}
+.profile-info{display:flex;align-items:end;gap:12px;margin:-30px 15px 18px}
+.profile-info .avatar{width:72px;height:72px;border:4px solid white;font-size:22px}
+.profile-info h2{margin:0}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.list-row{display:flex;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid var(--line)}
+.list-row:last-child{border:0}
+.grow{flex:1;min-width:0}
+.list-row strong{display:block}
+.list-row small{color:var(--muted)}
+.message-layout{display:grid;grid-template-columns:160px 1fr;gap:12px;min-height:390px}
+.message-list{border-right:1px solid var(--line);padding-right:10px}
+.conversation{display:flex;flex-direction:column;min-width:0}
+.messages{flex:1;min-height:260px;max-height:420px;overflow:auto;padding:10px}
+.bubble{max-width:80%;padding:10px 13px;border-radius:13px;margin:7px 0;background:#eef2fa;overflow-wrap:anywhere}
+.bubble.mine{background:#e8efff;color:#2149b5;margin-left:auto}
+.send-row{display:flex;gap:7px;padding-top:10px;border-top:1px solid var(--line)}
+.send-row input{flex:1;min-width:0;padding:10px;border:1px solid var(--line);border-radius:9px}
+.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
+.stat{padding:14px}
+.stat span{font-size:12px;color:var(--muted)}
+.stat strong{display:block;font-size:24px;margin-top:5px}
+.table-wrap{overflow:auto}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{text-align:left;padding:11px;border-bottom:1px solid var(--line);white-space:nowrap}
+th{font-size:11px;color:var(--muted)}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#17213b;color:white;padding:12px 18px;border-radius:11px;z-index:50;max-width:90%;text-align:center}
+.mobile-nav{display:none}
+@media(max-width:950px){.layout{grid-template-columns:190px minmax(0,1fr)}.rightbar{display:none}}
+@media(max-width:650px){
+.auth-shell{grid-template-columns:1fr}.hero{min-height:auto;padding:22px}.hero h1{font-size:34px;margin:20px 0 8px}.hero p{margin:0}.planet{font-size:55px;padding:5px}.auth-panel{padding:23px}
+.topbar{height:59px;padding:0 11px}.brand{font-size:17px}.layout{display:block;margin:13px auto 75px;padding:0 10px}.sidebar,.rightbar{display:none}
+.mobile-nav{display:flex;position:fixed;bottom:0;left:0;right:0;background:white;border-top:1px solid var(--line);z-index:20;justify-content:space-around;padding:6px 2px calc(6px + env(safe-area-inset-bottom))}
+.mobile-nav .nav{display:grid;justify-items:center;gap:1px;width:auto;padding:5px;font-size:10px;margin:0}.mobile-nav .ico{font-size:18px}
+.grid2{grid-template-columns:1fr}.message-layout{grid-template-columns:105px 1fr;gap:7px}.page-card{padding:13px}.stat-grid{grid-template-columns:repeat(2,1fr)}.stat{padding:11px}.stat strong{font-size:21px}
+}
 </style>
 </head>
 <body>
-<div id="anonBanner">🕶️ ANONYMOUS MODE - Nobody knows you are Admin. Tap ⚫ to return.</div>
-<div id="auth"><div class="auth-box"><h1 style="color:#0a8a3a;font-size:42px">🌍 PlanetSurfX</h1><p style="margin:10px 0">Like Facebook - But All In One</p><input id="loginName" placeholder="Username - e.g. @bassey"><input id="loginPass" type="password" placeholder="Create / Enter Your Password"><button class="btn-green" onclick="login()">Log In</button><p style="font-size:12px;color:#666;margin:10px 0">First time? Type username + password, then Create Account</p><button class="btn-blue" onclick="signup()">Create New Account</button><p id="authMsg" style="color:red;font-size:13px"></p></div></div>
 
-<!-- TOP - EXACTLY LIKE VIDEO: ☰ Facebook 🔍 💬 🔔 👤 -->
-<div class="top" id="topbar"><button onclick="showPage('settings')" style="background:none;font-size:22px">☰</button><h1>PlanetSurfX</h1><input placeholder="🔍 Search..." oninput="doSearch(this.value)"><button style="background:none;font-size:20px" onclick="showPage('messenger')">💬<span id="msgBadge" class="badge hidden">0</span></button><button style="background:none;font-size:20px" onclick="showPage('notifications')">🔔<span id="notifBadge" class="badge hidden">0</span></button><button style="background:none;font-size:22px" onclick="showPage('profile')">👤</button><button class="btn-gold" onclick="openAdmin()">👑</button></div>
-<div id="searchResults" class="card hidden"></div>
-
-<!-- ========== FEED - LIKE VIDEO ========== -->
-<div id="page-feed">
-<div class="card"><div style="display:flex;gap:8px;align-items:center"><div class="avatar" id="postAvatar">P</div><input id="postText" placeholder="What's on your mind?" style="border-radius:20px;background:#f0f2f5;border:none"><button class="btn-light" onclick="showPage('create')">📷</button></div></div>
-<div class="card"><div class="stories" id="storyRow"></div><div style="display:flex;gap:8px;margin-top:8px"><label class="btn-light" style="flex:1;text-align:center">📸 Create Story <input type="file" accept="image/*" style="display:none" onchange="addStory(this)"></label><button class="btn-light" onclick="showPage('videos')">🎬 Reels</button></div></div>
-<div id="feedList"></div>
-<div class="card"><h3>👥 People you may know</h3><div id="peopleList"></div></div>
-<div class="card"><h3>📄 Suggested Pages for you</h3><p>Support small businesses by following</p><div style="display:flex;gap:8px;margin-top:8px;align-items:center"><b>Akwa Ibom News Line</b><button class="btn-blue" style="padding:8px" onclick="this.innerText='Following'">Follow</button></div><div style="display:flex;gap:8px;margin-top:8px;align-items:center"><b>Agbor Sellers</b><button class="btn-blue" style="padding:8px" onclick="this.innerText='Following'">Follow</button></div></div>
-</div>
-
-<!-- ========== PROFILE - EXACTLY LIKE VIDEO ========== -->
-<div id="page-profile" class="hidden">
-  <!-- COVER + PROFILE PIC - LIKE VIDEO -->
-  <div style="margin:8px 8px 0">
-    <div class="cover" id="coverPhoto" style="background-image:url('https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800')"><label class="cover-btn">📷 Edit cover photo <input type="file" accept="image/*" style="display:none" onchange="changeCover(this)"></label></div>
+<section id="authScreen" class="auth-wrap">
+ <div class="auth-shell">
+  <div class="hero">
+   <div>
+    <div class="brand" style="color:white"><div class="logo">✦</div>PlanetSurfX</div>
+    <h1>Connect beyond boundaries.</h1>
+    <p>Meet people, share ideas, build communities and discover opportunities across the planet.</p>
+   </div>
+   <div class="planet">🌍</div>
+   <small>One planet. Endless connections.</small>
   </div>
-  <div class="profile-header">
-    <div class="profile-pic" id="profileAvatar">P</div>
-    <h1 id="profileName" style="font-size:28px;margin-top:8px">User</h1>
-    <p id="profileUsername" style="color:#666">@user</p>
-    <p><b id="profileFriendsText">0 friends</b> • <span id="profileBio">Welcome to PlanetSurfX 🌍</span></p>
-    <!-- FRIENDS FACES ROW - LIKE VIDEO -->
-    <div class="friends-row" id="friendsAvatars"></div>
-    <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap">
-      <button class="btn-blue" style="flex:1" onclick="showPage('feed')">+ Add to story</button>
-      <button class="btn-light" style="flex:1" onclick="showPage('settings')">Edit profile</button>
-      <button class="btn-gold" style="flex:1;padding:11px;border-radius:8px" onclick="showPage('dashboard')">📊 See dashboard</button>
-      <button class="btn-light" onclick="showPage('settings')">...</button>
-    </div>
-    <div class="saved-box" id="profileContactBox">No WhatsApp / Opay saved yet</div>
-    <!-- TABS - LIKE VIDEO: Posts | About | Friends | Photos | Reels -->
-    <div class="profile-tabs">
-      <button class="active" id="pt-posts" onclick="showProfileTab('posts')">Posts</button>
-      <button id="pt-about" onclick="showProfileTab('about')">About</button>
-      <button id="pt-friends" onclick="showProfileTab('friends')">Friends</button>
-      <button id="pt-photos" onclick="showProfileTab('photos')">Photos</button>
-      <button id="pt-reels" onclick="showProfileTab('reels')">Reels</button>
-      <button onclick="showPage('dashboard')">Dashboard</button>
-    </div>
+  <div class="auth-panel">
+   <div class="brand"><div class="logo">✦</div>PlanetSurf<span>X</span></div>
+   <div class="tabs">
+    <button class="tab active" id="loginTab" onclick="showAuth('login')">Sign in</button>
+    <button class="tab" id="registerTab" onclick="showAuth('register')">Join</button>
+    <button class="tab" id="adminTab" onclick="showAuth('admin')">Admin</button>
+   </div>
+   <form id="loginForm" onsubmit="login(event)">
+    <h2>Welcome back</h2><p class="muted">Sign in to continue.</p>
+    <div class="field"><label>Username</label><input id="loginUsername" required autocomplete="username"></div>
+    <div class="field"><label>Password</label><input id="loginPassword" type="password" required autocomplete="current-password"></div>
+    <div id="loginMessage" class="error"></div>
+    <button class="btn" style="width:100%">Sign in</button>
+   </form>
+   <form id="registerForm" class="hidden" onsubmit="register(event)">
+    <h2>Create your account</h2><p class="muted">Join the PlanetSurfX community.</p>
+    <div class="field"><label>Username</label><input id="regUsername" required minlength="3" maxlength="30"></div>
+    <div class="field"><label>Full name</label><input id="regFullName" required></div>
+    <div class="field"><label>Email (optional)</label><input id="regEmail" type="email"></div>
+    <div class="field"><label>Password</label><input id="regPassword" type="password" required minlength="8"></div>
+    <div id="registerMessage" class="error"></div>
+    <button class="btn" style="width:100%">Create account</button>
+   </form>
+   <form id="adminForm" class="hidden" onsubmit="adminLogin(event)">
+    <h2>Administrator access</h2>
+    <div class="field"><label>Admin username</label><input id="adminUsername" required></div>
+    <div class="field"><label>Admin password</label><input id="adminPassword" type="password" required></div>
+    <div id="adminMessage" class="error"></div>
+    <button class="btn" style="width:100%">Open admin dashboard</button>
+    <div class="notice">Use the administrator account already created through the secure Worker setup process.</div>
+   </form>
   </div>
-  <!-- PROFILE POSTS TAB -->
-  <div id="profile-tab-posts">
-    <div class="card"><h3>Details</h3><p id="aboutLine1">📍 Lives in Agbor, Nigeria</p><p>💼 Works at PlanetSurfX</p><p>📱 WhatsApp: <span id="aboutWa">Not saved yet</span></p><p>💳 Opay: <span id="aboutOpay">Not saved yet</span></p><button class="btn-light" style="margin-top:8px" onclick="showPage('settings')">Edit Details</button></div>
-    <div class="card"><h3>Friends - <span id="profileFriendsCount2">0</span></h3><div id="friendsPreview"></div><button class="btn-light" style="width:100%;margin-top:8px" onclick="showProfileTab('friends')">See all friends →</button></div>
-    <div class="card"><h3>Photos</h3><div id="photosPreview"></div><button class="btn-light" style="width:100%;margin-top:8px" onclick="showProfileTab('photos')">See all photos →</button></div>
-    <div class="card"><h3>What's on your mind?</h3><button class="btn-green" onclick="showPage('create')">Create Post</button></div>
-    <div id="myPostsList"></div>
+ </div>
+</section>
+
+<div id="appScreen" class="hidden">
+<header class="topbar">
+ <div class="brand"><div class="logo">✦</div>PlanetSurf<span>X</span></div>
+ <div class="top-actions"><span id="topUserName" class="muted small"></span><div id="topAvatar" class="avatar">P</div><button class="btn ghost" onclick="logout()">Log out</button></div>
+</header>
+<div class="layout">
+ <aside class="sidebar">
+  <div class="panel side">
+   <div class="side-user"><div id="sideAvatar" class="avatar">P</div><div><strong id="sideName">Member</strong><div class="small muted" id="sideHandle">@member</div></div></div>
+   <button class="nav active" data-page="feed" onclick="openPage('feed')"><span class="ico">🏠</span>Home feed</button>
+   <button class="nav" data-page="profile" onclick="openPage('profile')"><span class="ico">👤</span>My profile</button>
+   <button class="nav" data-page="friends" onclick="openPage('friends')"><span class="ico">🤝</span>Friends</button>
+   <button class="nav" data-page="messages" onclick="openPage('messages')"><span class="ico">💬</span>Messages</button>
+   <button class="nav" data-page="notifications" onclick="openPage('notifications')"><span class="ico">🔔</span>Notifications</button>
+   <button class="nav" data-page="marketplace" onclick="openPage('marketplace')"><span class="ico">🛍️</span>Marketplace</button>
+   <button class="nav" id="adminNav" data-page="admin" onclick="openPage('admin')" style="display:none"><span class="ico">🛡️</span>Admin panel</button>
   </div>
-  <!-- PROFILE ABOUT -->
-  <div id="profile-tab-about" class="hidden"><div class="card"><h3>About</h3><p><b>Bio:</b> <span id="aboutBio">Welcome</span></p><p><b>Username:</b> <span id="aboutUsername">@user</span></p><p><b>WhatsApp:</b> <span id="aboutWa2">Not saved</span></p><p><b>Opay Name:</b> <span id="aboutOpayName">Not saved</span></p><p><b>Opay Account:</b> <span id="aboutOpayAcct">Not saved</span></p><button class="btn-blue" style="margin-top:10px" onclick="showPage('settings')">Edit About</button></div></div>
-  <!-- PROFILE FRIENDS - FIND FRIENDS + REMOVE - THE PART YOU ASKED FOR -->
-  <div id="profile-tab-friends" class="hidden">
-    <div class="card"><h3>🔍 Find Friends</h3><input id="findFriendInput" placeholder="Search by username..." oninput="findFriends(this.value)"><div id="findFriendsResults"></div></div>
-    <div class="card"><h3>👥 Your Friends - <span id="friendsCountInProfile">0</span> (Real)</h3><div id="friendsListProfile"></div></div>
-    <div class="card"><h3>👥 People You May Know - Add / Remove</h3><p style="font-size:13px;color:#666">These are real users on PlanetSurfX. Tap Add friend to add, Remove to remove.</p><div id="peopleYouMayKnow"></div></div>
-  </div>
-  <!-- PROFILE PHOTOS -->
-  <div id="profile-tab-photos" class="hidden"><div class="card"><h3>Photos</h3><div id="photosList"></div></div></div>
-  <!-- PROFILE REELS -->
-  <div id="profile-tab-reels" class="hidden"><div class="card"><h3>Reels</h3><div id="reelsList"></div></div></div>
+ </aside>
+ <main class="main" id="mainContent"></main>
+ <aside class="rightbar">
+  <div class="panel right-card"><h3>🌐 Your PlanetSurfX</h3><p class="muted small">A place to connect, share and discover. Be respectful and protect your account details.</p></div>
+  <div class="panel right-card"><h3>Quick guide</h3><p class="small">✍️ Share your ideas.</p><p class="small">🤝 Build connections.</p><p class="small">💬 Start conversations.</p></div>
+ </aside>
 </div>
-
-<!-- ========== DASHBOARD - LIKE VIDEO "See dashboard" ========== -->
-<div id="page-dashboard" class="hidden">
-  <div class="card"><button class="btn-light" onclick="showPage('profile')">← Back to Profile</button><h2 style="margin-top:10px">📊 Professional Dashboard</h2><p>See how your page is doing - REAL numbers only</p></div>
-  <div class="card"><h3>Insights - Last 28 days</h3><div class="dash-grid"><div><h2 id="dashPosts">0</h2>Posts</div><div><h2 id="dashLikes">0</h2>Total Likes</div><div><h2 id="dashFriends">0</h2>Friends</div><div><h2 id="dashViews">0</h2>Views</div></div></div>
-  <div class="card"><h3>💰 Monetization</h3><div class="dash-grid"><div><h2 id="dashMoney">₦0</h2>Total Earnings</div><div><h2 id="dashSurf">₦0</h2>Surf</div><div><h2 id="dashSales">₦0</h2>Sales</div><div><h2 id="dashAds">₦0</h2>Ads</div></div><button class="btn-green" style="margin-top:10px" onclick="showPage('money')">Go to Money Dashboard →</button></div>
-  <div class="card"><h3>Your Content</h3><p>Posts: <b id="dashPosts2">0</b> • Videos: <b id="dashVideos">0</b> • Products: <b id="dashProducts">0</b></p><button class="btn-blue" style="margin-top:8px" onclick="showPage('create')">+ Create New Post</button></div>
-  <div class="card"><h3>Contact - Saved</h3><div id="dashContact"></div><button class="btn-light" style="margin-top:8px" onclick="showPage('settings')">Edit WhatsApp / Opay</button></div>
+<nav class="mobile-nav">
+ <button class="nav active" data-page="feed" onclick="openPage('feed')"><span class="ico">🏠</span>Home</button>
+ <button class="nav" data-page="friends" onclick="openPage('friends')"><span class="ico">🤝</span>Friends</button>
+ <button class="nav" data-page="messages" onclick="openPage('messages')"><span class="ico">💬</span>Chat</button>
+ <button class="nav" data-page="notifications" onclick="openPage('notifications')"><span class="ico">🔔</span>Alerts</button>
+ <button class="nav" data-page="profile" onclick="openPage('profile')"><span class="ico">👤</span>Profile</button>
+</nav>
 </div>
-
-<!-- CREATE -->
-<div id="page-create" class="hidden"><div class="card"><h2>New post - <span id="createName">You</span></h2><p>🎵 Music &nbsp; 👤 People &nbsp; 📍 Location &nbsp; 🙂 Feeling</p><textarea id="createText" placeholder="What's on your mind?" rows="4"></textarea><div class="emoji-row" id="emojiPost"></div><div style="display:flex;gap:8px"><label class="btn-light" style="flex:1;text-align:center">📷 Photo <input type="file" accept="image/*" style="display:none" onchange="uploadPhoto(this,'post')"></label><label class="btn-light" style="flex:1;text-align:center">🎥 Video <input type="file" accept="video/*" style="display:none" onchange="uploadVideoFile(this,'post')"></label></div><img id="postPreview" class="hidden post-img"><video id="postVideoPreview" class="hidden" controls style="width:100%;border-radius:10px"></video><button class="btn-green" onclick="addPostFromCreate()">Post</button></div></div>
-
-<!-- VIDEOS -->
-<div id="page-videos" class="hidden"><div class="card"><h2>🎬 Reels / Videos</h2><input id="videoTitle" placeholder="Video title"><label class="btn-purple" style="display:block;text-align:center">📁 Choose Video From Phone <input type="file" accept="video/*" style="display:none" onchange="uploadVideoFile(this,'video')"></label><input id="videoUrl" placeholder="Or paste video link"><video id="videoPreview" class="hidden" controls style="width:100%;margin-top:8px;border-radius:10px"></video><button class="btn-purple" style="margin-top:8px" onclick="addVideo()">+ Upload Reel</button></div><div id="videoList"></div></div>
-
-<!-- FRIENDS PAGE - FIND + ADD + REMOVE -->
-<div id="page-friends" class="hidden">
-<div class="card"><h2>👥 Friends</h2><div class="tabs"><button class="active" onclick="showPage('friends')">Friend requests</button><button onclick="showProfileTab('friends');showPage('profile')">Find friends</button></div><input placeholder="🔍 Find friends by username..." oninput="findFriends(this.value)"><div id="findFriendsResults2"></div></div>
-<div class="card"><h3>People you may know</h3><div id="friendsList"></div></div>
-<div class="card"><h3>Your Friends - Real</h3><div id="yourFriendsList"></div></div>
-</div>
-
-<!-- MARKETPLACE -->
-<div id="page-market" class="hidden"><div class="card"><h2>🛍️ Marketplace</h2><input id="mTitle" placeholder="What are you selling?"><input id="mPrice" placeholder="Price"><label class="btn-light" style="display:block;text-align:center">📷 Upload Product Photo <input type="file" accept="image/*" style="display:none" onchange="uploadPhoto(this,'product')"></label><input id="mImg" placeholder="Or paste Image link"><img id="productPreview" class="hidden post-img"><button class="btn-green" onclick="addProduct()">+ List Product</button><p style="font-size:12px;color:#666">Buyers will contact you on your saved WhatsApp.</p></div><div class="card"><div class="market-grid" id="marketList"></div></div></div>
-
-<!-- MESSENGER -->
-<div id="page-messenger" class="hidden"><div class="card"><h2>💬 Messenger - <span id="chatCount">0</span> chats</h2><input placeholder="🔍 Search chats..." oninput="filterChats(this.value)"><div id="chatList"></div><button class="btn-green" style="margin-top:10px" onclick="newChat()">+ New Chat</button></div><div id="chatWindow" class="card hidden"><div style="display:flex;align-items:center;gap:8px"><button class="btn-light" onclick="closeChat()">←</button><div class="avatar" id="chatAvatar">A</div><div><b id="chatName">Ada</b><div style="font-size:12px;color:#0a8a3a">● Active now</div></div></div><hr style="margin:8px 0"><div id="chatMessages" style="min-height:250px;max-height:350px;overflow:auto"></div><div class="emoji-row" id="emojiChat"></div><div class="chat-input"><button class="btn-light" onclick="document.getElementById('chatFile').click()">📷</button><input type="file" id="chatFile" accept="image/*" style="display:none" onchange="sendChatPhoto(this)"><input id="chatInput" placeholder="Aa - Type message... 😊" onkeypress="if(event.key==='Enter')sendChat()"><button class="voice-btn" id="voiceBtn" onmousedown="startVoice(event)" onmouseup="stopVoice(event)" ontouchstart="startVoice(event)" ontouchend="stopVoice(event)">🎤</button><button class="btn-blue" style="padding:10px 14px" onclick="sendChat()">➤</button></div><p style="font-size:11px;color:#666;text-align:center">Hold 🎤 for Voice Note • ✓ Sent • ✓✓ Delivered • <span style="color:#1877f2;font-weight:bold">✓✓ Blue = Read</span></p></div></div>
-
-<!-- NOTIFICATIONS - LIKE VIDEO -->
-<div id="page-notifications" class="hidden"><div class="card"><h2>🔔 Notifications</h2><p style="font-size:13px;color:#666">Earlier - Real notifications only</p><div id="notifList"></div><button class="btn-light" onclick="clearNotif()">Mark All Read</button></div></div>
-
-<!-- MONEY -->
-<div id="page-money" class="hidden"><div class="card"><h2>💰 My Monetary Dashboard - REAL</h2><h1 id="moneyTotal" style="color:#0a8a3a">₦0</h1><div class="money-grid" style="margin-top:10px"><div><b id="moneySurf">₦0</b><br>🌐 Surf</div><div><b id="moneySales">₦0</b><br>🛍️ Sales</div><div><b id="moneyAds">₦0</b><br>📢 Ads</div></div></div><div class="card"><h3>💚 WhatsApp - SAVED</h3><input id="waNumber" placeholder="WhatsApp Number - e.g. +234 803 123 4567"><input id="waName" placeholder="WhatsApp Name"><button class="btn-green" onclick="saveWhatsApp()">Save My WhatsApp</button><div id="waSavedBox" class="saved-box hidden"></div></div><div class="card"><h3>💳 Opay - SAVED</h3><input id="opayName" placeholder="Full Name on Opay"><input id="opayPhone" placeholder="Opay Phone"><input id="opayAcct" placeholder="10-digit Opay Account"><button class="btn-green" onclick="verifyOpay()">Verify & Save Opay</button><div id="otpBox" class="hidden"><input id="otpInput" placeholder="OTP - use 123456"><button class="btn-blue" style="width:100%" onclick="verifyOTP()">Verify OTP & Bind Opay</button></div><p id="walletMsg"></p><div id="opaySavedBox" class="saved-box hidden"></div></div><div class="card"><h3>Withdraw to Opay</h3><p>Balance: <b id="walletBalance"></b></p><p>To: <b id="withdrawToText">No Opay saved yet</b></p><button class="btn-light" onclick="addMoney(5000)">+ Test Add ₦5,000</button> <button class="btn-green" style="width:auto;padding:11px 20px" onclick="withdraw()">Withdraw →</button><div id="historyList"></div></div></div>
-
-<!-- ADS -->
-<div id="page-ads" class="hidden"><div class="card"><h2>📢 Advert Subscription</h2><div class="ad-plan"><b>🥉 Starter - ₦1,000 / 3 Days</b><button class="btn-green" style="padding:10px;margin-top:6px" onclick="buyAd('Starter',1000,3)">Subscribe</button></div><div class="ad-plan"><b>🥈 Business - ₦5,000 / 7 Days</b><button class="btn-green" style="padding:10px;margin-top:6px" onclick="buyAd('Business',5000,7)">Subscribe</button></div><div class="ad-plan" style="border-color:#f59e0b"><b>🥇 Premium - ₦10,000 / 30 Days</b><button class="btn-gold" style="width:100%;padding:11px;margin-top:6px" onclick="buyAd('Premium',10000,30)">Subscribe</button></div><div id="myAds"></div></div><div class="card"><h3>Create Advert</h3><input id="adTitle" placeholder="Advert Title"><button class="btn-purple" onclick="createAd()">+ Create Advert</button></div></div>
-
-<!-- GROUPS -->
-<div id="page-groups" class="hidden"><div class="card"><h2>👥 Groups</h2><input id="groupName" placeholder="Create Group Name"><button class="btn-green" onclick="createGroup()">+ Create Group</button><div id="groupsList"></div></div></div>
-
-<!-- SURF -->
-<div id="page-surf" class="hidden"><div class="card"><h2>🌐 Surf to Earn</h2><h1 id="surfBal" style="color:#0a8a3a">₦0</h1><button class="btn-green" onclick="surfEarn()">🌐 Start Surfing - Earn ₦50</button><p id="surfMsg"></p><div style="background:#eee;height:12px;border-radius:20px;margin-top:12px;overflow:hidden"><div id="surfBar" style="height:100%;width:0%;background:#0a8a3a"></div></div></div></div>
-
-<!-- SETTINGS / MENU - LIKE VIDEO -->
-<div id="page-settings" class="hidden">
-<div class="card"><h2>☰ Menu - Like Facebook Video</h2><p><b id="menuName">User</b></p><p>Meta AI • Saved • Memories • Groups • Help and support • Settings and privacy • Messenger • WhatsApp</p><p style="margin-top:8px"><button class="btn-dark" onclick="toggleAnonymous()">🕶️ Go Anonymous / Back to Admin</button> <button class="btn-gold" onclick="openAdmin()">👑 Admin</button></p></div>
-<div class="card"><h2>💚📱 My WhatsApp & Opay - SAVED</h2><input id="setWaNumber" placeholder="WhatsApp Number"><input id="setWaName" placeholder="WhatsApp Name"><input id="setOpayName" placeholder="Opay Full Name"><input id="setOpayPhone" placeholder="Opay Phone"><input id="setOpayAcct" placeholder="Opay 10-digit Account"><button class="btn-green" onclick="saveContactFromSettings()">Save My WhatsApp + Opay</button><div id="contactSavedBox" class="saved-box hidden"></div></div>
-<div class="card"><h3>⚙️ Settings</h3><p>🌙 Dark Mode <button class="btn-light" onclick="toggleDark()">Toggle</button></p><br><p>🔔 Notifications <button class="btn-light">ON</button></p></div>
-<div class="card"><h3>👤 Edit Profile</h3><input id="setName" placeholder="Display Name"><input id="setBio" placeholder="Bio"><label class="btn-light" style="display:block;text-align:center">📷 Change Profile Photo <input type="file" accept="image/*" style="display:none" onchange="uploadPhoto(this,'profile')"></label><label class="btn-light" style="display:block;text-align:center;margin-top:8px">🖼️ Change Cover Photo <input type="file" accept="image/*" style="display:none" onchange="changeCover(this)"></label><button class="btn-green" onclick="saveProfile()">Save Profile</button></div>
-<div class="card"><h3>🔐 Change Passwords</h3><input id="setUserPass" type="password" placeholder="New User Password"><button class="btn-blue" style="width:100%" onclick="changeUserPassFromSettings()">Change User Password</button><br><br><input id="setAdminPass" type="password" placeholder="New Admin Password"><button class="btn-gold" style="width:100%;padding:12px;border-radius:8px" onclick="changeAdminPassFromSettings()">Change Admin Password</button></div>
-<div class="card"><button class="btn-light" style="width:100%" onclick="showPage('money')">💰 Money Dashboard</button><br><br><button class="btn-light" style="width:100%" onclick="showPage('ads')">📢 Adverts</button><br><br><button class="btn-light" style="width:100%" onclick="showPage('dashboard')">📊 See Dashboard</button><br><br><button class="btn-light" style="width:100%" onclick="showPage('messenger')">💬 Messenger</button></div>
-<div class="card"><button class="btn-light" style="width:100%" onclick="logout()">Log Out</button><br><br><button class="btn-red" style="width:100%" onclick="deleteAccount()">Delete My Account</button></div>
-</div>
-
-<div class="bottom" id="bottomNav"><button id="b-feed" class="active" onclick="showPage('feed')">🏠</button><button id="b-videos" onclick="showPage('videos')">🎬</button><button id="b-friends" onclick="showPage('friends')">👥</button><button id="b-market" onclick="showPage('market')">🛍️</button><button id="b-notifications" onclick="showPage('notifications')">🔔</button><button id="b-messenger" onclick="showPage('messenger')">💬<span id="msgBadge2" class="badge hidden">0</span></button><button id="b-profile" onclick="showPage('profile')">👤</button></div>
-<button id="secretBtn" onclick="returnToAdmin()">⚫</button>
-
-<!-- ADMIN -->
-<div id="adminView"><div style="max-width:900px;margin:auto"><div style="display:flex;justify-content:space-between;align-items:center"><div><h1 style="color:#22c55e">👑 Admin Dashboard</h1><p>Boss Control - REAL numbers</p></div><button class="btn-blue" style="width:auto" onclick="closeAdmin()">👥 Back to User</button></div><button class="btn-dark" style="width:100%;padding:13px;margin-top:12px;border-radius:8px" onclick="goAnonymousFromAdmin()">🕶️ Go Anonymous</button><div id="createAdminBox" class="card hidden" style="margin-top:12px"><h2>🔐 Create YOUR Admin Password</h2><input id="newAdminPass" type="password" placeholder="Create Admin Password (min 6)"><input id="newAdminPass2" type="password" placeholder="Confirm"><button class="btn-green" onclick="createAdminPass()">Create & Enter</button><p id="createAdminMsg" style="color:#f87171"></p></div><div id="adminLoginBox" class="card hidden" style="margin-top:12px"><h2>Enter YOUR Admin Password</h2><input id="adminPass" type="password" placeholder="Your Admin Password"><button class="btn-green" onclick="checkAdmin()">Enter Admin</button><p id="adminLoginMsg" style="color:#f87171"></p></div><div id="adminContent" class="hidden"><div class="card" style="margin-top:12px"><h3>Owner Contact</h3><div id="adminContactBox"></div></div><div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin:12px 0"><div class="card" style="text-align:center"><h2 id="statUsers">0</h2>Real Users</div><div class="card" style="text-align:center"><h2 id="statPosts">0</h2>Real Posts</div><div class="card" style="text-align:center"><h2 id="statMoney">₦0</h2>Real Money</div></div><div class="tabs"><button class="active" id="at-users" onclick="showA('users')">Users</button><button id="at-posts" onclick="showA('posts')">Posts</button><button id="at-money" onclick="showA('money')">Money</button><button id="at-settings" onclick="showA('settings')">Settings</button></div><div id="a-users" class="card"><div id="usersList"></div></div><div id="a-posts" class="card hidden"><div id="postsList"></div></div><div id="a-money" class="card hidden"><div id="moneyAdmin"></div></div><div id="a-settings" class="card hidden"><button class="btn-red" onclick="resetAll()">⚠️ RESET ALL</button></div><button class="btn-blue" style="width:100%;padding:13px;margin-top:10px" onclick="closeAdmin()">👥 Back to User Mode</button></div></div></div>
+<div id="toast" class="toast hidden"></div>
 
 <script>
-let balance=parseInt(localStorage.getItem('psx_bal')||'0');let surfEarnTotal=parseInt(localStorage.getItem('psx_surf')||'0');let salesTotal=parseInt(localStorage.getItem('psx_sales')||'0');let adsEarnTotal=parseInt(localStorage.getItem('psx_ads_earn')||'0');let history=JSON.parse(localStorage.getItem('psx_history')||'[]');
-let userName=localStorage.getItem('psx_user')||'';let displayName=localStorage.getItem('psx_display')||'';let bio=localStorage.getItem('psx_bio')||'Welcome to PlanetSurfX 🌍';let profilePic=localStorage.getItem('psx_pic')||'';let coverPic=localStorage.getItem('psx_cover')||'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800';let isAnonymous=localStorage.getItem('psx_anon')==='1';let anonName=localStorage.getItem('psx_anon_name')||'@guest_user';
-let waNumber=localStorage.getItem('psx_wa_number')||'';let waName=localStorage.getItem('psx_wa_name')||'';let opayName=localStorage.getItem('psx_opay_name')||'';let opayPhone=localStorage.getItem('psx_opay_phone')||'';let opayAcct=localStorage.getItem('psx_opay_acct')||'';let opayBound=localStorage.getItem('psx_opay_bound')==='1';
-let users=JSON.parse(localStorage.getItem('psx_users')||'{}');
-let posts=JSON.parse(localStorage.getItem('psx_posts')||'[]');let products=JSON.parse(localStorage.getItem('psx_products')||'[]');let videos=JSON.parse(localStorage.getItem('psx_videos')||'[]');let myAds=JSON.parse(localStorage.getItem('psx_myads')||'[]');let groups=JSON.parse(localStorage.getItem('psx_groups')||'[]');let stories=JSON.parse(localStorage.getItem('psx_stories')||'[]');let notifs=JSON.parse(localStorage.getItem('psx_notifs')||'[]');let chats=JSON.parse(localStorage.getItem('psx_chats')||'{}');
-let myFriends=JSON.parse(localStorage.getItem('psx_myfriends')||'[]'); // REAL friends you added
-let removedUsers=JSON.parse(localStorage.getItem('psx_removed')||'[]');
-let currentChat=null;let tempPostImg='',tempPostVideo='',tempProductImg='',tempAdImg='',tempVideoUrl='';let mediaRecorder=null;let audioChunks=[];
-function save(){localStorage.setItem('psx_bal',balance);localStorage.setItem('psx_surf',surfEarnTotal);localStorage.setItem('psx_sales',salesTotal);localStorage.setItem('psx_ads_earn',adsEarnTotal);localStorage.setItem('psx_history',JSON.stringify(history));localStorage.setItem('psx_posts',JSON.stringify(posts));localStorage.setItem('psx_products',JSON.stringify(products));localStorage.setItem('psx_users',JSON.stringify(users));localStorage.setItem('psx_videos',JSON.stringify(videos));localStorage.setItem('psx_myads',JSON.stringify(myAds));localStorage.setItem('psx_groups',JSON.stringify(groups));localStorage.setItem('psx_stories',JSON.stringify(stories));localStorage.setItem('psx_display',displayName);localStorage.setItem('psx_bio',bio);localStorage.setItem('psx_pic',profilePic);localStorage.setItem('psx_cover',coverPic);localStorage.setItem('psx_anon',isAnonymous?'1':'0');localStorage.setItem('psx_anon_name',anonName);localStorage.setItem('psx_chats',JSON.stringify(chats));localStorage.setItem('psx_notifs',JSON.stringify(notifs));localStorage.setItem('psx_wa_number',waNumber);localStorage.setItem('psx_wa_name',waName);localStorage.setItem('psx_opay_name',opayName);localStorage.setItem('psx_opay_phone',opayPhone);localStorage.setItem('psx_opay_acct',opayAcct);localStorage.setItem('psx_opay_bound',opayBound?'1':'0');localStorage.setItem('psx_myfriends',JSON.stringify(myFriends));localStorage.setItem('psx_removed',JSON.stringify(removedUsers));updateBal();updateContactUI();}
-function updateBal(){let b='₦'+balance.toLocaleString();['moneyTotal','surfBal','walletBalance'].forEach(id=>{let e=document.getElementById(id);if(e)e.innerText=b;});document.getElementById('moneySurf').innerText='₦'+surfEarnTotal.toLocaleString();document.getElementById('moneySales').innerText='₦'+salesTotal.toLocaleString();document.getElementById('moneyAds').innerText='₦'+adsEarnTotal.toLocaleString();document.getElementById('historyList').innerHTML=history.slice(0,10).map(h=>`<div style="border-bottom:1px solid #eee;padding:8px 0">${h}</div>`).join('')||'No transactions yet.';let realUsers=Object.keys(users).length;let unread=0;for(let k in chats){chats[k].forEach(m=>{if(m.from==='other'&&m.status!=='read')unread++;});}let b1=document.getElementById('msgBadge');let b2=document.getElementById('msgBadge2');let nb=document.getElementById('notifBadge');if(unread>0){b1.classList.remove('hidden');b1.innerText=unread;b2.classList.remove('hidden');b2.innerText=unread;}else{b1.classList.add('hidden');b2.classList.add('hidden');}if(notifs.length>0){nb.classList.remove('hidden');nb.innerText=notifs.length;}else nb.classList.add('hidden');document.getElementById('chatCount').innerText=Object.keys(chats).length;document.getElementById('friendsCountInProfile').innerText=myFriends.length;document.getElementById('profileFriendsText').innerText=myFriends.length+' friends';document.getElementById('profileFriendsCount2').innerText=myFriends.length;document.getElementById('dashPosts').innerText=posts.length;document.getElementById('dashPosts2').innerText=posts.length;document.getElementById('dashLikes').innerText=posts.reduce((s,p)=>s+p.likes,0);document.getElementById('dashFriends').innerText=myFriends.length;document.getElementById('dashViews').innerText=posts.length*3;document.getElementById('dashMoney').innerText=b;document.getElementById('dashSurf').innerText='₦'+surfEarnTotal.toLocaleString();document.getElementById('dashSales').innerText='₦'+salesTotal.toLocaleString();document.getElementById('dashAds').innerText='₦'+adsEarnTotal.toLocaleString();document.getElementById('dashVideos').innerText=videos.length;document.getElementById('dashProducts').innerText=products.length;}
-function updateContactUI(){let waHtml=waNumber?`✅ <b>WhatsApp:</b> ${waNumber} (${waName||''})`:'No WhatsApp saved yet';let opayHtml=opayBound?`✅ <b>Opay:</b> ${opayName} • ${opayAcct} • ${opayPhone}`:(opayAcct?`⏳ Opay: ${opayAcct} (not verified)`:'No Opay saved yet');['waSavedBox','opaySavedBox','contactSavedBox','profileContactBox','adminContactBox','dashContact'].forEach(id=>{let e=document.getElementById(id);if(e){e.classList.remove('hidden');e.innerHTML=waHtml+'<br>'+opayHtml;}});document.getElementById('withdrawToText').innerText=opayBound?`Opay: ${opayName} - ${opayAcct}`:'No Opay saved yet';document.getElementById('aboutWa').innerText=waNumber||'Not saved yet';document.getElementById('aboutOpay').innerText=opayAcct||'Not saved yet';document.getElementById('aboutWa2').innerText=waNumber||'Not saved';document.getElementById('aboutOpayName').innerText=opayName||'Not saved';document.getElementById('aboutOpayAcct').innerText=opayAcct||'Not saved';document.getElementById('waNumber').value=waNumber;document.getElementById('waName').value=waName;document.getElementById('opayName').value=opayName;document.getElementById('opayPhone').value=opayPhone;document.getElementById('opayAcct').value=opayAcct;document.getElementById('setWaNumber').value=waNumber;document.getElementById('setWaName').value=waName;document.getElementById('setOpayName').value=opayName;document.getElementById('setOpayPhone').value=opayPhone;document.getElementById('setOpayAcct').value=opayAcct;document.getElementById('coverPhoto').style.backgroundImage=`url('${coverPic}')`;}
-function saveWhatsApp(){let n=document.getElementById('waNumber').value.trim();let nm=document.getElementById('waName').value.trim();if(!n)return alert('Enter WhatsApp number');waNumber=n;waName=nm;save();alert('✅ WhatsApp saved: '+n);}
-function saveContactFromSettings(){waNumber=document.getElementById('setWaNumber').value.trim();waName=document.getElementById('setWaName').value.trim();opayName=document.getElementById('setOpayName').value.trim();opayPhone=document.getElementById('setOpayPhone').value.trim();opayAcct=document.getElementById('setOpayAcct').value.trim();save();alert('✅ WhatsApp + Opay saved!');}
-function verifyOpay(){opayName=document.getElementById('opayName').value.trim();opayPhone=document.getElementById('opayPhone').value.trim();opayAcct=document.getElementById('opayAcct').value.trim();if(opayAcct.length<10)return alert('Enter 10-digit Opay');save();document.getElementById('otpBox').classList.remove('hidden');document.getElementById('walletMsg').innerText='OTP sent (demo: 123456)';}
-function verifyOTP(){if(document.getElementById('otpInput').value.trim()==='123456'){opayBound=true;save();alert('✅ Opay saved: '+opayName+' - '+opayAcct);}else alert('Wrong OTP, use 123456');}
-function changeCover(input){let f=input.files[0];if(!f)return;let r=new FileReader();r.onload=e=>{coverPic=e.target.result;save();updateContactUI();alert('Cover photo changed!');};r.readAsDataURL(f);}
-let emojis=['😂','❤️','😍','🔥','👍','🙏','😭','😮','😡','🎉','💯','😊','😢','👏','🤣'];
-function renderEmojiPickers(){document.getElementById('emojiPost').innerHTML=emojis.map(e=>`<span onclick="addEmojiToPost('${e}')">${e}</span>`).join('');document.getElementById('emojiChat').innerHTML=emojis.map(e=>`<span onclick="insertEmojiChat('${e}')">${e}</span>`).join('');}
-function addEmojiToPost(e){document.getElementById('createText').value+=e;document.getElementById('postText').value+=e;}
-function insertEmojiChat(e){document.getElementById('chatInput').value+=e;}
-function showPage(p){let pages=['feed','create','videos','friends','market','messenger','notifications','money','ads','profile','groups','surf','settings','dashboard'];pages.forEach(x=>{let el=document.getElementById('page-'+x);if(el)el.classList.add('hidden');});let cur=document.getElementById('page-'+p);if(cur)cur.classList.remove('hidden');document.getElementById('searchResults').classList.add('hidden');['feed','videos','friends','market','notifications','messenger','profile'].forEach(b=>{let btn=document.getElementById('b-'+b);if(btn)btn.classList.remove('active');});let b=document.getElementById('b-'+p);if(b)b.classList.add('active');if(p==='messenger')renderChatList();if(p==='notifications')renderNotif();if(p==='friends')renderFriendsPage();if(p==='groups')renderGroups();if(p==='videos')renderVideos();if(p==='profile')renderProfileFriends();if(p==='dashboard')updateBal();window.scrollTo(0,0);}
-function showProfileTab(t){['posts','about','friends','photos','reels'].forEach(x=>{document.getElementById('profile-tab-'+x).classList.add('hidden');document.getElementById('pt-'+x).classList.remove('active');});document.getElementById('profile-tab-'+t).classList.remove('hidden');document.getElementById('pt-'+t).classList.add('active');if(t==='friends')renderProfileFriends();if(t==='photos')renderProfilePhotos();if(t==='reels')renderProfileReels();}
-// FRIENDS - FIND, ADD, REMOVE - EXACTLY LIKE VIDEO
-function getAllRealUsers(){return Object.keys(users).filter(u=>u!==userName && !removedUsers.includes(u));}
-function findFriends(q){let box=document.getElementById('findFriendsResults');let box2=document.getElementById('findFriendsResults2');let all=getAllRealUsers();let filtered=q?all.filter(u=>u.toLowerCase().includes(q.toLowerCase())):all;let html='';if(filtered.length===0)html='<p>No user found with that name. Invite them to sign up on PlanetSurfX.</p>';else html=filtered.map(u=>`<div class="friend-card"><div class="avatar">${u[0].toUpperCase()}</div><div style="flex:1"><b>${u}</b><br><span style="color:#666;font-size:13px">New to PlanetSurfX</span></div><button class="btn-blue" style="padding:8px 12px" onclick="addFriend('${u}')">Add friend</button> <button class="btn-light" onclick="removeSuggestion('${u}')">Remove</button></div>`).join('');if(box)box.innerHTML=html;if(box2)box2.innerHTML=html;}
-function addFriend(u){if(!myFriends.includes(u)){myFriends.push(u);notifs.unshift({t:'You are now friends with '+u});save();renderProfileFriends();renderFriendsPage();alert('✅ You are now friends with '+u);}else alert('Already friends with '+u);}
-function removeSuggestion(u){removedUsers.push(u);save();renderProfileFriends();renderFriendsPage();alert('Removed '+u+' from suggestions. You won\'t see them again.');}
-function removeFriend(u){if(confirm('Remove '+u+' from friends?')){myFriends=myFriends.filter(f=>f!==u);removedUsers.push(u);save();renderProfileFriends();renderFriendsPage();alert('Removed '+u);}}
-function undoRemove(u){removedUsers=removedUsers.filter(r=>r!==u);save();renderProfileFriends();alert('Undone - '+u+' will show again');}
-function renderProfileFriends(){
-  // Friends avatars row like video
-  document.getElementById('friendsAvatars').innerHTML=myFriends.slice(0,6).map(f=>`<div class="avatar">${f[0].toUpperCase()}</div>`).join('')||'<span style="color:#666;font-size:13px">No friends yet - Find friends below</span>';
-  document.getElementById('friendsPreview').innerHTML=myFriends.slice(0,3).map(f=>`<div style="display:flex;gap:8px;padding:6px 0"><div class="avatar">${f[0].toUpperCase()}</div><b>${f}</b></div>`).join('')||'No friends yet';
-  document.getElementById('friendsListProfile').innerHTML=myFriends.length?myFriends.map(f=>`<div class="friend-card"><div class="avatar">${f[0].toUpperCase()}</div><div style="flex:1"><b>${f}</b></div><button class="btn-light" onclick="openChatFromFriend('${f}')">Message</button> <button class="btn-red" style="padding:8px 12px" onclick="removeFriend('${f}')">Remove</button></div>`).join(''):'<p>No friends yet. Use Find Friends below to add real friends.</p>';
-  // People you may know - with Add + Remove like video
-  let candidates=getAllRealUsers().filter(u=>!myFriends.includes(u));
-  document.getElementById('peopleYouMayKnow').innerHTML=candidates.length?candidates.map(u=>`<div class="friend-card"><div class="avatar">${u[0].toUpperCase()}</div><div style="flex:1"><b>${u}</b><br><span style="color:#666;font-size:13px">Suggested for you</span></div><button class="btn-blue" style="padding:8px 12px" onclick="addFriend('${u}')">Add friend</button> <button class="btn-light" onclick="removeSuggestion('${u}')">Remove</button></div>`).join(''):'<p>No more suggestions. When new users sign up, they will appear here.</p><button class="btn-light" onclick="undoRemoveAll()">Show removed again</button>';
-  findFriends('');
+const API="https://planetsurfx.ekpobassey01.workers.dev";
+let token=localStorage.getItem("psx_api_token")||"";
+let currentUser=null,currentRole="user",currentPage="feed",activeChat="";
+let toastTimer;
+
+function esc(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+function initials(n){return (String(n||"P").trim().split(/\s+/).slice(0,2).map(x=>x[0]).join("")||"P").toUpperCase();}
+function avatar(name,url){return `<div class="avatar">${url?`<img src="${esc(url)}" alt="">`:esc(initials(name))}</div>`;}
+function toast(msg){const e=document.getElementById("toast");e.textContent=msg;e.classList.remove("hidden");clearTimeout(toastTimer);toastTimer=setTimeout(()=>e.classList.add("hidden"),2800);}
+function message(id,msg){document.getElementById(id).textContent=msg;}
+async function api(path,options={}){
+ const headers={"Content-Type":"application/json",...(options.headers||{})};
+ if(token)headers.Authorization="Bearer "+token;
+ const r=await fetch(API+path,{...options,headers});
+ let d={};try{d=await r.json();}catch(e){}
+ if(!r.ok)throw new Error(d.error||"Request failed ("+r.status+")");
+ return d;
 }
-function undoRemoveAll(){removedUsers=[];save();renderProfileFriends();alert('All removed suggestions restored');}
-function renderFriendsPage(){
-  let candidates=getAllRealUsers().filter(u=>!myFriends.includes(u));
-  document.getElementById('friendsList').innerHTML=candidates.length?candidates.map(u=>`<div class="friend-card"><div class="avatar">${u[0].toUpperCase()}</div><div style="flex:1"><b>${u}</b><br><span style="color:#666;font-size:13px">People you may know</span></div><button class="btn-blue" style="padding:8px 12px" onclick="addFriend('${u}')">Add friend</button> <button class="btn-light" onclick="removeSuggestion('${u}')">Remove</button></div>`).join(''):'<p>No suggestions yet. Real users will appear when they sign up.</p>';
-  document.getElementById('yourFriendsList').innerHTML=myFriends.length?myFriends.map(f=>`<div class="friend-card"><div class="avatar">${f[0].toUpperCase()}</div><div style="flex:1"><b>${f}</b></div><button class="btn-light" onclick="openChatFromFriend('${f}')">Message</button> <button class="btn-red" style="padding:8px 12px" onclick="removeFriend('${f}')">Remove</button></div>`).join(''):'<p>No friends yet.</p>';
-  findFriends('');
+function showAuth(mode){
+ ["loginForm","registerForm","adminForm"].forEach(x=>document.getElementById(x).classList.add("hidden"));
+ ["loginTab","registerTab","adminTab"].forEach(x=>document.getElementById(x).classList.remove("active"));
+ document.getElementById(mode+"Form").classList.remove("hidden");
+ document.getElementById(mode+"Tab").classList.add("active");
 }
-function openChatFromFriend(name){if(!chats[name])chats[name]=[];save();showPage('messenger');openChat(name);}
-function renderProfilePhotos(){let myPosts=posts.filter(p=>p.name===userName||p.name===anonName);document.getElementById('photosPreview').innerHTML=myPosts.filter(p=>p.img).slice(0,3).map(p=>`<img src="${p.img}" style="width:32%;height:80px;object-fit:cover;border-radius:8px">`).join('')||'No photos yet';document.getElementById('photosList').innerHTML=myPosts.filter(p=>p.img).map(p=>`<img src="${p.img}" style="width:32%;height:100px;object-fit:cover;border-radius:8px;margin:2px">`).join('')||'No photos yet - Upload your first photo';}
-function renderProfileReels(){document.getElementById('reelsList').innerHTML=videos.filter(v=>v.by===userName||v.by===anonName).map(v=>`<div class="card"><b>${v.title}</b><video controls src="${v.url}" style="width:100%;border-radius:10px"></video></div>`).join('')||'No reels yet';}
-// MESSENGER
-function ticksHtml(s){if(s==='sent')return `<div class="ticks grey">✓ Sent</div>`;if(s==='delivered')return `<div class="ticks grey">✓✓ Delivered</div>`;if(s==='read')return `<div class="ticks blue">✓✓ Read</div>`;return '';}
-function renderChatList(){if(Object.keys(chats).length===0){document.getElementById('chatList').innerHTML='<p>No chats yet. Tap + New Chat.</p>';return;}let h='';for(let n in chats){let last=chats[n][chats[n].length-1];let prev=last.voice?'🎤 Voice Note':(last.img?'📷 Photo':last.text);h+=`<div style="display:flex;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid #f0f0f0" onclick="openChat('${n}')"><div class="avatar">${n[0]}</div><div style="flex:1"><b>${n}</b><div style="font-size:13px;color:#666">${prev.substring(0,40)}</div></div><div>${last.from==='me'?ticksHtml(last.status):'<span style="color:#0a8a3a">●</span>'}</div></div>`;}document.getElementById('chatList').innerHTML=h;}
-function newChat(){let n=prompt('Enter name to chat with:');if(!n)return;if(!chats[n])chats[n]=[];save();renderChatList();openChat(n);}
-function filterChats(q){renderChatList();}
-function openChat(n){currentChat=n;document.getElementById('chatWindow').classList.remove('hidden');document.getElementById('chatName').innerText=n;document.getElementById('chatAvatar').innerText=n[0];renderMessages();chats[n].forEach(m=>{if(m.from==='other')m.status='read';});save();setTimeout(()=>{chats[n].forEach(m=>{if(m.from==='me')m.status='read';});save();renderMessages();renderChatList();},2500);}
-function closeChat(){document.getElementById('chatWindow').classList.add('hidden');currentChat=null;}
-function renderMessages(){if(!currentChat)return;let box=document.getElementById('chatMessages');if(chats[currentChat].length===0){box.innerHTML='<p style="color:#888;text-align:center">No messages yet. Say hello! 👋</p>';return;}box.innerHTML=chats[currentChat].map(m=>{if(m.voice)return `<div class="msg ${m.from==='me'?'me':'other'}">🎤 Voice Note<br><audio controls src="${m.voice}" style="width:180px"></audio>${m.from==='me'?ticksHtml(m.status):''}</div>`;if(m.img)return `<div class="msg ${m.from==='me'?'me':'other'}"><img src="${m.img}" style="width:180px;border-radius:10px">${m.from==='me'?ticksHtml(m.status):''}</div>`;return `<div class="msg ${m.from==='me'?'me':'other'}">${m.text}${m.from==='me'?ticksHtml(m.status):''}</div>`;}).join('');box.scrollTop=box.scrollHeight;}
-function sendChat(){let inp=document.getElementById('chatInput');let txt=inp.value.trim();if(!txt||!currentChat)return;chats[currentChat].push({from:'me',text:txt,status:'sent'});inp.value='';save();renderMessages();renderChatList();setTimeout(()=>{let l=chats[currentChat][chats[currentChat].length-1];if(l.status==='sent'){l.status='delivered';save();renderMessages();}},1000);setTimeout(()=>{let l=chats[currentChat][chats[currentChat].length-1];if(l.status==='delivered'){l.status='read';save();renderMessages();renderChatList();}},3000);}
-function sendChatPhoto(input){let f=input.files[0];if(!f||!currentChat)return;let r=new FileReader();r.onload=e=>{chats[currentChat].push({from:'me',img:e.target.result,status:'sent'});save();renderMessages();setTimeout(()=>{let l=chats[currentChat][chats[currentChat].length-1];l.status='read';save();renderMessages();},2000);};r.readAsDataURL(f);}
-async function startVoice(e){e.preventDefault();try{let s=await navigator.mediaDevices.getUserMedia({audio:true});mediaRecorder=new MediaRecorder(s);audioChunks=[];mediaRecorder.ondataavailable=ev=>audioChunks.push(ev.data);mediaRecorder.start();document.getElementById('voiceBtn').style.background='#111';document.getElementById('voiceBtn').innerText='●';}catch(err){alert('Allow microphone');}}
-function stopVoice(e){e.preventDefault();if(!mediaRecorder)return;mediaRecorder.onstop=()=>{let blob=new Blob(audioChunks,{type:'audio/webm'});let url=URL.createObjectURL(blob);if(currentChat){chats[currentChat].push({from:'me',voice:url,status:'sent'});save();renderMessages();setTimeout(()=>{let l=chats[currentChat][chats[currentChat].length-1];l.status='read';save();renderMessages();},2500);}document.getElementById('voiceBtn').style.background='#e41e3f';document.getElementById('voiceBtn').innerText='🎤';};mediaRecorder.stop();mediaRecorder.stream.getTracks().forEach(t=>t.stop());}
-function uploadPhoto(input,type){let f=input.files[0];if(!f)return;let r=new FileReader();r.onload=e=>{let url=e.target.result;if(type==='post'){tempPostImg=url;document.getElementById('postPreview').src=url;document.getElementById('postPreview').classList.remove('hidden');}if(type==='product'){tempProductImg=url;document.getElementById('productPreview').src=url;document.getElementById('productPreview').classList.remove('hidden');document.getElementById('mImg').value='Photo selected ✅';}if(type==='ad'){tempAdImg=url;document.getElementById('adImg').value='Photo selected ✅';}if(type==='profile'){profilePic=url;save();updateProfileUI();alert('Profile photo updated!');}};r.readAsDataURL(f);}
-function uploadVideoFile(input,type){let f=input.files[0];if(!f)return;let url=URL.createObjectURL(f);if(type==='post'){tempPostVideo=url;document.getElementById('postVideoPreview').src=url;document.getElementById('postVideoPreview').classList.remove('hidden');}if(type==='video'){tempVideoUrl=url;document.getElementById('videoPreview').src=url;document.getElementById('videoPreview').classList.remove('hidden');document.getElementById('videoUrl').value='Video selected ✅';}}
-function addStory(input){let f=input.files[0];if(!f)return;let r=new FileReader();r.onload=e=>{stories.unshift({name:isAnonymous?anonName:userName,img:e.target.result});save();renderStories();alert('Story added!');};r.readAsDataURL(f);}
-function renderStories(){if(stories.length===0){document.getElementById('storyRow').innerHTML=`<div class="story" style="background:#0a8a3a">➕ Create story</div>`;return;}document.getElementById('storyRow').innerHTML=stories.map((s,i)=>`<div class="story" style="background-image:url('${s.img}')">${i===0?'➕ ':''}${s.name}</div>`).join('');}
-function updateProfileUI(){let disp=displayName||userName;document.getElementById('profileName').innerText=disp;document.getElementById('profileUsername').innerText=userName.startsWith('@')?userName:'@'+userName;document.getElementById('profileBio').innerText=bio;document.getElementById('menuName').innerText=disp;document.getElementById('createName').innerText=disp;document.getElementById('setName').value=disp;document.getElementById('setBio').value=bio;document.getElementById('aboutBio').innerText=bio;document.getElementById('aboutUsername').innerText=userName;document.getElementById('aboutLine1').innerText='📍 Lives in Agbor, Nigeria';let pic=profilePic?`<img src="${profilePic}">`:disp[0].toUpperCase();['postAvatar','profileAvatar'].forEach(id=>{let e=document.getElementById(id);if(e)e.innerHTML=pic;});applyAnonymousUI();updateContactUI();renderProfileFriends();}
-function saveProfile(){displayName=document.getElementById('setName').value.trim()||displayName;bio=document.getElementById('setBio').value.trim()||bio;save();updateProfileUI();alert('Profile saved!');}
-function login(){let n=document.getElementById('loginName').value.trim();let p=document.getElementById('loginPass').value;if(!n||!p){document.getElementById('authMsg').innerText='Type username and password';return;}if(!users[n]){document.getElementById('authMsg').innerText='No account yet. Tap Create New Account.';return;}if(users[n]!==p){document.getElementById('authMsg').innerText='Wrong password!';return;}enterApp(n);}
-function signup(){let n=document.getElementById('loginName').value.trim();let p=document.getElementById('loginPass').value;if(!n||!p){document.getElementById('authMsg').innerText='Type username + create password';return;}if(p.length<4){document.getElementById('authMsg').innerText='Password min 4 chars';return;}if(users[n]){document.getElementById('authMsg').innerText='Username taken. Tap Log In.';return;}users[n]=p;save();alert('Account created for '+n);enterApp(n);}
-function enterApp(n){userName=n;localStorage.setItem('psx_user',n);if(!displayName)displayName=n;document.getElementById('auth').style.display='none';document.getElementById('topbar').style.display='flex';document.getElementById('bottomNav').style.display='flex';updateProfileUI();renderAll();showPage('feed');}
-function logout(){document.getElementById('auth').style.display='flex';document.getElementById('topbar').style.display='none';document.getElementById('bottomNav').style.display='none';document.getElementById('adminView').style.display='none';document.getElementById('secretBtn').style.display='none';document.getElementById('anonBanner').style.display='none';}
-function renderAll(){renderFeed();renderMarket();renderVideos();renderAds();renderStories();renderFriendsPage();renderGroups();renderNotif();renderChatList();renderEmojiPickers();updateBal();updateProfileUI();renderProfileFriends();renderProfilePhotos();}
-function renderFeed(){if(posts.length===0){document.getElementById('feedList').innerHTML=`<div class="card" style="text-align:center"><h3>Welcome to PlanetSurfX 🌍</h3><p>No posts yet - Be the first to post! Real posts only.</p><button class="btn-green" style="margin-top:10px" onclick="showPage('create')">Create First Post</button></div>`;}else{document.getElementById('feedList').innerHTML=posts.map((p,i)=>`<div class="card"><div style="display:flex;gap:8px;align-items:center"><div class="avatar">${(p.display||p.name)[0]}</div><div><b>${p.display||p.name}</b> <button class="btn-blue" style="padding:4px 10px;font-size:12px" onclick="addFriend('${p.name}')">Follow</button><div style="font-size:12px;color:#888">${p.time}</div></div><button style="background:none;margin-left:auto" onclick="hidePost(${i})">✕</button></div><p style="margin:8px 0">${p.text}</p>${p.img?`<img class="post-img" src="${p.img}">`:''}${p.video?`<video controls src="${p.video}" style="width:100%;border-radius:10px"></video>`:''}<div style="display:flex;justify-content:space-between;font-size:13px;color:#555"><span>👍 ${p.likes} likes</span><span>💬 ${p.comments.length} comments</span></div><div class="actions"><span onclick="likePost(${i})">👍 Like (${p.likes})</span><span onclick="commentPost(${i})">💬 Comment</span><span>↗️ Share</span></div><div style="display:flex;gap:6px;margin-top:8px"><input id="cmt-${i}" placeholder="Write a comment... 😊" style="border-radius:20px"><button class="btn-blue" style="padding:8px 12px" onclick="addComment(${i})">➤</button></div></div>`).join('');}document.getElementById('myPostsList').innerHTML=posts.filter(p=>p.name===userName||p.name===anonName).map(p=>`<div class="card"><p>${p.text.substring(0,100)}</p><p style="font-size:12px;color:#888">👍 ${p.likes} • 💬 ${p.comments.length}</p></div>`).join('')||'No posts yet';document.getElementById('peopleList').innerHTML=getAllRealUsers().filter(u=>!myFriends.includes(u)).slice(0,3).map(u=>`<div style="display:flex;justify-content:space-between;padding:8px 0"><b>${u}</b><div><button class="btn-blue" style="padding:6px 10px" onclick="addFriend('${u}')">Add friend</button> <button class="btn-light" style="padding:6px 10px" onclick="removeSuggestion('${u}')">Remove</button></div></div>`).join('')||'No suggestions yet - Real users will appear when they sign up';}
-function hidePost(i){posts.splice(i,1);save();renderFeed();}
-function likePost(i){posts[i].likes++;save();renderFeed();}
-function commentPost(i){let c=prompt('Write comment:');if(c){posts[i].comments.push(userName+': '+c);notifs.unshift({t:userName+' commented'});save();renderFeed();}}
-function addComment(i){let inp=document.getElementById('cmt-'+i);let c=inp.value.trim();if(!c)return;posts[i].comments.push((isAnonymous?anonName:userName)+': '+c);notifs.unshift({t:(isAnonymous?anonName:userName)+' commented'});save();renderFeed();}
-function addPostFromCreate(){let t=document.getElementById('createText').value.trim()||document.getElementById('postText').value.trim();if(!t&&!tempPostImg&&!tempPostVideo)return alert('Write something');let img=tempPostImg;let pn=isAnonymous?anonName:userName;let pd=isAnonymous?'Anonymous User':(displayName||userName);posts.unshift({name:pn,display:pd,time:'Just now',text:t||'📸 Photo/Video post',img:img,video:tempPostVideo,likes:0,comments:[]});save();renderFeed();document.getElementById('createText').value='';document.getElementById('postText').value='';tempPostImg='';tempPostVideo='';document.getElementById('postPreview').classList.add('hidden');document.getElementById('postVideoPreview').classList.add('hidden');alert('Posted!');showPage('feed');}
-function renderMarket(){if(products.length===0){document.getElementById('marketList').innerHTML='<p>No products yet.</p>';return;}document.getElementById('marketList').innerHTML=products.map((p,i)=>`<div class="m-item"><img src="${p.img}"><div><b>${p.title}</b><div style="color:#0a8a3a;font-weight:bold">₦${p.price.toLocaleString()}</div><div>${p.loc}</div><p style="font-size:12px;color:#0a8a3a">💚 WhatsApp: ${waNumber||'Save WhatsApp'}</p><button class="btn-green" style="padding:8px;margin-top:6px" onclick="buyProduct(${i})">Buy Now</button></div></div>`).join('');}
-function addProduct(){let t=document.getElementById('mTitle').value.trim();let pr=parseInt(document.getElementById('mPrice').value)||0;let img=tempProductImg||document.getElementById('mImg').value.trim();if(img==='Photo selected ✅')img=tempProductImg;if(!t)return alert('Type product');if(!img)img='https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600';products.unshift({title:t,price:pr,img:img,loc:'Agbor'});save();renderMarket();tempProductImg='';alert('Listed!');}
-function buyProduct(i){let p=products[i];if(confirm('Buy '+p.title+' for ₦'+p.price.toLocaleString()+'? WhatsApp: '+(waNumber||'Not saved'))){salesTotal+=p.price;history.unshift('🛍️ Sold: '+p.title+' - ₦'+p.price.toLocaleString());save();alert('Order placed!');}}
-function renderVideos(){if(videos.length===0){document.getElementById('videoList').innerHTML='<div class="card">No reels yet.</div>';return;}document.getElementById('videoList').innerHTML=videos.map((v,i)=>`<div class="card"><b>${v.title}</b><p style="font-size:13px;color:#666">by ${v.by} • 👍 ${v.likes}</p><video controls src="${v.url}" style="margin-top:8px;width:100%;border-radius:10px"></video><div style="margin-top:8px"><button class="btn-light" onclick="likeVideo(${i})">👍 Like (${v.likes})</button> <button class="btn-light">↗️ Share</button></div></div>`).join('');}
-function likeVideo(i){videos[i].likes++;save();renderVideos();}
-function addVideo(){let t=document.getElementById('videoTitle').value.trim();let u=tempVideoUrl||document.getElementById('videoUrl').value.trim();if(u==='Video selected ✅')u=tempVideoUrl;if(!t||!u)return alert('Title + Video needed');videos.unshift({title:t,by:isAnonymous?anonName:userName,url:u,likes:0});save();renderVideos();tempVideoUrl='';alert('Reel uploaded!');}
-function addMoney(v){balance+=v;history.unshift('➕ Added ₦'+v.toLocaleString());save();}
-function withdraw(){if(balance<=0)return alert('Balance is ₦0');if(!opayBound)return alert('Save and verify Opay first');let amt=balance;history.unshift('💸 Withdraw to Opay '+opayAcct+': ₦'+amt.toLocaleString());balance=0;save();alert('Withdraw ₦'+amt.toLocaleString()+' to '+opayAcct+' requested!');}
-function surfEarn(){let bar=document.getElementById('surfBar');let w=0;document.getElementById('surfMsg').innerText='Surfing...';let iv=setInterval(()=>{w+=10;bar.style.width=w+'%';if(w>=100){clearInterval(iv);balance+=50;surfEarnTotal+=50;history.unshift('🌐 Surf: +₦50');save();document.getElementById('surfMsg').innerText='✅ Earned ₦50!';}},200);}
-function renderAds(){document.getElementById('myAds').innerHTML=myAds.length?myAds.map(a=>`<div class="ad-plan"><b>${a.plan} - ₦${a.price.toLocaleString()}</b> • ${a.days} Days • ${a.date}</div>`).join(''):'<p>No advert subscription yet</p>';}
-function buyAd(plan,price,days){if(!confirm('Subscribe '+plan+' for ₦'+price.toLocaleString()+'?'))return;myAds.unshift({plan:plan,price:price,days:days,date:new Date().toLocaleDateString()});adsEarnTotal+=price;history.unshift('📢 Advert: '+plan+' - ₦'+price.toLocaleString());save();renderAds();alert('✅ Subscribed!');}
-function createAd(){let t=document.getElementById('adTitle').value.trim();if(!t)return alert('Advert title needed');myAds.unshift({plan:'Custom: '+t,price:0,days:7,date:new Date().toLocaleDateString()});save();renderAds();alert('Advert created!');}
-function renderGroups(){if(groups.length===0){document.getElementById('groupsList').innerHTML='<p>No groups yet.</p>';return;}document.getElementById('groupsList').innerHTML=groups.map(g=>`<div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #eee"><div><b>${g.name}</b><br><span style="color:#666">${g.members} members</span></div><button class="btn-light">Join</button></div>`).join('');}
-function createGroup(){let n=document.getElementById('groupName').value.trim();if(!n)return alert('Group name needed');groups.unshift({name:n,members:1});save();renderGroups();alert('Group created!');}
-function renderNotif(){if(notifs.length===0){document.getElementById('notifList').innerHTML='<p>No notifications yet - Real: 0</p>';return;}document.getElementById('notifList').innerHTML=notifs.map(n=>`<div style="padding:10px 0;border-bottom:1px solid #eee">🔔 ${n.t}</div>`).join('');}
-function clearNotif(){notifs=[];save();renderNotif();}
-function doSearch(q){if(!q||q.length<2){document.getElementById('searchResults').classList.add('hidden');return;}let box=document.getElementById('searchResults');box.classList.remove('hidden');let fp=posts.filter(p=>p.text.toLowerCase().includes(q.toLowerCase()));let fpr=products.filter(p=>p.title.toLowerCase().includes(q.toLowerCase()));box.innerHTML=`<h3>Search: "${q}"</h3><p>Posts: ${fp.length} • Products: ${fpr.length}</p><button class="btn-light" onclick="document.getElementById('searchResults').classList.add('hidden')">Close</button>`;}
-function toggleDark(){document.body.classList.toggle('dark');}
-function changeUserPassFromSettings(){let np=document.getElementById('setUserPass').value;if(np&&np.length>=4){users[userName]=np;save();alert('User password changed!');}else alert('Min 4 chars');}
-function changeAdminPassFromSettings(){let np=document.getElementById('setAdminPass').value;if(np&&np.length>=6){localStorage.setItem('psx_admin_pass',np);alert('Admin password changed!');}else alert('Min 6 chars');}
-function deleteAccount(){if(confirm('Delete your account?')){delete users[userName];save();logout();}}
-function toggleAnonymous(){if(!isAnonymous){let alias=prompt('Choose Anonymous Username:',anonName);if(alias)anonName=alias.startsWith('@')?alias:'@'+alias;isAnonymous=true;alert('🕶️ Anonymous ON as '+anonName);}else{isAnonymous=false;alert('👑 Back to Admin');}save();applyAnonymousUI();}
-function goAnonymousFromAdmin(){document.getElementById('adminView').style.display='none';isAnonymous=true;save();applyAnonymousUI();document.getElementById('topbar').style.display='flex';document.getElementById('bottomNav').style.display='flex';showPage('feed');}
-function returnToAdmin(){let pass=prompt('Enter YOUR Admin Password:');if(pass===localStorage.getItem('psx_admin_pass')){isAnonymous=false;save();applyAnonymousUI();openAdmin();}else if(pass)alert('Wrong password');}
-function applyAnonymousUI(){let disp=isAnonymous?'Anonymous User':(displayName||userName);let show=isAnonymous?anonName:(userName.startsWith('@')?userName:'@'+userName);document.getElementById('profileName').innerText=disp;document.getElementById('profileUsername').innerText=show;document.getElementById('anonBanner').style.display=isAnonymous?'block':'none';document.getElementById('secretBtn').style.display=isAnonymous?'block':'none';}
-function openAdmin(){document.getElementById('topbar').style.display='none';document.getElementById('bottomNav').style.display='none';document.getElementById('anonBanner').style.display='none';document.getElementById('secretBtn').style.display='none';document.getElementById('adminView').style.display='block';window.scrollTo(0,0);let saved=localStorage.getItem('psx_admin_pass');document.getElementById('adminContent').classList.add('hidden');if(!saved){document.getElementById('createAdminBox').classList.remove('hidden');document.getElementById('adminLoginBox').classList.add('hidden');}else{document.getElementById('createAdminBox').classList.add('hidden');document.getElementById('adminLoginBox').classList.remove('hidden');}}
-function createAdminPass(){let p1=document.getElementById('newAdminPass').value;let p2=document.getElementById('newAdminPass2').value;if(p1.length<6){document.getElementById('createAdminMsg').innerText='Min 6 chars';return;}if(p1!==p2){document.getElementById('createAdminMsg').innerText='Do not match';return;}localStorage.setItem('psx_admin_pass',p1);alert('Admin password created!');document.getElementById('createAdminBox').classList.add('hidden');document.getElementById('adminContent').classList.remove('hidden');renderAdmin();}
-function checkAdmin(){if(document.getElementById('adminPass').value===localStorage.getItem('psx_admin_pass')){document.getElementById('adminLoginBox').classList.add('hidden');document.getElementById('adminContent').classList.remove('hidden');renderAdmin();}else document.getElementById('adminLoginMsg').innerText='Wrong password!';}
-function closeAdmin(){document.getElementById('adminView').style.display='none';document.getElementById('topbar').style.display='flex';document.getElementById('bottomNav').style.display='flex';applyAnonymousUI();}
-function showA(t){['users','posts','money','settings'].forEach(x=>{document.getElementById('a-'+x).classList.add('hidden');document.getElementById('at-'+x).classList.remove('active');});document.getElementById('a-'+t).classList.remove('hidden');document.getElementById('at-'+t).classList.add('active');}
-function renderAdmin(){document.getElementById('statPosts').innerText=posts.length;document.getElementById('statUsers').innerText=Object.keys(users).length;document.getElementById('statMoney').innerText='₦'+balance.toLocaleString();document.getElementById('usersList').innerHTML=Object.keys(users).map(u=>`<div style="background:#0f172a;padding:12px;border-radius:8px;margin:6px 0"><b>${u}</b></div>`).join('')||'No users';document.getElementById('postsList').innerHTML=posts.map((p,i)=>`<div style="background:#0f172a;padding:12px;border-radius:8px;margin:8px 0"><b>${p.display||p.name}</b>: ${p.text.substring(0,100)}<br><button class="btn-red" style="margin-top:8px" onclick="deletePost(${i})">Delete</button></div>`).join('')||'No posts';document.getElementById('moneyAdmin').innerHTML=`<p>Balance: ₦${balance.toLocaleString()}</p><p>WhatsApp: ${waNumber||'Not saved'}</p><p>Opay: ${opayName} - ${opayAcct||'Not saved'}</p><p>${history.slice(0,10).join('<br>')||'No transactions'}</p>`;}
-function deletePost(i){posts.splice(i,1);save();renderAdmin();renderFeed();}
-function resetAll(){if(confirm('Delete everything?')){localStorage.clear();location.reload();}}
-if(userName)document.getElementById('loginName').value=userName;
-updateBal();renderEmojiPickers();updateContactUI();
+async function login(e){
+ e.preventDefault();message("loginMessage","Signing in…");
+ try{const d=await api("/api/login",{method:"POST",body:JSON.stringify({username:loginUsername.value.trim(),password:loginPassword.value})});token=d.token;localStorage.setItem("psx_api_token",token);await restoreSession();}
+ catch(err){message("loginMessage",err.message);}
+}
+async function register(e){
+ e.preventDefault();message("registerMessage","Creating account…");
+ try{
+  const body={username:regUsername.value.trim(),full_name:regFullName.value.trim(),password:regPassword.value};
+  if(regEmail.value.trim())body.email=regEmail.value.trim();
+  const d=await api("/api/register",{method:"POST",body:JSON.stringify(body)});
+  token=d.token;localStorage.setItem("psx_api_token",token);await restoreSession();
+ }catch(err){message("registerMessage",err.message);}
+}
+async function adminLogin(e){
+ e.preventDefault();message("adminMessage","Checking credentials…");
+ try{const d=await api("/api/admin/login",{method:"POST",body:JSON.stringify({username:adminUsername.value.trim(),password:adminPassword.value})});token=d.token;localStorage.setItem("psx_api_token",token);await restoreSession();}
+ catch(err){message("adminMessage",err.message);}
+}
+async function restoreSession(){
+ if(!token){showAuth("login");return;}
+ try{
+  const d=await api("/api/me");
+  if(!d.authenticated)throw new Error("Session expired");
+  currentRole=d.role||"user";currentUser=d.profile||d.user||d;
+  document.getElementById("authScreen").classList.add("hidden");
+  document.getElementById("appScreen").classList.remove("hidden");
+  const name=currentUser.full_name||currentUser.username||"Member";
+  document.getElementById("topUserName").textContent=name;
+  document.getElementById("topAvatar").innerHTML=currentUser.avatar?`<img src="${esc(currentUser.avatar)}">`:esc(initials(name));
+  document.getElementById("sideAvatar").innerHTML=document.getElementById("topAvatar").innerHTML;
+  document.getElementById("sideName").textContent=name;
+  document.getElementById("sideHandle").textContent="@"+(currentUser.username||"member");
+  document.getElementById("adminNav").style.display=currentRole==="admin"?"flex":"none";
+  openPage(currentRole==="admin"?"admin":"feed");
+ }catch(err){
+  token="";localStorage.removeItem("psx_api_token");currentUser=null;
+  document.getElementById("appScreen").classList.add("hidden");
+  document.getElementById("authScreen").classList.remove("hidden");showAuth("login");
+ }
+}
+async function logout(){
+ try{await api("/api/logout",{method:"POST",body:"{}"});}catch(e){}
+ token="";localStorage.removeItem("psx_api_token");currentUser=null;
+ document.getElementById("appScreen").classList.add("hidden");
+ document.getElementById("authScreen").classList.remove("hidden");showAuth("login");
+ toast("Signed out.");
+}
+function openPage(page){
+ currentPage=page;
+ document.querySelectorAll("[data-page]").forEach(b=>b.classList.toggle("active",b.dataset.page===page));
+ const funcs={feed:loadFeed,profile:loadProfile,friends:loadFriends,messages:loadMessages,notifications:loadNotifications,marketplace:loadMarketplace,admin:loadAdmin};
+ if(page==="admin"&&currentRole!=="admin"){toast("Administrator access required.");return;}
+ if(funcs[page])funcs[page]();
+}
+function head(title,extra=""){return `<div class="head"><h2>${title}</h2>${extra}</div>`;}
+function empty(t){return `<div class="empty">${esc(t)}</div>`;}
+
+async function loadFeed(){
+ const root=document.getElementById("mainContent");
+ root.innerHTML=head("Home feed")+`
+ <section class="composer">
+  <div class="compose-top">${avatar(currentUser.full_name||currentUser.username,currentUser.avatar)}<textarea id="postText" placeholder="What's happening on your planet?"></textarea></div>
+  <div class="compose-bottom"><select id="postVisibility"><option value="public">Public post</option><option value="friends">Friends only</option></select><button class="btn" onclick="createPost()">Publish post</button></div>
+ </section><div id="feedList">${empty("Loading feed…")}</div>`;
+ try{const d=await api("/api/feed?limit=50");const posts=d.posts||[];document.getElementById("feedList").innerHTML=posts.length?posts.map(postCard).join(""):empty("No public posts yet. Be the first to share!");}
+ catch(e){document.getElementById("feedList").innerHTML=empty(e.message);}
+}
+function postCard(p){
+ const own=String(p.user_id)===String(currentUser.id);
+ return `<article class="post">
+ <div class="post-head">${avatar(p.full_name||p.username,p.avatar)}<div class="post-meta"><strong>${esc(p.full_name||p.username||"Member")}</strong><small>@${esc(p.username||"member")} · ${esc(p.created_at||"")}</small></div>
+ ${own?`<button class="btn ghost small" onclick="deletePost(${Number(p.id)})">Delete</button>`:""}</div>
+ <div class="post-content">${esc(p.content)}</div>
+ <div class="post-actions"><button class="action" onclick="likePost(${Number(p.id)})">♡ ${Number(p.likes)||0} Like</button><button class="action" onclick="toggleComments(${Number(p.id)})">💬 ${Number(p.comments)||0} Comments</button></div>
+ <div id="comments-${Number(p.id)}" class="hidden"></div></article>`;
+}
+async function createPost(){
+ const content=document.getElementById("postText").value.trim();if(!content)return toast("Write something first.");
+ try{await api("/api/posts",{method:"POST",body:JSON.stringify({content,visibility:document.getElementById("postVisibility").value})});toast("Post published.");loadFeed();}
+ catch(e){toast(e.message);}
+}
+async function likePost(id){try{await api(`/api/posts/${id}/like`,{method:"POST",body:"{}"});loadFeed();}catch(e){toast(e.message);}}
+async function deletePost(id){if(!confirm("Delete this post?"))return;try{await api(`/api/posts/${id}`,{method:"DELETE"});toast("Post deleted.");loadFeed();}catch(e){toast(e.message);}}
+async function toggleComments(id){
+ const box=document.getElementById("comments-"+id);
+ if(!box.classList.contains("hidden")){box.classList.add("hidden");return;}
+ box.classList.remove("hidden");box.innerHTML=empty("Loading comments…");
+ try{
+  const d=await api(`/api/posts/${id}/comments`);
+  box.innerHTML=`<div class="comment-list">${(d.comments||[]).map(c=>`<div class="comment"><strong>${esc(c.full_name||c.username||"Member")}</strong> ${esc(c.content)}</div>`).join("")||"No comments yet."}</div><div class="comment-box"><input id="comment-${id}" placeholder="Write a comment…"><button class="btn" onclick="sendComment(${id})">Send</button></div>`;
+ }catch(e){box.innerHTML=empty(e.message);}
+}
+async function sendComment(id){
+ const input=document.getElementById("comment-"+id),content=input.value.trim();if(!content)return;
+ try{await api(`/api/posts/${id}/comments`,{method:"POST",body:JSON.stringify({content})});toast("Comment added.");loadFeed();}
+ catch(e){toast(e.message);}
+}
+
+async function loadProfile(){
+ document.getElementById("mainContent").innerHTML=head("My profile")+`
+ <section class="panel page-card"><div class="profile-cover"></div>
+ <div class="profile-info">${avatar(currentUser.full_name||currentUser.username,currentUser.avatar)}<div><h2>${esc(currentUser.full_name||currentUser.username)}</h2><span class="muted">@${esc(currentUser.username)}</span></div></div>
+ <div style="max-width:600px"><h3>Edit your profile</h3>
+ <div class="field"><label>Full name</label><input id="profileName" value="${esc(currentUser.full_name||"")}"></div>
+ <div class="field"><label>About you</label><textarea id="profileBio">${esc(currentUser.bio||"")}</textarea></div>
+ <div class="field"><label>Avatar image URL</label><input id="profileAvatar" value="${esc(currentUser.avatar||"")}" placeholder="https://…"></div>
+ <div class="field"><label>Cover image URL</label><input id="profileCover" value="${esc(currentUser.cover||"")}" placeholder="https://…"></div>
+ <div class="field"><label>Location</label><input id="profileLocation" value="${esc(currentUser.location||"")}"></div>
+ <button class="btn" onclick="saveProfile()">Save profile</button></div></section>`;
+}
+async function saveProfile(){
+ const body={full_name:document.getElementById("profileName").value.trim(),bio:document.getElementById("profileBio").value,avatar:document.getElementById("profileAvatar").value.trim(),cover:document.getElementById("profileCover").value.trim(),location:document.getElementById("profileLocation").value.trim()};
+ try{await api("/api/profile",{method:"PATCH",body:JSON.stringify(body)});currentUser={...currentUser,...body};toast("Profile updated.");loadProfile();}
+ catch(e){toast(e.message);}
+}
+
+async function loadFriends(){
+ const root=document.getElementById("mainContent");
+ root.innerHTML=head("Friends")+`
+ <section class="panel page-card"><h3>Find a member</h3><div class="comment-box"><input id="friendUsername" placeholder="Enter their exact username"><button class="btn" onclick="sendFriendRequest()">Send request</button></div></section>
+ <section class="panel page-card" style="margin-top:13px"><h3>Friend requests</h3><div id="friendRequests">${empty("Loading…")}</div></section>
+ <section class="panel page-card" style="margin-top:13px"><h3>Your friends</h3><div id="friendsList">${empty("Loading…")}</div></section>`;
+ try{
+  const [r,f]=await Promise.all([api("/api/friends/requests"),api("/api/friends")]);
+  const requests=r.requests||[],friends=f.friends||[];
+  document.getElementById("friendRequests").innerHTML=requests.length?requests.map(x=>`<div class="list-row">${avatar(x.full_name||x.username,x.avatar)}<div class="grow"><strong>${esc(x.full_name||x.username)}</strong><small>@${esc(x.username)}</small></div><button class="btn" onclick="acceptFriend(${Number(x.id)})">Accept</button></div>`).join(""):empty("No pending requests.");
+  document.getElementById("friendsList").innerHTML=friends.length?friends.map(x=>`<div class="list-row">${avatar(x.full_name||x.username,x.avatar)}<div class="grow"><strong>${esc(x.full_name||x.username)}</strong><small>@${esc(x.username)}</small></div><button class="btn secondary" onclick="startChat('${esc(x.username)}')">Message</button></div>`).join(""):empty("Your friends will appear here.");
+ }catch(e){document.getElementById("friendRequests").innerHTML=empty(e.message);}
+}
+async function sendFriendRequest(){
+ const username=document.getElementById("friendUsername").value.trim();if(!username)return toast("Enter a username.");
+ try{await api("/api/friends/request",{method:"POST",body:JSON.stringify({username})});toast("Request sent.");loadFriends();}
+ catch(e){toast(e.message);}
+}
+async function acceptFriend(id){
+ try{await api("/api/friends/accept",{method:"POST",body:JSON.stringify({request_id:id})});toast("Friend request accepted.");loadFriends();}
+ catch(e){toast(e.message);}
+}
+function startChat(username){activeChat=username;openPage("messages");}
+
+async function loadMessages(){
+ document.getElementById("mainContent").innerHTML=head("Messages")+`
+ <section class="panel page-card"><div class="message-layout">
+ <div class="message-list"><strong>Start chat</strong><div class="field"><input id="chatUsername" placeholder="Username" value="${esc(activeChat)}"><button class="btn secondary" onclick="openChat()">Open</button></div><small class="muted">Enter a member's username.</small></div>
+ <div class="conversation"><strong id="chatTitle">${activeChat?"@"+esc(activeChat):"Choose a conversation"}</strong><div class="messages" id="messageItems">${empty("Choose a username to load messages.")}</div>
+ <div class="send-row"><input id="messageText" placeholder="Write a message…" ${activeChat?"":"disabled"}><button class="btn" onclick="sendMessage()" ${activeChat?"":"disabled"}>Send</button></div></div>
+ </div></section>`;
+ if(activeChat)await fetchConversation();
+}
+function openChat(){activeChat=document.getElementById("chatUsername").value.trim();if(!activeChat)return toast("Enter a username.");loadMessages();}
+async function fetchConversation(){
+ const box=document.getElementById("messageItems");
+ try{const d=await api("/api/messages?username="+encodeURIComponent(activeChat));box.innerHTML=(d.messages||[]).map(m=>`<div class="bubble ${String(m.sender_id)===String(currentUser.id)?"mine":""}">${esc(m.content)}<div class="small muted">${esc(m.created_at||"")}</div></div>`).join("")||empty("No messages yet. Say hello!");box.scrollTop=box.scrollHeight;}
+ catch(e){box.innerHTML=empty(e.message);}
+}
+async function sendMessage(){
+ const input=document.getElementById("messageText"),content=input.value.trim();if(!activeChat||!content)return;
+ try{await api("/api/messages",{method:"POST",body:JSON.stringify({username:activeChat,content})});input.value="";await fetchConversation();}
+ catch(e){toast(e.message);}
+}
+
+async function loadNotifications(){
+ const root=document.getElementById("mainContent");
+ root.innerHTML=head("Notifications",`<button class="btn secondary" onclick="markNotificationsRead()">Mark all read</button>`)+`<section class="panel page-card" id="notificationList">${empty("Loading notifications…")}</section>`;
+ try{
+  const d=await api("/api/notifications"),items=d.notifications||[];
+  document.getElementById("notificationList").innerHTML=items.length?items.map(n=>`<div class="list-row"><div class="avatar">🔔</div><div class="grow"><strong>${esc(n.title||n.message||"Notification")}</strong><small>${esc(n.created_at||"")}</small></div></div>`).join(""):empty("You're all caught up.");
+ }catch(e){document.getElementById("notificationList").innerHTML=empty(e.message);}
+}
+async function markNotificationsRead(){
+ try{await api("/api/notifications/read",{method:"POST",body:"{}"});toast("Notifications marked read.");loadNotifications();}
+ catch(e){toast(e.message);}
+}
+
+async function loadMarketplace(){
+ const root=document.getElementById("mainContent");
+ root.innerHTML=head("Marketplace")+`
+ <section class="panel page-card"><h3>List an item or service</h3><div class="grid2">
+ <div class="field"><label>Title</label><input id="listingTitle" placeholder="What are you offering?"></div>
+ <div class="field"><label>Price</label><input id="listingPrice" placeholder="e.g. ₦25,000"></div>
+ <div class="field"><label>Category</label><input id="listingCategory" placeholder="Electronics, fashion…"></div>
+ <div class="field"><label>Location</label><input id="listingLocation" placeholder="City or area"></div></div>
+ <div class="field"><label>Description</label><textarea id="listingDescription"></textarea></div>
+ <button class="btn" onclick="createListing()">Publish listing</button></section>
+ <div id="marketList" style="margin-top:14px">${empty("Loading marketplace…")}</div>`;
+ try{
+  const d=await api("/api/marketplace"),items=d.listings||[];
+  document.getElementById("marketList").innerHTML=items.length?items.map(x=>`<article class="post"><h3>${esc(x.title)}</h3><p class="muted small">${esc(x.category||"General")} · ${esc(x.location||"Location not specified")}</p><p>${esc(x.description||"")}</p><strong>${esc(x.price||"Contact seller")}</strong><p class="small muted">Seller: ${esc(x.full_name||x.username||"Member")}</p></article>`).join(""):empty("No listings yet.");
+ }catch(e){document.getElementById("marketList").innerHTML=empty(e.message);}
+}
+async function createListing(){
+ const body={title:document.getElementById("listingTitle").value.trim(),price:document.getElementById("listingPrice").value.trim(),category:document.getElementById("listingCategory").value.trim(),location:document.getElementById("listingLocation").value.trim(),description:document.getElementById("listingDescription").value.trim()};
+ if(!body.title)return toast("Enter a listing title.");
+ try{await api("/api/marketplace",{method:"POST",body:JSON.stringify(body)});toast("Listing published.");loadMarketplace();}
+ catch(e){toast(e.message);}
+}
+
+async function loadAdmin(){
+ const root=document.getElementById("mainContent");
+ root.innerHTML=head("Admin dashboard")+`
+ <div class="stat-grid"><div class="stat"><span>Total members</span><strong id="statUsers">—</strong></div><div class="stat"><span>Posts</span><strong id="statPosts">—</strong></div><div class="stat"><span>Listings</span><strong id="statListings">—</strong></div><div class="stat"><span>Messages</span><strong id="statMessages">—</strong></div></div>
+ <section class="panel page-card"><div class="head"><h3>Manage members</h3><button class="btn secondary" onclick="loadAdmin()">Refresh</button></div><div class="table-wrap" id="adminUsers">${empty("Loading members…")}</div></section>`;
+ try{
+  const [s,u]=await Promise.all([api("/api/admin/dashboard"),api("/api/admin/users")]);
+  document.getElementById("statUsers").textContent=s.users??0;
+  document.getElementById("statPosts").textContent=s.posts??0;
+  document.getElementById("statListings").textContent=s.listings??0;
+  document.getElementById("statMessages").textContent=s.messages??0;
+  const users=u.users||[];
+  document.getElementById("adminUsers").innerHTML=users.length?`<table><thead><tr><th>Member</th><th>Username</th><th>Status</th><th>Action</th></tr></thead><tbody>${users.map(x=>`<tr><td>${esc(x.full_name||x.username)}</td><td>@${esc(x.username)}</td><td>${esc(x.status||"active")}</td><td><button class="btn ${x.status==="suspended"?"secondary":"danger"}" onclick="setUserStatus(${Number(x.id)},'${x.status==="suspended"?"active":"suspended"}')">${x.status==="suspended"?"Activate":"Suspend"}</button></td></tr>`).join("")}</tbody></table>`:empty("No members found.");
+ }catch(e){document.getElementById("adminUsers").innerHTML=empty(e.message);}
+}
+async function setUserStatus(id,status){
+ if(!confirm((status==="suspended"?"Suspend":"Activate")+" this member?"))return;
+ try{await api(`/api/admin/users/${id}`,{method:"PATCH",body:JSON.stringify({status})});toast("Member status updated.");loadAdmin();}
+ catch(e){toast(e.message);}
+}
+window.addEventListener("DOMContentLoaded",restoreSession);
 </script>
 </body>
 </html>
