@@ -1,5 +1,3 @@
-JavaScript
-
 const ORIGINS = [
   "https://ekpobassey01-glitch.github.io",
   "https://planetsurfx.ekpobassey01.workers.dev"
