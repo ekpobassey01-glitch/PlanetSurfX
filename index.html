@@ -1012,4 +1012,27 @@ function psxFilter(cat){
 psxLoadFeed();
 </script>
 <!-- ===== END FEED ===== -->
+<!-- ===== SAFE FIX - BIG BOX ONLY ===== -->
+<style>
+  /* ONLY the Share box - nothing else */
+  textarea[placeholder="Share something..."] {
+    min-height: 150px !important;
+    font-size: 17px !important;
+    line-height: 1.5 !important;
+    padding: 14px !important;
+  }
+
+  /* ONLY images inside a post - not all images on site */
+  .post-card img, .post img {
+    width: 100% !important;
+    height: auto !important;
+    border-radius: 12px !important;
+  }
+  .post-card video, .post video {
+    width: 100% !important;
+    height: auto !important;
+    border-radius: 12px !important;
+  }
+</style>
+<!-- ===== END SAFE FIX ===== -->
 </body></html>
