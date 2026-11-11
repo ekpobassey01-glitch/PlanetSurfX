@@ -476,4 +476,65 @@ document.addEventListener("DOMContentLoaded", function() {
 <!-- <div id="stageBadge">🌱 Newcomer - Stage 1/15</div> -->
 <!-- <button id="redeemStageBtn">Redeem Next Stage With Coins</button> -->
 <!-- <div>Coins: <span id="coinBalance">0</span></div> -->
+<!-- PlanetSurfX - PROFILE PHOTO UPLOAD - ADD ONLY - DOES NOT TOUCH LOGIN -->
+<!-- Paste this JUST ABOVE </body>, below No.1 and No.2 -->
+<script>
+// ===== PROFILE PHOTO - ONLY RUNS IF PROFILE ELEMENTS EXIST =====
+
+function loadProfilePhoto() {
+  let saved = localStorage.getItem("planetsurfx_profile_photo");
+  let img = document.querySelector("#profilePhoto") || document.querySelector("#userAvatar") || document.querySelector("#profileImg");
+  if (!img) return; // No profile photo on this page (e.g. Login) - do nothing, login safe
+  if (saved) {
+    img.src = saved;
+  }
+}
+
+function handleProfilePhotoSelect(event) {
+  let file = event.target.files[0];
+  if (!file) return;
+  // Only images allowed
+  if (!file.type.startsWith("image/")) {
+    alert("Please select an image file.");
+    return;
+  }
+  // Limit to 2MB to keep app fast
+  if (file.size > 2 * 1024 * 1024) {
+    alert("Photo too large. Please choose a photo under 2MB.");
+    return;
+  }
+  let reader = new FileReader();
+  reader.onload = function(e) {
+    let photoData = e.target.result;
+    localStorage.setItem("planetsurfx_profile_photo", photoData);
+    let img = document.querySelector("#profilePhoto") || document.querySelector("#userAvatar") || document.querySelector("#profileImg");
+    if (img) img.src = photoData;
+    alert("Profile photo updated!");
+  };
+  reader.readAsDataURL(file);
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+  loadProfilePhoto();
+  // Attach to upload input if it exists - if not on page, do nothing
+  let input = document.querySelector("#profilePhotoInput") || document.querySelector("#uploadProfilePhoto");
+  if (input) {
+    input.addEventListener("change", handleProfilePhotoSelect);
+  }
+  // Also allow clicking the photo itself to change it
+  let img = document.querySelector("#profilePhoto") || document.querySelector("#userAvatar");
+  if (img) {
+    img.style.cursor = "pointer";
+    img.addEventListener("click", function() {
+      if (input) input.click();
+    });
+  }
+});
+</script>
+<!-- END PlanetSurfX PROFILE PHOTO - SAFE FOR LOGIN -->
+
+<!-- OPTIONAL: Add these lines WHERE you want profile photo to show - in Profile / Chatroom page, NOT in Login page -->
+<!-- <img id="profilePhoto" src="default-avatar.png" width="100" height="100" style="border-radius:50%; object-fit:cover;" /> -->
+<!-- <input type="file" id="profilePhotoInput" accept="image/*" style="display:block; margin-top:8px;" /> -->
+<!-- <p style="font-size:12px;">Tap photo or choose file to change profile photo</p> -->
 </body></html>
