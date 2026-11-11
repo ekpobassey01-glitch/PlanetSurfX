@@ -572,5 +572,78 @@ setTimeout(showAdminOrders,1500);
 window.check48HourReward();
 },1200);
 </script>
+  <!-- ===== PLANETSURFX ONLY CODE - NO POPUP ===== -->
+<style>
+/* Frontpage: hide floating pills */
+body:not(.psx-inside) .psx-fab { display: none !important; }
+</style>
+<script>
+const OWNER_USER = "Fieldmarshal";
+const OWNER_PASS = "Nigerian123"; // your normal password inside " "
+
+function psxIsInside(){
+  return localStorage.getItem('psx_logged_in') === 'Fieldmarshal';
+}
+
+function psxHideLoginForever(){
+  if(!psxIsInside()) return;
+  document.body.classList.add('psx-inside');
+  // Remove EVERY Welcome back box, even if original code re-creates it
+  document.querySelectorAll('*').forEach(el=>{
+    if(el.innerText && el.innerText.trim().startsWith('Welcome back!')){
+      let box = el;
+      for(let i=0;i<5;i++){ if(box.parentElement) box = box.parentElement; }
+      if(box && box.tagName !== 'BODY' && box.tagName !== 'HTML') box.style.display = 'none';
+    }
+  });
+  // Hide floating pills if they are on frontpage - show only inside after login
+  // After we are inside, we DO want them, so don't hide here
+  let app = document.getElementById('app') || document.getElementById('dashboard') || document.getElementById('main');
+  if(app) app.style.display = 'block';
+  window.scrollTo(0,0);
+}
+
+// 1. Watch for login - NO alert, NO reload
+document.addEventListener('click', function(e){
+  let t = (e.target.innerText || '').trim().toLowerCase();
+  if(t === 'sign in'){
+    let inputs = document.querySelectorAll('input');
+    // Find the inputs that are actually visible - not the hidden duplicate
+    let visible = Array.from(inputs).filter(i => i.offsetParent !== null);
+    let typedUser = visible[0] ? visible[0].value.trim() : '';
+    let typedPass = visible[1] ? visible[1].value : '';
+    if(typedUser.toLowerCase() === OWNER_USER.toLowerCase() && typedPass === OWNER_PASS){
+      localStorage.setItem('n', 'Fieldmarshal');
+      localStorage.setItem('admin', '1');
+      localStorage.setItem('psx_logged_in', 'Fieldmarshal');
+      // Go inside straight away, no popup to block it
+      psxHideLoginForever();
+    }
+  }
+});
+
+// 2. Watcher - if original code tries to bring login back, hide it again every 500ms
+setInterval(psxHideLoginForever, 500);
+
+// 3. If you refresh and you are already logged in, go straight inside
+if(psxIsInside()){
+  setTimeout(psxHideLoginForever, 500);
+}
+
+// 4. Frontpage: hide floating pills (Meetings / Encyclopedia) until inside
+function psxHideFloats(){
+  if(psxIsInside()) return; // inside = show them
+  document.querySelectorAll('button, div, a').forEach(el=>{
+    let txt = (el.innerText||'').trim();
+    if(txt === 'Meetings' || txt === 'Encyclopedia' || txt.includes('PlanetSurfX AI')){
+      if(el.offsetHeight < 60 && el.offsetWidth > 80){
+        el.style.display = 'none';
+      }
+    }
+  });
+}
+setInterval(psxHideFloats, 800);
+</script>
+<!-- ===== END ONLY CODE ===== -->
 </body>
 </html>
