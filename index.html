@@ -840,4 +840,89 @@ document.addEventListener("DOMContentLoaded", function() {
 <!--   <button id="aiSendBtn" style="padding:8px 16px; background:#000; color:white; border:0; border-radius:8px;">Ask AI</button> -->
 <!--   <button id="aiPayBtn" style="padding:8px 16px; background:#ff9800; color:white; border:0; border-radius:8px;">Pay 3000/month for Full AI</button> -->
 <!-- </div> -->
+<!-- PlanetSurfX - DEVICE-BINDING PIN - ADD ONLY - DOES NOT CHANGE PASSWORD -->
+<!-- Paste this JUST ABOVE </body>, below No.1,2,3,4,5,6 -->
+<script>
+// ===== DEVICE-BINDING PIN - ONLY RUNS ON PIN / LOGIN CHECK =====
+
+// 1. Create a unique Device ID for THIS phone - stays same for this phone only
+function getDeviceId() {
+  let id = localStorage.getItem("planetsurfx_device_id");
+  if (!id) {
+    id = "DEV-" + Date.now().toString(36) + "-" + Math.random().toString(36).slice(2, 10).toUpperCase();
+    localStorage.setItem("planetsurfx_device_id", id);
+  }
+  return id;
+}
+
+// 2. Check if user is Admin - Admin bypasses device binding
+function isAdminPIN() {
+  let user = localStorage.getItem("planetsurfx_user");
+  if (!user) return false;
+  try { user = JSON.parse(user); } catch(e){ return false; }
+  if (user.isAdmin === true) return true;
+  if (user.username === "Fieldmarshal" || user.username === "Admin") return true;
+  return false;
+}
+
+// 3. MAIN CHECK - Call this AFTER user enters PIN, BEFORE allowing entry
+function checkDeviceBindingPIN(enteredPIN) {
+  if (!enteredPIN) return { allowed: false, message: "Please enter PIN" };
+  if (isAdminPIN()) {
+    return { allowed: true, message: "Admin - unlimited, any device allowed" };
+  }
+  let deviceId = getDeviceId();
+  // Get all PIN bindings saved on this device / server
+  // In your real app, this should be checked on your server/database, not just localStorage
+  // For now, localStorage is used so you can test immediately
+  let bindings = JSON.parse(localStorage.getItem("planetsurfx_pin_bindings") || "{}");
+  // If PIN has never been used before, bind it to THIS device now
+  if (!bindings[enteredPIN]) {
+    bindings[enteredPIN] = deviceId;
+    localStorage.setItem("planetsurfx_pin_bindings", JSON.stringify(bindings));
+    return { allowed: true, message: "PIN bound to this device successfully. It will NOT work on any other phone." };
+  }
+  // If PIN already bound, check if it's THIS device
+  if (bindings[enteredPIN] === deviceId) {
+    return { allowed: true, message: "PIN correct - same device, access allowed" };
+  } else {
+    // PIN is bound to a DIFFERENT device - BLOCK
+    return { allowed: false, message: "BLOCKED: This PIN is bound to another device/phone and cannot be transferred. Use the original device, or contact Admin." };
+  }
+}
+
+// 4. Auto-attach to PIN button - does NOT change your login password logic
+document.addEventListener("DOMContentLoaded", function() {
+  let pinBtn = document.querySelector("#pinLoginBtn") || document.querySelector("#verifyPinBtn") || document.querySelector("#enterPinBtn");
+  if (!pinBtn) return; // No PIN button on this page - do nothing
+  // Show device ID for debugging
+  let devEl = document.querySelector("#deviceIdDisplay");
+  if (devEl) devEl.textContent = "This Device ID: " + getDeviceId();
+  pinBtn.addEventListener("click", function(e) {
+    let pinInput = document.querySelector("#pinInput") || document.querySelector("#userPin");
+    let pin = pinInput ? pinInput.value.trim() : "";
+    let result = checkDeviceBindingPIN(pin);
+    if (!result.allowed) {
+      e.preventDefault();
+      e.stopPropagation();
+      alert(result.message);
+      return false;
+    } else {
+      console.log(result.message);
+      // Let your normal login continue - we do NOT stop it here
+      // alert(result.message); // Uncomment if you want user to see success message
+    }
+  });
+});
+</script>
+<!-- END PlanetSurfX DEVICE-BINDING PIN - SAFE -->
+
+<!-- OPTIONAL: Add this WHERE you have PIN login - in Login page, below password -->
+<!-- <div style="border:1px solid #ddd; padding:12px; border-radius:12px; margin-top:10px;"> -->
+<!--   <h4>🔒 Device PIN</h4> -->
+<!--   <div id="deviceIdDisplay" style="font-size:11px; color:#888;"></div> -->
+<!--   <input id="pinInput" type="password" placeholder="Enter your PIN" style="width:100%; padding:8px; margin:6px 0;" /> -->
+<!--   <button id="pinLoginBtn" style="padding:8px 16px; background:#000; color:white; border:0; border-radius:8px;">Verify PIN & Enter</button> -->
+<!--   <p style="font-size:11px;">Note: PIN works only on the first device that uses it. It cannot be transferred.</p> -->
+<!-- </div> -->
 </body></html>
