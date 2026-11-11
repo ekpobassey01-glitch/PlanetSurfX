@@ -1161,4 +1161,44 @@ psxLoadFeed();
 })();
 </script>
 <!-- ===== END SAFE FIX ===== -->
+<!-- ===== CORRECT SPEC FIX V3 - PASTE AT BOTTOM ===== -->
+<style>
+  /* ONLY main composer = BIG */
+  [placeholder*="Share"], [placeholder*="happening"], [placeholder*="What's"] {
+    min-height: 140px !important;
+    height: 140px !important;
+    width: 100% !important;
+    font-size: 17px !important;
+    padding: 12px !important;
+    border-radius: 12px !important;
+    display: block !important;
+  }
+  /* Comment boxes = stay SMALL */
+  [placeholder*="comment"], [placeholder*="Comment"] {
+    min-height: 40px !important;
+    height: 40px !important;
+  }
+</style>
+<script>
+(function(){
+  function fix(){
+    var boxes = document.querySelectorAll('[placeholder*="Share"], [placeholder*="happening"], [placeholder*="What"]');
+    boxes.forEach(function(box){
+      box.style.minHeight = '140px';
+      box.style.height = '140px';
+      box.style.width = '100%';
+      if(!box.nextElementSibling || !box.nextElementSibling.classList.contains('fb3-bar')){
+        var bar = document.createElement('div');
+        bar.className = 'fb3-bar';
+        bar.style.cssText = 'display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;padding-top:10px;border-top:1px solid #eee;';
+        bar.innerHTML = '<span style="background:#e7f3ff;padding:8px 14px;border-radius:20px;font-size:14px;">📷 Photo</span><span style="background:#e7f3ff;padding:8px 14px;border-radius:20px;font-size:14px;">🎥 Video</span><span style="background:#f0f0f0;padding:8px 14px;border-radius:20px;font-size:14px;">📎 File</span>';
+        box.after(bar);
+      }
+    });
+  }
+  setInterval(fix, 1000);
+  fix();
+})();
+</script>
+<!-- ===== END V3 ===== -->
 </body></html>
