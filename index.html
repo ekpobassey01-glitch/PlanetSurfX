@@ -1066,4 +1066,99 @@ psxLoadFeed();
   }
 </style>
 <!-- ===== END FIX ===== -->
+<!-- ===== SAFE FACEBOOK BOX FIX - PASTE ONLY, NO DELETE ===== -->
+<style>
+  textarea[placeholder="Share something..."]{
+    width:100% !important;
+    min-height:140px !important;
+    height:140px !important;
+    font-size:17px !important;
+    padding:12px !important;
+    border-radius:12px !important;
+    resize:vertical !important;
+    overflow-y:auto !important;
+    box-sizing:border-box !important;
+    display:block !important;
+  }
+  .fb-upload-bar{
+    display:flex !important;
+    gap:8px !important;
+    flex-wrap:wrap !important;
+    align-items:center !important;
+    margin-top:10px !important;
+    padding-top:10px !important;
+    border-top:1px solid #eee !important;
+  }
+  .fb-upload-btn{
+    background:#e7f3ff !important;
+    padding:8px 14px !important;
+    border-radius:20px !important;
+    font-size:14px !important;
+    cursor:pointer !important;
+    display:inline-block !important;
+  }
+  .fb-preview img, .fb-preview video{
+    width:100% !important;
+    border-radius:10px !important;
+    margin-top:8px !important;
+  }
+</style>
+
+<script>
+(function(){
+  function addFacebookBox(){
+    var box = document.querySelector('textarea[placeholder="Share something..."]');
+    if(!box) return;
+    if(document.querySelector('.fb-upload-bar')) return;
+
+    // Make box big
+    box.style.minHeight = '140px';
+    box.style.height = '140px';
+
+    // Preview area
+    var preview = document.createElement('div');
+    preview.className = 'fb-preview';
+    box.after(preview);
+
+    // Bottom bar with Photo / Video / File
+    var bar = document.createElement('div');
+    bar.className = 'fb-upload-bar';
+    bar.innerHTML =
+      '<label class="fb-upload-btn">📷 Photo<input type="file" accept="image/*" style="display:none"></label>' +
+      '<label class="fb-upload-btn">🎥 Video<input type="file" accept="video/*" style="display:none"></label>' +
+      '<label class="fb-upload-btn" style="background:#f0f0f0;">📎 File<input type="file" style="display:none"></label>' +
+      '<span style="font-size:12px;color:#888;">Type + attach in same box</span>';
+
+    preview.after(bar);
+
+    // When user picks a file, show preview inside the box
+    bar.querySelectorAll('input[type="file"]').forEach(function(input){
+      input.addEventListener('change', function(){
+        var file = this.files[0];
+        if(!file) return;
+        preview.innerHTML = '';
+        if(file.type.indexOf('image/') === 0){
+          var img = document.createElement('img');
+          img.src = URL.createObjectURL(file);
+          preview.appendChild(img);
+        } else if(file.type.indexOf('video/') === 0){
+          var vid = document.createElement('video');
+          vid.src = URL.createObjectURL(file);
+          vid.controls = true;
+          preview.appendChild(vid);
+        } else {
+          preview.textContent = '📎 Selected: ' + file.name;
+        }
+        // Save file for your Publish function to use
+        window._planetSurfFile = file;
+        window._planetSurfFileName = file.name;
+      });
+    });
+  }
+  document.addEventListener('DOMContentLoaded', addFacebookBox);
+  setTimeout(addFacebookBox, 1000);
+  setTimeout(addFacebookBox, 2500);
+})();
+</script>
+<!-- ===== END SAFE FIX ===== -->
 </body></html>
