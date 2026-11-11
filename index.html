@@ -977,5 +977,27 @@ document.addEventListener('click', function(e){
   }
 });
 </script>
+  <!-- === AUTO ENTER DASHBOARD FOR FIELDMARSHAL === -->
+<script>
+setTimeout(()=>{
+  if(localStorage.getItem('admin')==='1' && localStorage.getItem('n')==='Fieldmarshal'){
+    // Hide the login card
+    document.querySelectorAll('div').forEach(d=>{
+      if(d.innerText && d.innerText.trim().startsWith('Welcome back!')){
+        d.closest('div').style.display='none';
+        // Also hide its parent card
+        let card = d.parentElement;
+        if(card) card.style.display='none';
+      }
+    });
+    // Force show dashboard elements
+    document.body.classList.add('logged-in');
+    let app = document.getElementById('app') || document.getElementById('dashboard') || document.getElementById('main') || document.getElementById('home');
+    if(app) app.style.display='block';
+    // Hide the top login box only, keep the bottom buttons
+    window.scrollTo(0,0);
+  }
+}, 1500);
+</script>
 </body>
 </html>
