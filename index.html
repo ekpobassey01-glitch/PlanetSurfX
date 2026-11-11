@@ -598,4 +598,92 @@ document.addEventListener("DOMContentLoaded", function() {
 <!--   <option value="pcm">Pidgin</option> -->
 <!-- </select> -->
 <!-- EXAMPLE of how to make words change: <span data-translate="home">Home</span> <span data-translate="post">Post</span> -->
+<!-- PlanetSurfX - MEETING BUTTON - ADD ONLY - DOES NOT TOUCH LOGIN -->
+<!-- Paste this JUST ABOVE </body>, below No.1,2,3,4 -->
+<script>
+// ===== MEETING - ONLY RUNS IF MEETING BUTTON EXISTS =====
+
+function createPlanetSurfXMeeting() {
+  let titleInput = document.querySelector("#meetingTitle");
+  let dateInput = document.querySelector("#meetingDate");
+  let timeInput = document.querySelector("#meetingTime");
+  let title = titleInput ? titleInput.value.trim() : "PlanetSurfX Meeting";
+  if (!title) title = "PlanetSurfX Meeting";
+  // Create unique room name
+  let roomId = "planetsurfx-" + Date.now().toString(36) + "-" + Math.floor(Math.random()*9999);
+  let link = window.location.origin + window.location.pathname + "?meeting=" + roomId;
+  // Save meeting info
+  let meetings = JSON.parse(localStorage.getItem("planetsurfx_meetings") || "[]");
+  meetings.push({ id: roomId, title: title, date: dateInput ? dateInput.value : "", time: timeInput ? timeInput.value : "", link: link, createdAt: Date.now() });
+  localStorage.setItem("planetsurfx_meetings", JSON.stringify(meetings));
+  // Show link
+  let linkBox = document.querySelector("#meetingLinkBox");
+  let linkText = document.querySelector("#meetingLinkText");
+  if (linkBox) linkBox.style.display = "block";
+  if (linkText) linkText.value = link;
+  // Show meeting frame
+  openMeetingFrame(roomId, title);
+  alert("Meeting created!\nTitle: " + title + "\nShare this link: " + link);
+  return link;
+}
+
+function openMeetingFrame(roomId, title) {
+  let container = document.querySelector("#meetingContainer");
+  if (!container) return;
+  container.style.display = "block";
+  // Using Jitsi Meet - free, no time limit, video/audio/screen share/chat built-in
+  // You can replace meet.jit.si with your own Jitsi server later
+  container.innerHTML = '<div style="padding:8px; font-weight:bold;">' + (title || "PlanetSurfX Meeting") + ' - <button onclick="closeMeetingFrame()" style="padding:4px 10px;">Leave Meeting</button> <button onclick="copyMeetingLink()" style="padding:4px 10px;">Copy Link</button></div>' +
+    '<iframe id="meetingFrame" src="https://meet.jit.si/' + roomId + '#config.startWithAudioMuted=true" style="width:100%; height:500px; border:0; border-radius:12px;" allow="camera; microphone; display-capture; fullscreen"></iframe>' +
+    '<p style="font-size:12px;">Inside meeting you have: Video, Audio, Screen Share, Text Chat, No Time Limit</p>';
+  container.scrollIntoView({ behavior: "smooth" });
+}
+
+function closeMeetingFrame() {
+  let container = document.querySelector("#meetingContainer");
+  if (container) { container.style.display = "none"; container.innerHTML = ""; }
+}
+function copyMeetingLink() {
+  let linkText = document.querySelector("#meetingLinkText");
+  if (linkText) {
+    linkText.select();
+    document.execCommand("copy");
+    alert("Meeting link copied! Share it with others.");
+  }
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+  let createBtn = document.querySelector("#createMeetingBtn");
+  if (!createBtn) return; // No meeting button on this page (e.g. Login) - do nothing, login safe
+  createBtn.addEventListener("click", function(e) {
+    e.preventDefault();
+    createPlanetSurfXMeeting();
+  });
+  // Auto-join if link has ?meeting=xxx
+  let params = new URLSearchParams(window.location.search);
+  let meetingId = params.get("meeting");
+  if (meetingId) {
+    openMeetingFrame(meetingId, "PlanetSurfX Meeting");
+  }
+  // Copy button
+  let copyBtn = document.querySelector("#copyMeetingLinkBtn");
+  if (copyBtn) copyBtn.addEventListener("click", copyMeetingLink);
+});
+</script>
+<!-- END PlanetSurfX MEETING - SAFE FOR LOGIN -->
+
+<!-- OPTIONAL: Add this WHERE you want Meeting button - in Home / Menu, NOT in Login page -->
+<!-- <div style="border:1px solid #ddd; padding:12px; border-radius:12px;"> -->
+<!--   <h3>📹 Meeting</h3> -->
+<!--   <input id="meetingTitle" placeholder="Meeting Title e.g. Field Marshal Talk" style="width:100%; padding:8px; margin-bottom:6px;" /> -->
+<!--   <input id="meetingDate" type="date" style="padding:8px; margin-right:6px;" /> -->
+<!--   <input id="meetingTime" type="time" style="padding:8px;" /> -->
+<!--   <br><br> -->
+<!--   <button id="createMeetingBtn" style="padding:10px 18px; background:#1a73e8; color:white; border:0; border-radius:8px;">Create Meeting</button> -->
+<!--   <div id="meetingLinkBox" style="display:none; margin-top:10px;"> -->
+<!--     <input id="meetingLinkText" readonly style="width:70%; padding:8px;" /> -->
+<!--     <button id="copyMeetingLinkBtn" style="padding:8px;">Copy Link</button> -->
+<!--   </div> -->
+<!--   <div id="meetingContainer" style="display:none; margin-top:12px;"></div> -->
+<!-- </div> -->
 </body></html>
