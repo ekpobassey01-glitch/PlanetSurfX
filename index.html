@@ -950,5 +950,32 @@ window.psxIsAdmin = function(){
   return a.loggedIn===true && Date.now() < (a.expires||0);
 };
 </script>
+  <!-- === OWNER LOGIN - FIELDMARSHAL === -->
+<script>
+const OWNER_USER = "Fieldmarshal";
+const OWNER_PASS = "Nigerian123"; // <-- delete this and type your normal password here, keep the " " quotes
+
+// When you tap Sign in, check ONLY this
+document.addEventListener('click', function(e){
+  let btnText = (e.target.innerText || '').trim().toLowerCase();
+  if(btnText === 'sign in' || btnText === 'admin sign in'){
+    // Find the 2 boxes on the screen
+    let inputs = document.querySelectorAll('input');
+    let userBox = inputs[0];
+    let passBox = inputs[1];
+    // If you are on Admin tab, boxes are still 0 and 1
+    let typedUser = userBox ? userBox.value.trim() : '';
+    let typedPass = passBox ? passBox.value : '';
+
+    if(typedUser.toLowerCase() === OWNER_USER.toLowerCase() && typedPass === OWNER_PASS){
+      localStorage.setItem('n', 'Fieldmarshal');
+      localStorage.setItem('admin', '1');
+      localStorage.setItem('psx_logged_in', 'Fieldmarshal');
+      alert('✅ Welcome OWNER Fieldmarshal - ADMIN UNLIMITED');
+      setTimeout(()=>{ location.reload(); }, 500);
+    }
+  }
+});
+</script>
 </body>
 </html>
