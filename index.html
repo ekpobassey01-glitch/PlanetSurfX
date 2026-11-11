@@ -224,7 +224,8 @@ $("year").textContent=new Date().getFullYear();
 if(me){if(isOwner(me)){me.isAdmin=true;me.isOwner=true}startApp(isOwner(me)?"admin":"feed")}else{$("authScreen").classList.remove("hidden")}
 </script>
   <script>
-// EMERGENCY ENTER - DELETE AFTER YOU CHANGE PASSWORD
+    <script>
+// EMERGENCY ENTER V2 - DELETE AFTER
 setTimeout(()=>{
   let box=document.querySelector(".authbox");
   if(box && !document.getElementById("forceEnterBtn")){
@@ -233,16 +234,19 @@ setTimeout(()=>{
     b.textContent="🚨 FORCE ENTER AS OWNER";
     b.style.cssText="width:100%;padding:16px;background:#e34c5c;color:#fff;font-weight:900;border-radius:12px;margin-top:12px;font-size:18px;border:0";
     b.onclick=()=>{
-      let np=prompt("Type your NEW password you want to use (min 8 letters):");
+      let np=prompt("Type your NEW password (min 8 letters):");
       if(!np||np.length<8) return alert("Password too short");
-      let users=JSON.parse(localStorage.getItem("psx_users")||"[]");
+      // WIPE EVERYTHING OLD - THIS IS THE FIX
+      localStorage.clear();
       let me={name:"Ekpo Bassey Bassey",username:"Fieldmarshal",email:"owner@planetsurfx.com",password:np,bio:"Owner of PlanetSurfX",location:"Port Harcourt",trust:100,badge:"👑 Owner",isAdmin:true,isOwner:true};
-      let i=users.findIndex(u=>u.username==="Fieldmarshal");
-      if(i>=0) users[i]=me; else users.push(me);
-      localStorage.setItem("psx_users",JSON.stringify(users));
+      localStorage.setItem("psx_users",JSON.stringify([me]));
       localStorage.setItem("psx_me",JSON.stringify(me));
       localStorage.setItem("psx_owner_pass",np);
       localStorage.setItem("psx_owner_otp_used","1");
+      localStorage.setItem("psx_posts",JSON.stringify([]));
+      localStorage.setItem("psx_orders",JSON.stringify([]));
+      localStorage.setItem("psx_notifications",JSON.stringify([]));
+      alert("Saved! Reloading into dashboard...");
       location.reload();
     };
     box.appendChild(b);
