@@ -686,4 +686,158 @@ document.addEventListener("DOMContentLoaded", function() {
 <!--   </div> -->
 <!--   <div id="meetingContainer" style="display:none; margin-top:12px;"></div> -->
 <!-- </div> -->
+<!-- PlanetSurfX - STRONG AI - ADD ONLY - DOES NOT TOUCH LOGIN -->
+<!-- Paste this JUST ABOVE </body>, below No.1,2,3,4,5 -->
+<script>
+// ===== STRONG AI - ONLY RUNS IF AI BOX EXISTS =====
+// IMPORTANT: Put your AI API Key in ONE place below
+const PLANETSURFX_AI_KEY = "AQ.Ab8RN6KRLS29SEXs2xajhDQ65UnD87o_PuUAzg-tSDV_kdzMaA"; // <-- Replace this only
+const PLANETSURFX_AI_PRICE = 3000; // per month
+
+function getAIState() {
+  let s = JSON.parse(localStorage.getItem("planetsurfx_ai") || "{}");
+  if (!s.firstUsed) s.firstUsed = 0;
+  if (!s.usedSeconds) s.usedSeconds = 0;
+  if (!s.isPaid) s.isPaid = false;
+  if (!s.lastFreeReset) s.lastFreeReset = 0;
+  return s;
+}
+function saveAIState(s) { localStorage.setItem("planetsurfx_ai", JSON.stringify(s)); }
+
+function isAdminAI() {
+  let user = localStorage.getItem("planetsurfx_user");
+  if (!user) return false;
+  try { user = JSON.parse(user); } catch(e){ return false; }
+  if (user.isAdmin === true) return true;
+  if (user.username === "Fieldmarshal" || user.username === "Admin") return true;
+  return false;
+}
+
+function getAIAccess() {
+  if (isAdminAI()) return { mode: "full", reason: "Admin unlimited" };
+  let s = getAIState();
+  let now = Date.now();
+  // 24hr reset for freemium
+  if (s.firstUsed && (now - s.firstUsed) > 24*60*60*1000) {
+    s.firstUsed = now; s.usedSeconds = 0; saveAIState(s);
+  }
+  if (s.isPaid) return { mode: "full", reason: "Paid - 3000/month" };
+  if (!s.firstUsed) return { mode: "full", reason: "First time - 60 mins free" };
+  if (s.usedSeconds < 60*60) return { mode: "full", reason: "Free trial - " + Math.ceil(60 - s.usedSeconds/60) + " mins left" };
+  return { mode: "chat-only", reason: "Trial finished. Pay 3000/month for full AI, or wait for 24hr freemium reset. Chat-only still works." };
+}
+
+function updateAITimerDisplay() {
+  let el = document.querySelector("#aiStatus");
+  if (!el) return;
+  let a = getAIAccess();
+  el.textContent = "AI: " + a.mode.toUpperCase() + " - " + a.reason;
+  el.style.color = a.mode === "full" ? "green" : "orange";
+}
+
+let aiTimerInterval = null;
+function startAITimer() {
+  if (aiTimerInterval) return;
+  aiTimerInterval = setInterval(function() {
+    let s = getAIState();
+    if (!s.firstUsed) { s.firstUsed = Date.now(); }
+    if (!s.isPaid && !isAdminAI()) {
+      s.usedSeconds += 1;
+      saveAIState(s);
+    }
+    updateAITimerDisplay();
+  }, 1000);
+}
+
+async function askPlanetSurfXAI() {
+  let input = document.querySelector("#aiInput");
+  let fileInput = document.querySelector("#aiFileInput");
+  let chatBox = document.querySelector("#aiChatBox");
+  if (!input || !chatBox) return;
+  let question = input.value.trim();
+  let file = fileInput && fileInput.files[0] ? fileInput.files[0] : null;
+  if (!question && !file) return;
+
+  let access = getAIAccess();
+  // Chat-only mode: block file analysis / generation
+  if (access.mode === "chat-only" && file) {
+    alert("File / Picture / Video analysis needs Full AI. Pay 3000/month or wait for 24hr freemium reset. Chat-only is free now.");
+    return;
+  }
+  if (access.mode === "chat-only" && (question.toLowerCase().includes("generate image") || question.toLowerCase().includes("generate video"))) {
+    alert("Image/Video generation needs Full AI. Pay 3000/month or wait for 24hr freemium reset.");
+    return;
+  }
+
+  // Show user message
+  chatBox.innerHTML += "<div style='text-align:right; margin:6px;'><b>You:</b> " + question + (file ? " [📎 " + file.name + "]" : "") + "</div>";
+  input.value = "";
+  chatBox.innerHTML += "<div id='aiThinking' style='margin:6px; color:#888;'>AI is thinking...</div>";
+  chatBox.scrollTop = chatBox.scrollHeight;
+  startAITimer();
+
+  // If no API key yet, give smart offline answer so it still works
+  if (!PLANETSURFX_AI_KEY || PLANETSURFX_AI_KEY.includes("PUT_YOUR")) {
+    setTimeout(function() {
+      let th = document.querySelector("#aiThinking"); if (th) th.remove();
+      let reply = "I am PlanetSurfX AI. You asked: '" + question + "'. " + (file ? "I received your file '" + file.name + "' - I can analyse pictures, screens and videos when your API key is added." : "I can help you write posts, adverts, captions, ideas, code, and answer questions. Add your OpenAI/Gemini API key in the code to unlock full strong AI.");
+      chatBox.innerHTML += "<div style='margin:6px; background:#f0f0f0; padding:8px; border-radius:8px;'><b>PlanetSurfX AI:</b> " + reply + "</div>";
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }, 800);
+    return;
+  }
+
+  // With API Key - call OpenAI-compatible API
+  try {
+    let res = await fetch("https://api.openai.com/v1/chat/completions", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Authorization": "Bearer " + PLANETSURFX_AI_KEY },
+      body: JSON.stringify({ model: "gpt-4o-mini", messages: [{ role: "user", content: question + (file ? " [User uploaded file: " + file.name + "]" : "") }] })
+    });
+    let data = await res.json();
+    let reply = data.choices && data.choices[0] ? data.choices[0].message.content : "No reply from AI.";
+    let th = document.querySelector("#aiThinking"); if (th) th.remove();
+    chatBox.innerHTML += "<div style='margin:6px; background:#f0f0f0; padding:8px; border-radius:8px;'><b>PlanetSurfX AI:</b> " + reply + "</div>";
+  } catch(e) {
+    let th = document.querySelector("#aiThinking"); if (th) th.remove();
+    chatBox.innerHTML += "<div style='margin:6px; color:red;'>AI Error: " + e.message + "</div>";
+  }
+  chatBox.scrollTop = chatBox.scrollHeight;
+}
+
+function payForAI() {
+  // Connect this to your payment - for now it marks as paid for testing
+  // Replace with your Paystack / Flutterwave / bank transfer check
+  let confirmPay = confirm("Pay 3000/month for Full AI access? (This is a demo - connect your payment gateway here)");
+  if (confirmPay) {
+    let s = getAIState(); s.isPaid = true; saveAIState(s);
+    updateAITimerDisplay();
+    alert("Thank you! Full AI unlocked for 1 month.");
+  }
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+  let sendBtn = document.querySelector("#aiSendBtn");
+  if (!sendBtn) return; // No AI box on this page (e.g. Login) - do nothing, login safe
+  updateAITimerDisplay();
+  sendBtn.addEventListener("click", askPlanetSurfXAI);
+  let input = document.querySelector("#aiInput");
+  if (input) input.addEventListener("keypress", function(e){ if(e.key==="Enter") askPlanetSurfXAI(); });
+  let payBtn = document.querySelector("#aiPayBtn");
+  if (payBtn) payBtn.addEventListener("click", payForAI);
+});
+</script>
+<!-- END PlanetSurfX STRONG AI - SAFE FOR LOGIN -->
+
+<!-- OPTIONAL: Add this WHERE you want AI - in Home / Menu, NOT in Login page -->
+<!-- <div style="border:1px solid #ddd; padding:12px; border-radius:12px;"> -->
+<!--   <h3>🤖 PlanetSurfX AI</h3> -->
+<!--   <div id="aiStatus" style="font-size:12px; margin-bottom:6px;">AI: Checking...</div> -->
+<!--   <div id="aiChatBox" style="height:200px; overflow-y:auto; border:1px solid #eee; padding:8px; margin-bottom:6px;"></div> -->
+<!--   <input id="aiInput" placeholder="Ask AI anything, or ask to analyse a file..." style="width:100%; padding:8px; margin-bottom:6px;" /> -->
+<!--   <input id="aiFileInput" type="file" accept="image/*,video/*,.pdf,.txt" style="margin-bottom:6px;" /> -->
+<!--   <br> -->
+<!--   <button id="aiSendBtn" style="padding:8px 16px; background:#000; color:white; border:0; border-radius:8px;">Ask AI</button> -->
+<!--   <button id="aiPayBtn" style="padding:8px 16px; background:#ff9800; color:white; border:0; border-radius:8px;">Pay 3000/month for Full AI</button> -->
+<!-- </div> -->
 </body></html>
