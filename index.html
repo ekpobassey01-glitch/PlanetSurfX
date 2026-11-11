@@ -1,19 +1,19 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>PlanetSurfX — Connect Beyond Borders</title>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PlanetSurfX — Connect Beyond Borders</title>
 <style>
 :root{--blue:#0759c7;--gold:#ffbd39;--bg:#f1f6fc;--muted:#718096;--line:#e4ebf4;--green:#12a875;--red:#e34c5c}
-*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:var(--bg);color:#172b4d}
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:linear-gradient(180deg,#0645a5,#087fd2 30%,#00b9d8 60%,#00d4a6);color:#172b4d}
 button,input,textarea,select{font:inherit}button{cursor:pointer;border:0}
 .topbar{background:linear-gradient(110deg,#0645a5,#087fd2,#00b9d8);color:#fff;padding:13px 4%;display:flex;justify-content:space-between;position:sticky;top:0;z-index:20}
-.brand{font-size:23px;font-weight:900}.brand span{color:#ffe18a}
-.top-actions button{background:#ffffff22;color:#fff;padding:9px 12px;border-radius:20px}
+.brand{font-size:23px;font-weight:900}.brand span{color:#ffe18a}.top-actions button{background:#ffffff22;color:#fff;padding:9px 12px;border-radius:20px}
 .shell{max-width:1400px;margin:auto;padding:18px;display:grid;grid-template-columns:220px minmax(0,650px) 260px;gap:18px}
 .panel,.card{background:#fff;border:1px solid var(--line);border-radius:16px}
-.sidebar{padding:12px;height:max-content;position:sticky;top:76px}
+.sidebar{padding:12px;height:max-content;position:sticky;top:76px;background:#fff}
 .navbtn{display:flex;width:100%;gap:12px;padding:13px 12px;background:transparent;color:#334766;text-align:left;border-radius:11px;font-weight:700}
 .navbtn.active,.navbtn:hover{background:#eaf4ff;color:var(--blue)}
-.main{min-width:0}.rightcol{display:flex;flex-direction:column;gap:14px}
-.card{padding:16px;margin-bottom:14px}h2,h3{margin:0 0 12px}.muted{color:var(--muted);font-size:13px}
+.main{min-width:0}.rightcol{display:flex;flex-direction:column;gap:14px}.card{padding:16px;margin-bottom:14px}
+h2,h3{margin:0 0 12px}.muted{color:var(--muted);font-size:13px}
 input,textarea,select{width:100%;padding:12px;border:1px solid #dce5f0;border-radius:10px;margin:5px 0 10px}
 textarea{min-height:85px}.btn{padding:11px 16px;border-radius:10px;background:var(--blue);color:#fff;font-weight:700}
 .btn.secondary{background:#eaf3ff;color:var(--blue)}.btn.gold{background:var(--gold);color:#453000}.btn.green{background:var(--green);color:#fff}.btn.red{background:#fff0f1;color:var(--red)}.btn.small{padding:8px 11px;font-size:13px}.btn.full{width:100%}
@@ -27,84 +27,128 @@ textarea{min-height:85px}.btn{padding:11px 16px;border-radius:10px;background:va
 .listitem{padding:12px 0;border-bottom:1px solid var(--line)}.badge{font-size:11px;background:#e9f5ff;color:#0862b9;padding:4px 8px;border-radius:20px}
 .commentbox{margin-top:12px;padding-top:10px;border-top:1px solid var(--line)}.comment{padding:8px 10px;background:#f4f7fb;border-radius:10px;margin:6px 0;font-size:13px}.commentform{display:flex;gap:7px}.commentform input{margin:0}
 .empty{text-align:center;color:var(--muted);padding:24px}.reel{border-radius:14px;background:#142b48;color:#fff;padding:18px;margin:10px 0}.reel a{color:#9ee8ff}
-.mobile-nav{display:none}.notice{padding:11px;border-radius:10px;margin:10px 0;font-size:13px;background:#e9f7ff;color:#0759a8}.notice.error{background:#fff0f1;color:#b52d40}.notice.success{background:#e8fff5;color:#08784f}
+.notice{padding:11px;border-radius:10px;margin:10px 0;font-size:13px;background:#e9f7ff;color:#0759a8}.notice.error{background:#fff0f1;color:#b52d40}.notice.success{background:#e8fff5;color:#08784f}
 .profile-cover{height:100px;border-radius:12px;background:linear-gradient(110deg,#0645a5,#00bfd1);margin-bottom:-28px}.profile-avatar{width:66px;height:66px;border:4px solid #fff;font-size:23px;margin-left:14px}
-.footer{text-align:center;color:#91a0b3;font-size:12px;padding:18px}.mobile-chips{display:none;gap:8px;overflow-x:auto}.mobile-chips button{background:#fff;border:1px solid var(--line);padding:9px 14px;border-radius:20px;font-weight:700}
-.dash-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.dash-grid button{background:#f0f5fb;border:1px solid var(--line);border-radius:14px;padding:16px 8px;font-weight:700}.dash-grid button span{font-size:26px;display:block}
+.footer{text-align:center;color:#91a0b3;font-size:12px;padding:18px}.dash-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.dash-grid button{background:#f0f5fb;border:1px solid var(--line);border-radius:14px;padding:16px 8px;font-weight:700}.dash-grid button span{font-size:26px;display:block}
 .emoji-bar{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0}.emoji-bar button{background:#f0f5fb;padding:8px 10px;border-radius:10px;font-size:18px}
 .paybox{background:#fff7e6;border:1px solid #ffe18a;border-radius:14px;padding:14px}.lock{font-size:12px;color:#08784f;background:#e8fff5;padding:4px 8px;border-radius:20px}.coin{font-size:12px;color:#453000;background:#fff7e6;padding:4px 8px;border-radius:20px;font-weight:700}.livebox{background:#1a0f2e;color:#fff;border-radius:14px;padding:16px}
 .ownerbar{background:#fff7e6;border:1px solid #ffbd39;padding:10px 14px;border-radius:12px;margin-bottom:12px;font-weight:700}
-.welcomebanner{background:linear-gradient(110deg,#0645a5,#00b9d8);color:#fff;border-radius:16px;padding:18px;margin-bottom:14px}
-@media(max-width:700px){.shell{display:block;padding:10px 10px 95px}.sidebar{display:block;position:static;overflow:auto}.sidebar .navbtn{display:inline-flex;width:auto}.sidebar hr,.sidebar .muted,.sidebar p{display:none}.mobile-chips{display:flex}.mobile-nav{display:flex;position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--line);z-index:30;overflow-x:auto;padding:7px 2px}.mobile-nav button{background:transparent;color:#60748d;font-size:10px;display:flex;flex-direction:column;align-items:center;gap:3px;min-width:62px}.mobile-nav button span{font-size:20px}.mobile-nav button.active{color:var(--blue)}.card{padding:13px}.rightcol{margin-top:10px}}
+.welcomebanner{background:linear-gradient(110deg,#1a0f2e,#0645a5);color:#fff;border-radius:16px;padding:18px;margin-bottom:14px;border:2px solid #ffbd39}
+.rankBadge{display:inline-block;padding:2px 8px;border-radius:20px;background:#fff3cd;border:1px solid #ffbd39;font-size:11px;font-weight:900;margin-left:4px}
+.coinBox{background:linear-gradient(90deg,#ffbd39,#ff8a00);color:#111;padding:12px;border-radius:14px;font-weight:900;margin:10px 0;text-align:center}
+.orderBox{background:#fff;border:2px solid #00c853;border-radius:14px;padding:12px;margin:10px 0}.orderBtn{width:100%;padding:12px;background:#00c853;color:#fff;border:0;border-radius:12px;font-weight:900;margin-top:8px}
+.waBtn{width:100%;padding:12px;background:#25D366;color:#fff;border:0;border-radius:12px;font-weight:900;margin-top:8px;display:block;text-align:center;text-decoration:none}
+.pkgBtn{padding:8px 10px;border:2px solid #ddd;border-radius:10px;background:#f7f7f7;font-weight:800;margin:3px}.pkgBtn.active{background:#ffbd39;border-color:#ff8a00}
+@media(max-width:700px){.shell{display:block;padding:10px 10px 95px}.sidebar{position:static}.card{padding:13px}}
 </style></head><body>
 <header class="topbar"><div class="brand">Planet<span>Surf</span>X 🌍</div><div class="top-actions"><span id="topUser"></span><button id="logoutBtn" class="hidden" onclick="logout()">Log out</button></div></header>
+
 <section id="authScreen" class="authwrap"><div class="authbox"><div style="text-align:center"><div style="font-size:34px;font-weight:900;color:var(--blue)">PlanetSurfX 🌍</div><h2>Connect Beyond Borders</h2><p class="muted">Meet people. Share ideas. Discover your world.</p></div>
 <div class="tabs"><button id="tabLogin" class="active" onclick="showAuth('login')">Sign in</button><button id="tabRegister" onclick="showAuth('register')">Join</button><button id="tabAdmin" onclick="showAuth('admin')">Admin</button></div><div id="authMessage"></div>
-<form id="loginForm"><h3>Welcome back!</h3><label>Username</label><input id="loginUsername" required placeholder="e.g Fieldmarshal"><label>Password</label><input id="loginPassword" type="password" required><button class="btn full">Sign in</button></form>
+<form id="loginForm"><h3>Welcome back!</h3><label>Username</label><input id="loginUsername" required placeholder="e.g Fieldmarshal"><label>Password / One-Time Password</label><input id="loginPassword" type="password" required placeholder="Password or OTP like PSX-4821"><button class="btn full">Sign in</button><p class="muted" style="text-align:center">Owner: First time use OLD password. After that, use OTP or your NEW dashboard password.</p></form>
 <form id="registerForm" class="hidden"><h3>Create account</h3><label>Full name</label><input id="regFullName" required><label>Username</label><input id="regUsername" required><label>Email</label><input id="regEmail" type="email"><label>Password</label><input id="regPassword" type="password" required minlength="8"><button class="btn full">Create account</button></form>
-<form id="adminForm" class="hidden"><h3>Admin sign in</h3><p class="muted">Owner is auto-admin. Just sign in normally as Fieldmarshal.</p><label>Username</label><input id="adminUsername" required><label>Password</label><input id="adminPassword" type="password" required><button class="btn full">Admin sign in</button><button type="button" class="btn gold full" style="margin-top:8px" onclick="unlockOwnerAdmin()">👑 I am the Owner - Unlock Admin</button></form>
+<form id="adminForm" class="hidden"><h3>Admin sign in</h3><p class="muted">Owner is auto-admin. Sign in as Fieldmarshal.</p><label>Username</label><input id="adminUsername" required><label>Password / OTP</label><input id="adminPassword" type="password" required><button class="btn full">Admin sign in</button><button type="button" class="btn gold full" style="margin-top:8px" onclick="unlockOwnerAdmin()">👑 I am the Owner - Unlock Admin</button></form>
 </div></section>
-<div id="appScreen" class="hidden"><div class="mobile-chips" id="mobileChips"></div><div class="shell"><aside class="sidebar panel"><div class="navlist"></div></aside>
+
+<div id="appScreen" class="hidden"><div class="shell"><aside class="sidebar panel"><div class="navlist"></div></aside>
 <main class="main">
 <div id="ownerBar" class="ownerbar hidden">👑 OWNER: Ekpo Bassey Bassey - Full Authority | <button class="btn small gold" onclick="openPage('admin')">Open Admin Dashboard</button></div>
-<section id="page-dashboard" class="page hidden"><div class="welcomebanner"><h2 style="margin:0">Welcome to PlanetSurfX 🌍</h2><p>Post today, Earn Coins, Get FREE Advert. More inviting than Facebook - you earn here!</p><div class="row"><button class="btn gold" onclick="openPage('feed')">+ Post & Earn +10</button><button class="btn green" onclick="openPage('rooms')">💬 Join Chat Rooms</button><button class="btn" style="background:#fff;color:#0759c7" onclick="dailyCheckin()">🎁 Daily +20</button></div></div>
-<div class="card"><h2>📊 Dashboard</h2><div class="dash-grid" id="dashGrid"></div></div><div class="card"><h3>🪙 My Coins - NOT Cash</h3><div id="dashInfo"></div><p class="muted">100 coins = 1 FREE advert (>30 secs). Coins are NOT cash.</p><button class="btn gold" onclick="redeemCoins()">Redeem 100 Coins for FREE Advert</button> <button class="btn secondary" onclick="dailyCheckin()">🎁 Daily Check-in +20 Coins</button></div><div class="card"><h3>💬 Chat Rooms - Join / Exit Anytime</h3><p class="muted">Romance • Health • Religion • Sports • Politics • Environment • Movies • Culture • Foods • Fashion • Education</p><button class="btn" onclick="openPage('rooms')">💬 Open All Rooms</button></div></section>
+
+<section id="page-dashboard" class="page hidden"><div class="welcomebanner"><h2 style="margin:0">Welcome to PlanetSurfX 🌍</h2><p>Post today, Earn Coins, Get FREE Advert. You earn here!</p><div class="row"><button class="btn gold" onclick="openPage('feed')">+ Post & Earn +10</button><button class="btn green" onclick="openPage('rooms')">💬 Join Chat Rooms</button><button class="btn" style="background:#fff;color:#0759c7" onclick="dailyCheckin()">🎁 Daily +20</button></div></div>
+<div class="card"><h2>📊 Dashboard</h2><div class="dash-grid" id="dashGrid"></div></div>
+<div class="card"><h3>🪙 My Coins - NOT Cash</h3><div id="dashInfo"></div><p class="muted">100 coins = 1 FREE advert (>30 secs). Coins are NOT cash.</p><button class="btn gold" onclick="redeemCoins()">Redeem 100 Coins for FREE Advert</button> <button class="btn secondary" onclick="dailyCheckin()">🎁 Daily Check-in +20 Coins</button></div>
+<div class="card"><h3>💬 Chat Rooms</h3><p class="muted">Romance • Health • Religion • Sports • Politics • Environment • Movies • Culture • Foods • Fashion • Education</p><button class="btn" onclick="openPage('rooms')">💬 Open All Rooms</button></div></section>
+
 <section id="page-feed" class="page"><div class="card"><h2>Stories</h2><div id="storyRail" class="storyrail">Loading…</div></div>
 <div class="card"><h2>What's happening?</h2><textarea id="postContent" placeholder="Share something…"></textarea><div class="emoji-bar" id="emojiPost"></div><div class="row between"><span class="muted">+10 coins per post</span><button class="btn" onclick="createPost()">Publish</button></div></div>
 <div class="card"><h3>📍 Near Me</h3><select id="nearFilter"><option value="all">All</option><option>Port Harcourt</option><option>Lagos</option><option>Abuja</option><option>Uyo</option><option>Calabar</option><option>Cameroon</option></select><button class="btn small" onclick="applyNear()">Show Near Me</button><p class="muted" id="nearInfo">Showing all.</p></div>
 <div class="row between"><h2>World Feed</h2><button class="btn small secondary" onclick="loadFeed()">Refresh</button></div><div id="feedList">Loading…</div></section>
-<section id="page-rooms" class="page hidden"><div class="card"><h2>💬 Chat Rooms</h2><p class="muted">Join any room. Exit anytime. No approval needed.</p><p><b>You are in:</b> <span id="myRooms">None</span></p><div id="roomList"></div></div><div id="roomChatBox" class="card hidden"><div class="row between"><h3 id="roomTitle">Room</h3><button class="btn red small" onclick="exitRoom()">🚪 Exit Room</button></div><p id="roomMembers" class="muted"></p><div id="roomMessages" style="max-height:320px;overflow:auto;background:#f4f7fb;border-radius:12px;padding:10px;margin:10px 0"></div><div style="display:flex;gap:7px"><input id="roomInput" placeholder="Say something..." style="margin:0"><button class="btn" onclick="sendRoomMsg()">Send</button></div><div class="emoji-bar" id="roomEmojis"></div><p class="muted">Rules: Respect • No nude • No scam • No hate. Owner can delete / ban.</p></div></section>
+
+<section id="page-rooms" class="page hidden"><div class="card"><h2>💬 Chat Rooms</h2><p class="muted">Join any room. Exit anytime.</p><p><b>You are in:</b> <span id="myRooms">None</span></p><div id="roomList"></div></div><div id="roomChatBox" class="card hidden"><div class="row between"><h3 id="roomTitle">Room</h3><button class="btn red small" onclick="exitRoom()">🚪 Exit Room</button></div><p id="roomMembers" class="muted"></p><div id="roomMessages" style="max-height:320px;overflow:auto;background:#f4f7fb;border-radius:12px;padding:10px;margin:10px 0"></div><div style="display:flex;gap:7px"><input id="roomInput" placeholder="Say something..." style="margin:0"><button class="btn" onclick="sendRoomMsg()">Send</button></div><div class="emoji-bar" id="roomEmojis"></div><p class="muted">Rules: Respect • No nude • No scam • No hate.</p></div></section>
+
 <section id="page-friends" class="page hidden"><div class="card"><h2>Friends</h2><button class="btn" onclick="loadFriends()">Refresh</button></div><div class="card"><h3>Requests</h3><div id="friendRequests"></div></div><div class="card"><h3>Your friends</h3><div id="friendList"></div></div><div class="card"><h3>Send request</h3><input id="friendUserId" placeholder="User ID"><button class="btn" onclick="sendFriendRequest()">Send</button></div></section>
 <section id="page-groups" class="page hidden"><div class="card"><h2>Groups</h2><input id="groupName" placeholder="Group name"><textarea id="groupDescription"></textarea><button class="btn" onclick="createGroup()">Create group</button></div><div class="card"><h3>Discover</h3><div id="groupList"></div></div></section>
 <section id="page-stories" class="page hidden"><div class="card"><h2>Stories</h2><textarea id="storyContent"></textarea><button class="btn" onclick="createStory()">Share story</button></div><div class="card"><h3>Recent</h3><div id="storyList"></div></div></section>
 <section id="page-reels" class="page hidden"><div class="card"><h2>Reels</h2><p class="muted">0-30s FREE. >30s = ₦2,000 OR 100 coins OR Admin free.</p><input id="reelCaption" placeholder="Caption"><input id="reelUrl" placeholder="Video URL"><input id="reelSeconds" type="number" placeholder="Seconds"><input id="reelFile" type="file" accept="video/*" onchange="checkVideoLength(this)"><div id="reelLengthInfo" class="notice">Enter seconds.</div><button class="btn" onclick="createReel()">Share reel</button><button class="btn gold full" style="margin-top:8px" onclick="openPage('subscribe')">💰 Pay / Use Coins</button></div><div id="reelList"></div></section>
 <section id="page-live" class="page hidden"><div class="card livebox"><h2>🎥 PlanetSurf LIVE</h2><p>Go Live. Gifts = coins.</p><input id="liveTitle" placeholder="Live title" style="background:#fff"><button class="btn gold" onclick="goLive()">🔴 Go Live</button><div id="liveArea"></div></div><div class="card"><h3>Live Now</h3><div id="liveList"></div></div></section>
-<section id="page-hustle" class="page hidden"><div class="card"><h2>💼 Hustle / Jobs</h2><input id="hustleTitle" placeholder="e.g I need plumber in PH / I sell akara"><textarea id="hustleDesc"></textarea><input id="hustlePrice" placeholder="Price"><select id="hustleLoc"><option>Port Harcourt</option><option>Lagos</option><option>Abuja</option><option>Uyo</option><option>Calabar</option><option>Cameroon</option></select><button class="btn green" onclick="createHustle()">Post Hustle +10 coins</button></div><div class="card"><h3>Latest Hustles</h3><div id="hustleList"></div></div></section>
+<section id="page-hustle" class="page hidden"><div class="card"><h2>💼 Hustle / Jobs</h2><input id="hustleTitle" placeholder="e.g I need plumber in PH"><textarea id="hustleDesc"></textarea><input id="hustlePrice" placeholder="Price"><select id="hustleLoc"><option>Port Harcourt</option><option>Lagos</option><option>Abuja</option><option>Uyo</option><option>Calabar</option><option>Cameroon</option></select><button class="btn green" onclick="createHustle()">Post Hustle +10 coins</button></div><div class="card"><h3>Latest Hustles</h3><div id="hustleList"></div></div></section>
 <section id="page-learn" class="page hidden"><div class="card"><h2>🎓 Learn & Earn</h2><p class="muted">Finish lesson = +30 coins + badge.</p><div id="lessonList"></div></div></section>
-<section id="page-referral" class="page hidden"><div class="card"><h2>🎁 Referral</h2><p class="muted">Invite friend, both get +50 coins. Coins = free adverts. No cash.</p><div class="paybox"><p>Your link:</p><p id="referralLink" style="font-weight:700;word-break:break-all"></p><button class="btn" onclick="copyReferral()">Copy Link</button> <button class="btn green" onclick="inviteWhatsApp()">💚 Invite on WhatsApp</button></div><p>Invites: <b id="referralCount">0</b> • Coins from invites: <b id="referralCoins">0</b></p><button class="btn gold" onclick="claimReferral()">Claim +50 Coins</button></div></section>
-<section id="page-games" class="page hidden"><div class="card"><h2>🎮 Games & Challenge</h2><p>Posts this week: <b id="challengePosts">0</b> / 5 <button class="btn small gold" onclick="claimChallenge()">Claim +100 Coins</button></p><div style="background:#eef2f7;height:12px;border-radius:20px;overflow:hidden"><div id="challengeFill" style="background:#f59e0b;height:12px;width:0%"></div></div></div><div class="card"><h3>🗳️ Poll</h3><p><b>Who makes best Jollof?</b></p><button class="btn secondary" onclick="votePoll('Nigeria')">🇳🇬 Nigeria</button> <button class="btn secondary" onclick="votePoll('Ghana')">🇬🇭 Ghana</button> <button class="btn secondary" onclick="votePoll('Cameroon')">🇨🇲 Cameroon</button><div id="pollResult" style="margin-top:10px"></div></div><div class="card"><h3>🎲 Quiz +10 coins</h3><p>What is PlanetSurfX for?</p><button class="btn" onclick="quizAnswer(true)">Connect Beyond Borders 🌍</button> <button class="btn secondary" onclick="quizAnswer(false)">Only for PH</button><div id="quizResult"></div></div></section>
+<section id="page-referral" class="page hidden"><div class="card"><h2>🎁 Referral</h2><p class="muted">Invite friend, both get +50 coins.</p><div class="paybox"><p>Your link:</p><p id="referralLink" style="font-weight:700;word-break:break-all"></p><button class="btn" onclick="copyReferral()">Copy Link</button> <button class="btn green" onclick="inviteWhatsApp()">💚 Invite on WhatsApp</button></div><p>Invites: <b id="referralCount">0</b> • Coins: <b id="referralCoins">0</b></p><button class="btn gold" onclick="claimReferral()">Claim +50 Coins</button></div></section>
+<section id="page-games" class="page hidden"><div class="card"><h2>🎮 Games</h2><p>Posts this week: <b id="challengePosts">0</b> / 5 <button class="btn small gold" onclick="claimChallenge()">Claim +100 Coins</button></p><div style="background:#eef2f7;height:12px;border-radius:20px;overflow:hidden"><div id="challengeFill" style="background:#f59e0b;height:12px;width:0%"></div></div></div><div class="card"><h3>🗳️ Poll</h3><p><b>Who makes best Jollof?</b></p><button class="btn secondary" onclick="votePoll('Nigeria')">🇳🇬 Nigeria</button> <button class="btn secondary" onclick="votePoll('Ghana')">🇬🇭 Ghana</button> <button class="btn secondary" onclick="votePoll('Cameroon')">🇨🇲 Cameroon</button><div id="pollResult" style="margin-top:10px"></div></div><div class="card"><h3>🎲 Quiz +10 coins</h3><p>What is PlanetSurfX for?</p><button class="btn" onclick="quizAnswer(true)">Connect Beyond Borders 🌍</button> <button class="btn secondary" onclick="quizAnswer(false)">Only for PH</button><div id="quizResult"></div></div></section>
 <section id="page-subscribe" class="page hidden"><div class="card"><h2>💰 Subscription - ₦2,000</h2><p class="muted">0-30s FREE. >30s = ₦2,000 OR 100 coins. Admin FREE.</p><div class="paybox"><h3>Pay to Opay</h3><p style="font-size:22px"><b>Opay: 8147699555</b> <button class="btn small" onclick="copyOpay()">Copy</button></p><p>Amount: <b>₦2,000</b></p><button class="btn green" onclick="sendProofWhatsApp()">💚 Send Proof on WhatsApp - 08147699555</button> <button class="btn gold" onclick="redeemCoins()">🪙 Use 100 Coins Instead</button></div></div><div class="card"><h3>🔑 Enter PIN</h3><input id="subPinInput" placeholder="PIN e.g PSX-1234"><button class="btn" onclick="unlockWithPin()">Unlock with PIN</button><div id="subStatus"></div></div><div class="card"><h3>📢 Create Advert</h3><input id="adTitle" placeholder="Advert title"><textarea id="adDesc"></textarea><input id="adSeconds" type="number" placeholder="Seconds"><input id="adUrl" placeholder="Video link"><button class="btn gold full" onclick="createAdvert()">Publish Advert</button><div id="myAds"></div></div></section>
-<section id="page-chat" class="page hidden"><div class="card"><h2>Messages <span class="lock">🔒 End-to-End Encrypted</span></h2><p class="muted">Only you + other person can read. Not even Admin.</p><input id="chatUserId" placeholder="Other user ID"><button class="btn secondary" onclick="loadMessages()">Load conversation</button></div><div class="card"><div id="messageList"><div class="empty">Enter user ID.</div></div><textarea id="messageText"></textarea><div class="emoji-bar" id="emojiChat"></div><div class="row"><button class="btn" onclick="sendMessage()">Send</button><button class="btn secondary" id="voiceBtn" onclick="toggleVoice()">🎤 Voice Note</button><span id="voiceStatus" class="muted"></span></div></div></section>
-<section id="page-market" class="page hidden"><div class="card"><h2>Marketplace</h2><p class="muted">Check Trust Score before you buy.</p><input id="listingTitle" placeholder="Title"><textarea id="listingDescription"></textarea><input id="listingPrice" placeholder="Price"><button class="btn" onclick="createListing()">Publish listing</button></div><div class="card"><h3>Listings</h3><div id="marketList"></div></div></section>
+<section id="page-chat" class="page hidden"><div class="card"><h2>Messages <span class="lock">🔒 End-to-End Encrypted</span></h2><input id="chatUserId" placeholder="Other user ID"><button class="btn secondary" onclick="loadMessages()">Load conversation</button></div><div class="card"><div id="messageList"><div class="empty">Enter user ID.</div></div><textarea id="messageText"></textarea><div class="emoji-bar" id="emojiChat"></div><div class="row"><button class="btn" onclick="sendMessage()">Send</button></div></div></section>
+<section id="page-market" class="page hidden"><div class="card"><h2>Marketplace</h2><input id="listingTitle" placeholder="Title"><textarea id="listingDescription"></textarea><input id="listingPrice" placeholder="Price"><button class="btn" onclick="createListing()">Publish listing</button></div><div class="card"><h3>Listings</h3><div id="marketList"></div></div></section>
 <section id="page-alerts" class="page hidden"><div class="card"><h2>Notifications</h2><button class="btn small secondary" onclick="readNotifications()">Mark all read</button><div id="notificationList"></div></div></section>
-<section id="page-profile" class="page hidden"><div class="card"><div class="profile-cover"></div><div id="profileAvatar" class="avatar profile-avatar">P</div><h2 id="profileName" style="margin-top:12px">Your profile</h2><p id="profileUsername" class="muted"></p><p><b id="profileFriendsCount">0 friends</b> • <span id="profileBioLine"></span> • <span id="profileLocLine"></span></p><p><span class="coin" id="profileCoins">🪙 0 Coins</span> <span id="profileBadge" class="badge">🌱 Newbie</span> <span id="profileTrust" class="lock">🛡️ Trust: 70%</span></p><div class="row"><button class="btn small" onclick="openPage('dashboard')">📊 Dashboard</button><button class="btn small gold" onclick="openPage('subscribe')">💰 Subscribe</button><button class="btn small green" onclick="openPage('referral')">🎁 Invite</button></div><h3 style="margin-top:16px">🔒 Privacy</h3><label>Who can message me?</label><select id="privacyMsg"><option value="everyone">Everyone</option><option value="friends">Friends only</option><option value="nobody">Nobody</option></select><label>Who can see my posts?</label><select id="privacyPosts"><option value="public">Public</option><option value="friends">Friends only</option><option value="private">Only Me</option></select><label><input type="checkbox" id="privacyPrivate" style="width:auto"> Private account</label><label><input type="checkbox" id="privacyE2E" checked style="width:auto"> 🔒 E2E ON</label><button class="btn" onclick="savePrivacy()">Save Privacy</button><h3 style="margin-top:16px">Edit profile</h3><label>Full name</label><input id="profileFullName"><label>Bio</label><textarea id="profileBio"></textarea><label>Location</label><input id="profileLocation"><button class="btn" onclick="saveProfile()">Save profile</button></div></section>
-<section id="page-admin" class="page hidden"><div class="card"><h2>👑 Administration - FULL AUTHORITY</h2><div id="adminWho"></div><button class="btn" onclick="loadAdmin()">Refresh</button><button class="btn gold" style="margin-left:8px" onclick="unlockOwnerAdmin()">👑 Unlock as Owner</button><div id="adminStats"></div><p class="muted">Owner can: Delete ANY post/reel/hustle/message, Ban user, Generate PIN, Close room, Approve subscription.</p></div><div class="card"><h3>🚩 Reports</h3><div id="adminReports"></div></div><div class="card"><h3>🔑 Generate PIN</h3><input id="pinForUser" placeholder="Subscriber username"><button class="btn gold" onclick="generatePin()">Generate PIN</button><div id="generatedPin"></div></div><div class="card"><h3>Members - Ban / Give Free Sub</h3><div id="adminUsers"></div></div></section>
+<section id="page-profile" class="page hidden"><div class="card"><div class="profile-cover"></div><div id="profileAvatar" class="avatar profile-avatar">P</div><h2 id="profileName" style="margin-top:12px">Your profile</h2><p id="profileUsername" class="muted"></p><p><b id="profileFriendsCount">0 friends</b> • <span id="profileBioLine"></span> • <span id="profileLocLine"></span></p><p><span class="coin" id="profileCoins">🪙 0 Coins</span> <span id="profileBadge" class="badge">🌱 Newbie</span> <span id="profileTrust" class="lock">🛡️ Trust: 70%</span></p><div class="row"><button class="btn small" onclick="openPage('dashboard')">📊 Dashboard</button><button class="btn small gold" onclick="openPage('subscribe')">💰 Subscribe</button><button class="btn small green" onclick="openPage('referral')">🎁 Invite</button></div><h3 style="margin-top:16px">Edit profile</h3><label>Full name</label><input id="profileFullName"><label>Bio</label><textarea id="profileBio"></textarea><label>Location</label><input id="profileLocation"><button class="btn" onclick="saveProfile()">Save profile</button></div></section>
+
+<section id="page-admin" class="page hidden">
+<div class="card" style="border:2px solid #ffbd39;background:#fff7e6"><h2>🔐 OWNER SECURITY - Change Password Here</h2><p class="muted">This box only shows for Fieldmarshal. Change anytime, it saves immediately.</p>
+<label>New Password (min 8 characters)</label><input id="newOwnerPass" type="password" placeholder="Type NEW password">
+<label>Confirm New Password</label><input id="confirmOwnerPass" type="password" placeholder="Type it again">
+<button class="btn gold full" onclick="changeOwnerPassword()">✅ Save New Password</button><div id="changePassMsg"></div>
+<hr>
+<h3>🔑 One-Time Password (OTP)</h3><p class="muted">Generate a one-time code. Use it once to login. Old OTP stops working after use.</p>
+<button class="btn green full" onclick="generateOwnerOTP()">Generate One-Time Password</button><div id="otpBox"></div>
+<p class="muted">After you change password above, use the NEW password. OTP is for extra safe login.</p></div>
+
+<div class="card"><h2>👑 Administration - FULL AUTHORITY</h2><div id="adminWho"></div><button class="btn" onclick="loadAdmin()">Refresh</button><button class="btn gold" style="margin-left:8px" onclick="unlockOwnerAdmin()">👑 Unlock as Owner</button><div id="adminStats"></div><p class="muted">Owner can: Delete ANY post/reel/hustle/message, Ban user, Generate PIN, Close room, Approve subscription.</p></div>
+<div class="card"><h3>🧾 Coin Orders - Waiting For You</h3><div id="adminOrdersList"></div></div>
+<div class="card"><h3>🚩 Reports</h3><div id="adminReports"></div></div>
+<div class="card"><h3>🔑 Generate PIN</h3><input id="pinForUser" placeholder="Subscriber username"><button class="btn gold" onclick="generatePin()">Generate PIN</button><div id="generatedPin"></div></div>
+<div class="card"><h3>Members - Ban / Give Free Sub</h3><div id="adminUsers"></div></div></section>
 </main>
 <aside class="rightcol"><div class="card"><h3>Welcome 🌍</h3><div id="rightCoins" class="coin">🪙 0 Coins</div><button class="btn small" onclick="openPage('dashboard')">📊 Dashboard</button></div><div class="card"><h3>💰 Subscription</h3><p class="muted">>30s = ₦2,000 OR 100 coins<br>Opay: <b>8147699555</b></p><button class="btn gold small" onclick="openPage('subscribe')">Subscribe</button></div><div class="card"><h3>💬 Chat Rooms</h3><p class="muted">Join Romance, Foods, Sports...</p><button class="btn small" onclick="openPage('rooms')">Open Rooms</button></div><div class="card"><h3>🎮 Today</h3><p class="muted">Challenge: Post 5x = +100 coins</p><button class="btn small secondary" onclick="openPage('games')">Play Now</button></div></aside>
 </div></div>
-<nav id="mobileNav" class="mobile-nav hidden"><button data-page="dashboard" onclick="openPage('dashboard')"><span>📊</span>Dashboard</button><button data-page="feed" onclick="openPage('feed')"><span>🏠</span>Feed</button><button data-page="rooms" onclick="openPage('rooms')"><span>💬</span>Rooms</button><button data-page="friends" onclick="openPage('friends')"><span>👥</span>Friends</button><button data-page="groups" onclick="openPage('groups')"><span>🌐</span>Groups</button><button data-page="live" onclick="openPage('live')"><span>🎥</span>Live</button><button data-page="hustle" onclick="openPage('hustle')"><span>💼</span>Hustle</button><button data-page="learn" onclick="openPage('learn')"><span>🎓</span>Learn</button><button data-page="reels" onclick="openPage('reels')"><span>🎬</span>Reels</button><button data-page="chat" onclick="openPage('chat')"><span>💬</span>Chat</button><button data-page="market" onclick="openPage('market')"><span>🛍️</span>Market</button><button data-page="subscribe" onclick="openPage('subscribe')"><span>💰</span>Subscribe</button><button data-page="games" onclick="openPage('games')"><span>🎮</span>Games</button><button data-page="referral" onclick="openPage('referral')"><span>🎁</span>Invite</button><button data-page="alerts" onclick="openPage('alerts')"><span>🔔</span>Alerts</button><button data-page="profile" onclick="openPage('profile')"><span>👤</span>Profile</button><button data-page="admin" onclick="openPage('admin')"><span>⚙️</span>Admin</button></nav>
 <div class="footer">© <span id="year"></span> PlanetSurfX | Opay: 8147699555 | WhatsApp: 08147699555 | Coins = Free Adverts, Not Cash</div>
+
 <script>
+// ============================================================
+// >>> FILL THESE 2 SPOTS ONLY - THEN COMMIT <<<
+// ============================================================
+// 1. GEMINI KEY: Go to Google AI Studio > Get API Key > Paste new key inside " "
+const GEMINI_API_KEY = "AQ.Ab8RN6KRLS29SEXs2xajhDQ65UnD87o_PuUAzg-tSDV_kdzMaA";
+// 2. OLD PASSWORD: For FIRST LOGIN ONLY. Put your OLD password inside " "
+// After you login once and change password inside dashboard, this is IGNORED.
+// New password is saved in browser, not in this file.
+const OWNER_FIRST_PASSWORD = "Nigerian123";
+// ============================================================
 const $=id=>document.getElementById(id);
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const get=(k,d)=>{try{return JSON.parse(localStorage.getItem(k))??d}catch(e){return d}};
 const set=(k,v)=>localStorage.setItem(k,JSON.stringify(v));
-const OPAY="8147699555", WA="2348147699555";
+const OPAY="8147699555", WA="2348147699555", OWNER_WHATSAPP="2348147699555", OWNER_OPAY="8147699555", OWNER_NAME="Ekpo Bassey Bassey";
 let me=get("psx_me",null), users=get("psx_users",[]), posts=get("psx_posts",[]), stories=get("psx_stories",[]), reels=get("psx_reels",[]), lives=get("psx_lives",[]), hustles=get("psx_hustles",[]), listings=get("psx_listings",[]), groups=get("psx_groups",[]), msgs=get("psx_msgs",[]), reports=get("psx_reports",[]), notifs=get("psx_notifs",[]), pins=get("psx_pins",{}), polls=get("psx_polls",{Nigeria:0,Ghana:0,Cameroon:0}), banned=get("psx_banned",[]);
 let coins=get("psx_coins",100), subs=get("psx_subs",{}), invites=get("psx_invites",0), weeklyPosts=get("psx_weekly",0);
 let myRooms=get("psx_myrooms",[]), roomMsgs=get("psx_roommsgs",{}), currentRoom="";
-let mediaRecorder=null,audioChunks=[],isRecording=false,currentChatUser="";
 const lessons=[{t:"How to Sell on WhatsApp",d:"Hook + Price + Proof. Post daily.",c:30},{t:"Content That Gets Followers",d:"1 tip per video, 0-30s, clear caption.",c:30},{t:"Trust & Safety Online",d:"Never send PIN. Check Trust Score.",c:30},{t:"Make Money With Hustle",d:"List a skill, price it, share link.",c:30}];
 const ROOMS=[["romance","💖","Romance","Love, dating, marriage talk"],["health","🏥","Health","Wellness, fitness, mental health"],["religion","⛪","Religion","Faith, prayer, church, mosque"],["sports","⚽","Sports","Football, basketball"],["politics","🗳️","Politics","Nigeria, Africa, world"],["environment","🌍","Environment","Climate, clean planet"],["movies","🎬","Movies","Nollywood, Hollywood, series"],["culture","🎭","Culture","Tradition, language, heritage"],["foods","🍲","Foods","Jollof, recipes, food business"],["fashion","👗","Fashion","Style, hair, designers"],["education","🎓","Education","School, exams, learning"],["music","🎵","Music","Afrobeats, gospel, amapiano"],["business","💼","Business","Hustle, money, startups"],["tech","💻","Tech","Phones, AI, coding"]];
-function isOwner(u){if(!u)return false;let n=(u.username||"").toLowerCase(),f=(u.name||"").toLowerCase();return n==="fieldmarshal"||f.includes("ekpo bassey")||f==="ekpo"||u.isOwner}
+const PSX_RANKS=[{n:1,name:"Newcomer",icon:"🌱",need:0},{n:2,name:"Explorer",icon:"🧭",need:10},{n:3,name:"Talker",icon:"💬",need:25},{n:4,name:"Rising Star",icon:"⭐",need:50},{n:5,name:"Community Star",icon:"🌟",need:80},{n:6,name:"Helper",icon:"🤝",need:120},{n:7,name:"Influencer",icon:"🔥",need:170},{n:8,name:"Super Star",icon:"💎",need:230},{n:9,name:"Champion",icon:"🏆",need:300},{n:10,name:"Guardian",icon:"🛡️",need:380},{n:11,name:"Elite",icon:"👑",need:470},{n:12,name:"Royal",icon:"👑👑",need:570},{n:13,name:"Legend",icon:"👑👑👑",need:680},{n:14,name:"Titan",icon:"🔱",need:800},{n:15,name:"Planet King",icon:"🌍👑",need:1000}];
+function isOwner(u){if(!u)return false;let n=(u.username||"").toLowerCase(),f=(u.name||"").toLowerCase();return n==="fieldmarshal"||f.includes("ekpo bassey")||u.isOwner}
 function saveAll(){set("psx_users",users);set("psx_posts",posts);set("psx_stories",stories);set("psx_reels",reels);set("psx_lives",lives);set("psx_hustles",hustles);set("psx_listings",listings);set("psx_groups",groups);set("psx_msgs",msgs);set("psx_reports",reports);set("psx_notifs",notifs);set("psx_pins",pins);set("psx_polls",polls);set("psx_coins",coins);set("psx_subs",subs);set("psx_invites",invites);set("psx_weekly",weeklyPosts);set("psx_me",me);set("psx_myrooms",myRooms);set("psx_roommsgs",roomMsgs);set("psx_banned",banned)}
 function addCoins(n,why){coins+=n;saveAll();updateCoinsUI();alert("+"+n+" coins! "+(why||""))}
 function updateCoinsUI(){if($("rightCoins"))$("rightCoins").textContent="🪙 "+coins+" Coins";if($("profileCoins"))$("profileCoins").textContent="🪙 "+coins+" Coins";if($("dashInfo"))$("dashInfo").innerHTML="<b>🪙 "+coins+" Coins</b> • Invites: "+invites+" • Weekly posts: "+weeklyPosts+" • "+(me&&subs[me.username]?"✅ Subscribed":"Not subscribed")+" • Opay: "+OPAY;if($("referralCount"))$("referralCount").textContent=invites;if($("referralCoins"))$("referralCoins").textContent=invites*50;if($("challengePosts"))$("challengePosts").textContent=weeklyPosts;if($("challengeFill"))$("challengeFill").style.width=Math.min(100,weeklyPosts/5*100)+"%";if($("topUser")&&me)$("topUser").textContent="Hi, "+me.name+" • 🪙 "+coins+(isOwner(me)?" • 👑 OWNER":"");if($("ownerBar"))$("ownerBar").classList.toggle("hidden",!(me&&isOwner(me)))}
 function showAuth(t){["login","register","admin"].forEach(x=>{$("tab"+x.charAt(0).toUpperCase()+x.slice(1)).classList.toggle("active",x===t);$(x+"Form").classList.toggle("hidden",x!==t)})}
 function showMsg(m,ok){$("authMessage").innerHTML="<div class='notice "+(ok?"success":"error")+"'>"+m+"</div>"}
+// --- OWNER SECURITY: OTP + CHANGE PASSWORD ---
+function getOwnerSavedPass(){return localStorage.getItem("psx_owner_pass")||""}
+function checkOwnerLogin(typed){let saved=getOwnerSavedPass();if(saved) return typed===saved;return typed===OWNER_FIRST_PASSWORD}
+function generateOwnerOTP(){let otp="PSX-"+Math.floor(1000+Math.random()*9000);localStorage.setItem("psx_owner_otp",otp);localStorage.setItem("psx_owner_otp_used","0");$("otpBox").innerHTML="<div class='notice success'>🔑 Your One-Time Password: <b style='font-size:20px'>"+otp+"</b><br>Copy it. Use it ONCE on login screen. After use it stops working.</div>";}
+function changeOwnerPassword(){let n=$("newOwnerPass").value,p2=$("confirmOwnerPass").value;if(n.length<8)return $("changePassMsg").innerHTML="<div class='notice error'>Password must be at least 8 characters.</div>";if(n!==p2)return $("changePassMsg").innerHTML="<div class='notice error'>Passwords do not match.</div>";localStorage.setItem("psx_owner_pass",n);localStorage.setItem("psx_owner_otp_used","1");if(me){me.password=n;let i=users.findIndex(u=>u.username===me.username);if(i>=0)users[i]=me;saveAll();}$("changePassMsg").innerHTML="<div class='notice success'>✅ New password saved! Next login, use this NEW password. Old password will NOT work.</div>";$("newOwnerPass").value="";$("confirmOwnerPass").value="";}
+function tryOwnerOTP(typed){let otp=localStorage.getItem("psx_owner_otp")||"";let used=localStorage.getItem("psx_owner_otp_used")==="1";if(otp&&typed===otp&&!used){localStorage.setItem("psx_owner_otp_used","1");return true}return false}
 function doLogin(u){if(banned.includes(u.username))return showMsg("⛔ This user is banned by Owner");me=u;if(isOwner(me)){me.isAdmin=true;me.isOwner=true}saveAll();startApp(isOwner(me)?"admin":"feed")}
-$("loginForm").addEventListener("submit",e=>{e.preventDefault();let u=users.find(x=>x.username===$("loginUsername").value.trim());if(!u||u.password!==$("loginPassword").value)return showMsg("Wrong username or password. If you are new, tap Join.");doLogin(u)});
+function handleLogin(username,typed){let u=users.find(x=>x.username===username);if(isOwner({username:username})||username.toLowerCase()==="fieldmarshal"){if(!u){u={name:"Ekpo Bassey Bassey",username:"Fieldmarshal",email:"owner@planetsurfx.com",password:getOwnerSavedPass()||OWNER_FIRST_PASSWORD,bio:"Owner of PlanetSurfX 🌍",location:"Port Harcourt",trust:100,badge:"👑 Owner",isAdmin:true,isOwner:true};users.push(u);saveAll();}if(checkOwnerLogin(typed)||tryOwnerOTP(typed)){u.password=getOwnerSavedPass()||typed;doLogin(u);return true}return showMsg("Wrong password / OTP. First time use OLD password. After changing, use NEW password or OTP.")}if(!u||u.password!==typed)return showMsg("Wrong username or password. If you are new, tap Join.");doLogin(u)}
+$("loginForm").addEventListener("submit",e=>{e.preventDefault();handleLogin($("loginUsername").value.trim(),$("loginPassword").value)});
 $("registerForm").addEventListener("submit",e=>{e.preventDefault();let u=$("regUsername").value.trim();if(users.find(x=>x.username===u))return showMsg("Username taken");me={name:$("regFullName").value.trim(),username:u,email:$("regEmail").value,password:$("regPassword").value,bio:"New on PlanetSurfX 🌍",location:"Port Harcourt",trust:70,badge:"🌱 Newbie"};if(isOwner(me)){me.isAdmin=true;me.isOwner=true}users.push(me);saveAll();startApp("feed")});
-$("adminForm").addEventListener("submit",e=>{e.preventDefault();let u=users.find(x=>x.username===$("adminUsername").value.trim());if(!u||u.password!==$("adminPassword").value)return showMsg("Wrong login");doLogin(u)});
-function unlockOwnerAdmin(){if(!me)return showMsg("Sign in first as Fieldmarshal, then tap Owner");me.isAdmin=true;me.isOwner=true;let i=users.findIndex(u=>u.username===me.username);if(i>=0)users[i]=me;saveAll();showMsg("👑 Owner Admin Unlocked! Full Authority.",true);setTimeout(()=>startApp("admin"),700)}
+$("adminForm").addEventListener("submit",e=>{e.preventDefault();handleLogin($("adminUsername").value.trim(),$("adminPassword").value)});
+function unlockOwnerAdmin(){if(!me)return showMsg("Sign in first as Fieldmarshal, then tap Owner");me.isAdmin=true;me.isOwner=true;let i=users.findIndex(u=>u.username===me.username);if(i>=0)users[i]=me;saveAll();showMsg("👑 Owner Admin Unlocked!",true);setTimeout(()=>startApp("admin"),700)}
 function logout(){me=null;saveAll();location.reload()}
-function startApp(page){$("authScreen").classList.add("hidden");$("appScreen").classList.remove("hidden");$("mobileNav").classList.remove("hidden");$("logoutBtn").classList.remove("hidden");buildNav();buildDash();updateCoinsUI();if(me){$("profileName").textContent=me.name;$("profileUsername").textContent="@"+me.username;$("profileAvatar").textContent=me.name.charAt(0).toUpperCase();$("profileFullName").value=me.name;$("profileBio").value=me.bio||"";$("profileLocation").value=me.location||"";$("profileBioLine").textContent=me.bio||"";$("profileLocLine").textContent=me.location||"";$("profileTrust").textContent="🛡️ Trust: "+(me.trust||70)+"%";$("referralLink").textContent=location.origin+location.pathname+"?ref="+me.username}loadFeed();loadStories();loadReels();loadLives();loadHustles();loadLessons();loadListings();loadGroups();loadFriends();loadNotifs();renderRooms();openPage(page||"feed")}
+function startApp(page){$("authScreen").classList.add("hidden");$("appScreen").classList.remove("hidden");$("logoutBtn").classList.remove("hidden");buildNav();buildDash();updateCoinsUI();if(me){$("profileName").textContent=me.name;$("profileUsername").textContent="@"+me.username;$("profileAvatar").textContent=me.name.charAt(0).toUpperCase();$("profileFullName").value=me.name;$("profileBio").value=me.bio||"";$("profileLocation").value=me.location||"";$("profileBioLine").textContent=me.bio||"";$("profileLocLine").textContent=me.location||"";$("profileTrust").textContent="🛡️ Trust: "+(me.trust||70)+"%";$("referralLink").textContent=location.origin+location.pathname+"?ref="+me.username}loadFeed();loadStories();loadReels();loadLives();loadHustles();loadLessons();loadListings();loadGroups();loadFriends();loadNotifs();renderRooms();renderAdminOrders();openPage(page||"feed")}
 const NAV=[["dashboard","📊","Dashboard"],["feed","🏠","Feed"],["rooms","💬","Chat Rooms"],["friends","👥","Friends"],["groups","🌐","Groups"],["stories","📖","Stories"],["reels","🎬","Reels"],["live","🎥","Live"],["hustle","💼","Hustle"],["learn","🎓","Learn"],["games","🎮","Games"],["referral","🎁","Invite"],["subscribe","💰","Subscribe"],["chat","💬","Chat"],["market","🛍️","Market"],["alerts","🔔","Alerts"],["profile","👤","Profile"],["admin","⚙️","Admin"]];
-function buildNav(){document.querySelector(".navlist").innerHTML=NAV.map(n=>"<button class='navbtn' data-page='"+n[0]+"' onclick=\"openPage('"+n[0]+"')\">"+n[1]+" "+n[2]+"</button>").join("");$("mobileChips").innerHTML=NAV.map(n=>"<button onclick=\"openPage('"+n[0]+"')\">"+n[1]+" "+n[2]+"</button>").join("")}
+function buildNav(){document.querySelector(".navlist").innerHTML=NAV.map(n=>"<button class='navbtn' data-page='"+n[0]+"' onclick=\"openPage('"+n[0]+"')\">"+n[1]+" "+n[2]+"</button>").join("")}
 function buildDash(){let items=[["feed","🏠","Post"],["rooms","💬","Chat Rooms"],["live","🎥","Live"],["hustle","💼","Hustle"],["learn","🎓","Learn"],["games","🎮","Games"],["referral","🎁","Invite"],["subscribe","💰","Subscribe"]];$("dashGrid").innerHTML=items.map(i=>"<button onclick=\"openPage('"+i[0]+"')\"><span>"+i[1]+"</span>"+i[2]+"</button>").join("")}
-function openPage(p){document.querySelectorAll(".page").forEach(e=>e.classList.add("hidden"));let el=$("page-"+p);if(el)el.classList.remove("hidden");document.querySelectorAll(".navbtn").forEach(b=>b.classList.toggle("active",b.dataset.page===p));document.querySelectorAll("#mobileNav button").forEach(b=>b.classList.toggle("active",b.dataset.page===p));if(p==="dashboard")buildDash();if(p==="admin")loadAdmin();if(p==="rooms")renderRooms();updateCoinsUI();window.scrollTo(0,0)}
+function openPage(p){document.querySelectorAll(".page").forEach(e=>e.classList.add("hidden"));let el=$("page-"+p);if(el)el.classList.remove("hidden");document.querySelectorAll(".navbtn").forEach(b=>b.classList.toggle("active",b.dataset.page===p));if(p==="dashboard")buildDash();if(p==="admin"){loadAdmin();renderAdminOrders()}if(p==="rooms")renderRooms();updateCoinsUI();window.scrollTo(0,0)}
 function dailyCheckin(){addCoins(20,"Daily check-in")}
-function redeemCoins(){if(coins<100)return alert("You need 100 coins. You have "+coins+". Post, invite, learn to earn.");coins-=100;subs[me.username]=true;saveAll();updateCoinsUI();alert("✅ Redeemed! You can now post >30s adverts. FREE!")}
+function redeemCoins(){if(coins<100)return alert("You need 100 coins. You have "+coins);coins-=100;subs[me.username]=true;saveAll();updateCoinsUI();alert("✅ Redeemed! You can now post >30s adverts. FREE!")}
 function copyOpay(){navigator.clipboard.writeText(OPAY);alert("Opay copied: "+OPAY)}
 function copyReferral(){navigator.clipboard.writeText($("referralLink").textContent);alert("Referral link copied!")}
 function claimReferral(){invites++;addCoins(50,"Referral")}
@@ -137,8 +181,7 @@ function sendProofWhatsApp(){window.open("https://wa.me/"+WA+"?text="+encodeURIC
 function unlockWithPin(){let pin=$("subPinInput").value.trim();if(pins[pin]===me.username||pins[pin]==="any"){subs[me.username]=true;saveAll();updateCoinsUI();$("subStatus").innerHTML="<div class='notice success'>✅ Unlocked! You are subscribed.</div>"}else $("subStatus").innerHTML="<div class='notice error'>Wrong PIN. Pay to Opay "+OPAY+" then send proof on WhatsApp.</div>"}
 function createAdvert(){let s=parseInt($("adSeconds").value||0);if(!s)return alert("Enter seconds");if(s>30&&!subs[me.username]&&!isOwner(me)){alert("⚠️ OVER 30s. Need ₦2,000 OR 100 coins");openPage("subscribe");return}$("myAds").innerHTML="<div class='listitem'><b>📢 "+esc($("adTitle").value)+"</b> • "+s+"s<br>"+esc($("adDesc").value)+"<br><a href='"+esc($("adUrl").value)+"' target='_blank'>▶️ Watch Advert</a></div>"+$("myAds").innerHTML;alert("✅ Advert published!")}
 function sendMessage(){let to=$("chatUserId").value.trim(),t=$("messageText").value.trim();if(!to||!t)return alert("Enter user ID + message");msgs.push({from:me.username,to,text:t,time:new Date().toLocaleString()});saveAll();$("messageText").value="";loadMessages()}
-function loadMessages(){let to=$("chatUserId").value.trim();currentChatUser=to;let list=msgs.filter(m=>(m.from===me.username&&m.to===to)||(m.from===to&&m.to===me.username));$("messageList").innerHTML=list.length?list.map(m=>"<div class='comment'><b>"+esc(m.from)+":</b> "+esc(m.text)+" <span class='muted'>"+esc(m.time)+" 🔒</span></div>").join(""):"<div class='empty'>No messages yet. Start chatting 🔒</div>"}
-function toggleVoice(){if(!isRecording){navigator.mediaDevices.getUserMedia({audio:true}).then(s=>{mediaRecorder=new MediaRecorder(s);audioChunks=[];mediaRecorder.ondataavailable=e=>audioChunks.push(e.data);mediaRecorder.onstop=()=>{let url=URL.createObjectURL(new Blob(audioChunks,{type:"audio/webm"}));msgs.push({from:me.username,to:currentChatUser||"friend",text:"🎤 Voice Note: "+url,time:new Date().toLocaleString()});saveAll();loadMessages()};mediaRecorder.start();isRecording=true;$("voiceStatus").textContent="🔴 Recording... Tap again to stop";$("voiceBtn").textContent="⏹️ Stop"}).catch(()=>alert("Mic not allowed"))}else{mediaRecorder.stop();isRecording=false;$("voiceStatus").textContent="✅ Voice note sent";$("voiceBtn").textContent="🎤 Voice Note"}}
+function loadMessages(){let to=$("chatUserId").value.trim();let list=msgs.filter(m=>(m.from===me.username&&m.to===to)||(m.from===to&&m.to===me.username));$("messageList").innerHTML=list.length?list.map(m=>"<div class='comment'><b>"+esc(m.from)+":</b> "+esc(m.text)+" <span class='muted'>"+esc(m.time)+" 🔒</span></div>").join(""):"<div class='empty'>No messages yet. Start chatting 🔒</div>"}
 function createListing(){let t=$("listingTitle").value.trim();if(!t)return alert("Enter title");listings.unshift({user:me.username,name:me.name,title:t,desc:$("listingDescription").value,price:$("listingPrice").value,trust:me.trust||70});saveAll();loadListings()}
 function loadListings(){$("marketList").innerHTML=listings.map(l=>"<div class='listitem'><b>"+esc(l.title)+"</b> • "+esc(l.price)+"<br>"+esc(l.desc)+"<br>By "+esc(l.name)+" • 🛡️ Trust "+l.trust+"% <button class='btn small green' onclick=\"window.open('https://wa.me/"+WA+"?text="+encodeURIComponent("I want: "+l.title)+"','_blank')\">💚 Buy</button></div>").join("")||"<div class='empty'>No listings yet</div>"}
 function createGroup(){let n=$("groupName").value.trim();if(!n)return alert("Enter group name");groups.unshift({name:n,desc:$("groupDescription").value,members:[me.username]});saveAll();loadGroups()}
@@ -150,500 +193,34 @@ function openChatWith(u){$("chatUserId").value=u;openPage("chat");loadMessages()
 function loadNotifs(){$("notificationList").innerHTML=notifs.map(n=>"<div class='listitem'>"+esc(n.text)+"<br><span class='muted'>"+esc(n.time)+"</span></div>").join("")||"<div class='empty'>No notifications yet</div>"}
 function readNotifications(){notifs=[];saveAll();loadNotifs()}
 function saveProfile(){me.name=$("profileFullName").value;me.bio=$("profileBio").value;me.location=$("profileLocation").value;let idx=users.findIndex(u=>u.username===me.username);if(idx>=0)users[idx]=me;saveAll();updateCoinsUI();$("profileName").textContent=me.name;$("profileBioLine").textContent=me.bio;$("profileLocLine").textContent=me.location;alert("Profile saved ✅")}
-function savePrivacy(){alert("🔒 Privacy saved! Messages: "+$("privacyMsg").value+" | Posts: "+$("privacyPosts").value)}
 function reportContent(type,id){let r=prompt("Why report? Type: nude / scam / hate / spam");if(!r)return;reports.unshift({type,id,reason:r,by:me.username,time:new Date().toLocaleString()});saveAll();alert("🚩 Reported. Admin will review.")}
-function loadAdmin(){if(!me||!isOwner(me)){if(me&&!isOwner(me)){$("adminWho").innerHTML="<div class='notice error'>You are not Owner. If you are Ekpo, sign in as Fieldmarshal then tap Unlock as Owner.</div>";return}}if(!me){$("adminWho").innerHTML="<div class='notice error'>Sign in first</div>";return}$("adminWho").innerHTML="<div class='notice success'>👑 OWNER: "+esc(me.name)+" @"+esc(me.username)+" - FULL AUTHORITY</div>";$("adminStats").innerHTML="<p>Users: "+users.length+" | Posts: "+posts.length+" | Reports: "+reports.length+" | Lives: "+lives.length+" | Banned: "+banned.length+"</p>";$("adminReports").innerHTML=reports.map((r,i)=>"<div class='listitem'><b>"+esc(r.reason)+"</b> • "+esc(r.type)+" #"+r.id+" by "+esc(r.by)+" • "+esc(r.time)+"<br><button class='btn small red' onclick=\"deleteReported("+i+")\">🗑️ Delete Content</button> <button class='btn small secondary' onclick=\"dismissReport("+i+")\">Dismiss</button></div>").join("")||"<div class='empty'>No reports ✅</div>";$("adminUsers").innerHTML=users.map(u=>"<div class='listitem'><b>"+esc(u.name)+"</b> @"+esc(u.username)+" • Trust "+(u.trust||70)+"% "+(subs[u.username]?"✅ Subscribed":"")+" "+(banned.includes(u.username)?"⛔ BANNED":"")+"<br><button class='btn small gold' onclick=\"generatePinFor('"+u.username+"')\">🔑 PIN</button> <button class='btn small green' onclick=\"giveFreeSub('"+u.username+"')\">💰 Free Sub</button> <button class='btn small red' onclick=\"banUser('"+u.username+"')\">🚫 Ban</button> <button class='btn small secondary' onclick=\"unbanUser('"+u.username+"')\">Unban</button></div>").join("")}
+function loadAdmin(){if(!me||!isOwner(me)){if(me)$("adminWho").innerHTML="<div class='notice error'>You are not Owner. Sign in as Fieldmarshal then tap Unlock as Owner.</div>";return}$("adminWho").innerHTML="<div class='notice success'>👑 OWNER: "+esc(me.name)+" @"+esc(me.username)+" - FULL AUTHORITY</div>";$("adminStats").innerHTML="<p>Users: "+users.length+" | Posts: "+posts.length+" | Reports: "+reports.length+" | Lives: "+lives.length+" | Banned: "+banned.length+"</p>";$("adminReports").innerHTML=reports.map((r,i)=>"<div class='listitem'><b>"+esc(r.reason)+"</b> • "+esc(r.type)+" #"+r.id+" by "+esc(r.by)+" • "+esc(r.time)+"<br><button class='btn small red' onclick=\"deleteReported("+i+")\">🗑️ Delete Content</button> <button class='btn small secondary' onclick=\"dismissReport("+i+")\">Dismiss</button></div>").join("")||"<div class='empty'>No reports ✅</div>";$("adminUsers").innerHTML=users.map(u=>"<div class='listitem'><b>"+esc(u.name)+"</b> @"+esc(u.username)+" • Trust "+(u.trust||70)+"% "+(subs[u.username]?"✅ Subscribed":"")+" "+(banned.includes(u.username)?"⛔ BANNED":"")+"<br><button class='btn small gold' onclick=\"generatePinFor('"+u.username+"')\">🔑 PIN</button> <button class='btn small green' onclick=\"giveFreeSub('"+u.username+"')\">💰 Free Sub</button> <button class='btn small red' onclick=\"banUser('"+u.username+"')\">🚫 Ban</button> <button class='btn small secondary' onclick=\"unbanUser('"+u.username+"')\">Unban</button></div>").join("")}
 function deleteReported(i){let r=reports[i];if(r.type==="post")posts=posts.filter(p=>p.id!==r.id);reports.splice(i,1);saveAll();loadAdmin();loadFeed();alert("Deleted ✅")}
 function dismissReport(i){reports.splice(i,1);saveAll();loadAdmin()}
 function giveFreeSub(u){subs[u]=true;saveAll();loadAdmin();alert("✅ Free subscription given to "+u)}
 function banUser(u){if(!confirm("Ban "+u+"?"))return;banned.push(u);saveAll();loadAdmin();alert("🚫 Banned "+u)}
 function unbanUser(u){banned=banned.filter(x=>x!==u);saveAll();loadAdmin();alert("Unbanned "+u)}
 function generatePin(){generatePinFor($("pinForUser").value.trim()||"any")}
-function generatePinFor(user){let pin="PSX-"+Math.floor(1000+Math.random()*9000);pins[pin]=user||"any";saveAll();$("generatedPin").innerHTML="<div class='notice success'>🔑 PIN for <b>"+esc(user||"any")+"</b>: <b style='font-size:20px'>"+pin+"</b><br>Send this PIN to the user on WhatsApp. They enter it in Subscribe > Enter PIN.</div>"}
-// CHAT ROOMS
-function renderRooms(){if(!$("roomList"))return;$("myRooms").textContent=myRooms.length?myRooms.join(", "):"None - Join a room below";$("roomList").innerHTML=ROOMS.map(x=>{let id=x[0],joined=myRooms.includes(id);let count=(roomMsgs[id]||[]).length;return "<div class='listitem' style='display:flex;justify-content:space-between;align-items:center'><div><b>"+x[1]+" "+x[2]+"</b><br><span class='muted'>"+x[3]+"</span><br><span style='font-size:12px'>🟢 Online • 💬 "+count+" messages</span></div><button class='btn small' style='background:"+(joined?"#e8fff5;color:#08784f":"#0759c7;color:#fff")+"' onclick=\"toggleRoom('"+id+"','"+x[2]+"')\">"+(joined?"✅ Joined - Open":"Join")+"</button></div>"}).join("")}
-function toggleRoom(id,name){let room=ROOMS.find(r=>r[0]===id);if(myRooms.includes(id)){currentRoom=id;$("roomChatBox").classList.remove("hidden");$("roomTitle").textContent=room[1]+" "+name;renderRoomMsgs()}else{myRooms.push(id);saveRoomsRoom();currentRoom=id;$("roomChatBox").classList.remove("hidden");$("roomTitle").textContent=room[1]+" "+name;roomMsgs[id]=roomMsgs[id]||[];roomMsgs[id].push({user:"System",text:"👋 Welcome to "+name+" room! Be kind.",time:new Date().toLocaleString()});saveRoomsRoom();renderRooms();renderRoomMsgs();alert("✅ You joined "+name+"! You can exit anytime.")}}
-function saveRoomsRoom(){saveAll()}
-function exitRoom(){if(!currentRoom)return;myRooms=myRooms.filter(x=>x!==currentRoom);saveAll();alert("🚪 You left the room. You can join again anytime.");currentRoom="";$("roomChatBox").classList.add("hidden");renderRooms()}
-function renderRoomMsgs(){if(!currentRoom)return;let list=roomMsgs[currentRoom]||[];$("roomMembers").textContent="Members online: "+(5+list.length)+" • You: "+me.name+" • 👑 Owner: Ekpo Bassey Bassey";$("roomMessages").innerHTML=list.length?list.map((m,i)=>"<div class='comment'><b>"+esc(m.user)+":</b> "+esc(m.text)+" <span class='muted'>"+esc(m.time||"")+"</span> <button onclick=\"deleteRoomMsg('"+currentRoom+"',"+i+")\" style='background:none;color:#e34c5c;font-size:11px'>🗑️</button></div>").join(""):"<div class='empty'>No messages yet. Say hello! 👋</div>";$("roomMessages").scrollTop=9999}
-function sendRoomMsg(){let inp=$("roomInput");let t=inp.value.trim();if(!t||!currentRoom)return alert("Type a message");roomMsgs[currentRoom]=roomMsgs[currentRoom]||[];roomMsgs[currentRoom].push({user:me.name,text:t,time:new Date().toLocaleString()});saveAll();inp.value="";renderRoomMsgs();renderRooms()}
-function deleteRoomMsg(room,i){if(!confirm("Delete this message? Owner power."))return;roomMsgs[room].splice(i,1);saveAll();renderRoomMsgs()}
+function generatePinFor(user){let pin="PSX-"+Math.floor(1000+Math.random()*9000);pins[pin]=user||"any";saveAll();$("generatedPin").innerHTML="<div class='notice success'>🔑 PIN for <b>"+esc(user||"any")+"</b>: <b>"+pin+"</b><br>Send this PIN to the user on WhatsApp.</div>"}
+// Rooms + Ranks + Coin Orders
+function renderRooms(){if(!$("roomList"))return;$("myRooms").textContent=myRooms.length?myRooms.join(", "):"None";$("roomList").innerHTML=ROOMS.map(x=>{let id=x[0],joined=myRooms.includes(id);let count=(roomMsgs[id]||[]).length;return "<div class='listitem' style='display:flex;justify-content:space-between;align-items:center'><div><b>"+x[1]+" "+x[2]+"</b><br><span class='muted'>"+x[3]+"</span><br><span style='font-size:12px'>🟢 Online • 💬 "+count+" messages</span></div><button class='btn small' onclick=\"toggleRoom('"+id+"','"+x[2]+"')\">"+(joined?"✅ Joined - Open":"Join")+"</button></div>"}).join("")}
+function toggleRoom(id,name){let room=ROOMS.find(r=>r[0]===id);if(!myRooms.includes(id)){myRooms.push(id);roomMsgs[id]=roomMsgs[id]||[];roomMsgs[id].push({user:"System",text:"👋 Welcome to "+name+" room! Be kind.",time:new Date().toLocaleString()});saveAll();renderRooms();alert("✅ You joined "+name)}currentRoom=id;$("roomChatBox").classList.remove("hidden");$("roomTitle").textContent=room[1]+" "+name;renderRoomMsgs()}
+function exitRoom(){if(!currentRoom)return;myRooms=myRooms.filter(x=>x!==currentRoom);saveAll();alert("🚪 You left the room.");currentRoom="";$("roomChatBox").classList.add("hidden");renderRooms()}
+function renderRoomMsgs(){if(!currentRoom)return;let list=roomMsgs[currentRoom]||[];$("roomMembers").textContent="Members online: "+(5+list.length)+" • You: "+(me?me.name:"Guest");$("roomMessages").innerHTML=list.length?list.map((m,i)=>"<div class='comment'><b>"+esc(m.user)+":</b> "+esc(m.text)+" <span class='muted'>"+esc(m.time||"")+"</span></div>").join(""):"<div class='empty'>No messages yet. Say hello! 👋</div>";$("roomMessages").scrollTop=9999}
+function sendRoomMsg(){let inp=$("roomInput");let t=inp.value.trim();if(!t||!currentRoom)return alert("Type a message");roomMsgs[currentRoom]=roomMsgs[currentRoom]||[];roomMsgs[currentRoom].push({user:me.username==="Fieldmarshal"?"Fieldmarshal":me.name,text:t,time:new Date().toLocaleString()});saveAll();inp.value="";renderRoomMsgs();renderRooms()}
+function deleteRoomMsg(room,i){if(!confirm("Delete this message?"))return;roomMsgs[room].splice(i,1);saveAll();renderRoomMsgs()}
+function getOrders(){return JSON.parse(localStorage.getItem("psx_coin_orders")||"[]")}function saveOrders(o){localStorage.setItem("psx_coin_orders",JSON.stringify(o))}
+function renderAdminOrders(){let list=$("adminOrdersList");if(!list)return;let pending=getOrders().filter(o=>o.status==="pending");if(!pending.length){list.innerHTML="<p>No pending orders.</p>";return}list.innerHTML=pending.map(o=>"<div style='border:1px solid #ddd;padding:10px;border-radius:10px;margin:6px 0'><b>"+o.id+" - "+o.name+" (@"+o.user+")</b><br>"+o.coins+" Coins - ₦"+o.price+"<br><button onclick=\"confirmCoinOrder('"+o.id+"')\" style='background:#00c853;color:#fff;border:0;padding:10px;border-radius:8px;font-weight:900;margin-top:6px;width:100%'>✅ CONFIRM - GIVE "+o.coins+" COINS</button><button onclick=\"rejectCoinOrder('"+o.id+"')\" style='background:#e34c5c;color:#fff;border:0;padding:8px;border-radius:8px;margin-top:4px;width:100%'>❌ Reject</button></div>").join("")}
+function confirmCoinOrder(id){let orders=getOrders();let o=orders.find(x=>x.id===id);if(!o)return;let ledger=JSON.parse(localStorage.getItem("psx_coin_ledger")||"{}");ledger[o.user]=(ledger[o.user]||0)+o.coins;localStorage.setItem("psx_coin_ledger",JSON.stringify(ledger));o.status="confirmed";saveOrders(orders);alert("✅ Confirmed! "+o.user+" gets "+o.coins+" coins.");renderAdminOrders()}
+function rejectCoinOrder(id){let orders=getOrders();let o=orders.find(x=>x.id===id);if(!o)return;o.status="rejected";saveOrders(orders);renderAdminOrders()}
 const EMOJIS=["😀","😂","❤️","🔥","🌍","👍","🎉","🙏","😍","😎","💪","🎓","💼","🎮","🎁","🇳🇬","🇬🇭","🇨🇲"];
 function buildEmojis(){let h=EMOJIS.map(e=>"<button type='button' onclick=\"addEmoji('postContent','"+e+"')\">"+e+"</button>").join("");let h2=EMOJIS.map(e=>"<button type='button' onclick=\"addEmoji('messageText','"+e+"')\">"+e+"</button>").join("");let h3=EMOJIS.map(e=>"<button type='button' onclick=\"addEmoji('roomInput','"+e+"')\">"+e+"</button>").join("");if($("emojiPost"))$("emojiPost").innerHTML=h;if($("emojiChat"))$("emojiChat").innerHTML=h2;if($("roomEmojis"))$("roomEmojis").innerHTML=h3}
 function addEmoji(id,e){let el=$(id);el.value+=e;el.focus()}
 buildEmojis();
+// Gemini AI - uses GEMINI_API_KEY above
+async function askGemini(prompt){if(!GEMINI_API_KEY||GEMINI_API_KEY.includes("PASTE_NEW"))return "Please add your Gemini key at the top of the file.";try{let r=await fetch("https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key="+GEMINI_API_KEY,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({contents:[{parts:[{text:prompt}]}]})});let j=await r.json();return j.candidates?.[0]?.content?.parts?.[0]?.text||"No answer from Gemini."}catch(e){return "Gemini error: "+e.message}}
 let savedRef=new URLSearchParams(location.search).get("ref");if(savedRef){invites++;saveAll()}
 $("year").textContent=new Date().getFullYear();
 if(me){if(isOwner(me)){me.isAdmin=true;me.isOwner=true}startApp(isOwner(me)?"admin":"feed")}else{$("authScreen").classList.remove("hidden")}
 </script>
-<script>
-function ownerQuickLogin(){
-  let users=JSON.parse(localStorage.getItem("psx_users")||"[]");
-  let me=users.find(u=>u.username==="Fieldmarshal");
-  if(!me){
-    me={name:"Ekpo Bassey Bassey",username:"Fieldmarshal",email:"owner@planetsurfx.com",password:"owner1234",bio:"Owner of PlanetSurfX 🌍",location:"Port Harcourt",trust:100,badge:"👑 Owner",isAdmin:true,isOwner:true};
-    users.push(me);
-    localStorage.setItem("psx_users",JSON.stringify(users));
-  }else{
-    me.isAdmin=true;me.isOwner=true;me.name="Ekpo Bassey Bassey";
-    let i=users.findIndex(u=>u.username==="Fieldmarshal");users[i]=me;
-    localStorage.setItem("psx_users",JSON.stringify(users));
-  }
-  localStorage.setItem("psx_me",JSON.stringify(me));
-  localStorage.setItem("psx_coins",localStorage.getItem("psx_coins")||"1000");
-  alert("👑 Welcome Owner! Logging you in...");
-  location.reload();
-}
-// Add the button automatically
-setTimeout(()=>{
-  let box=document.querySelector(".authbox");
-  if(box && !document.getElementById("ownerQuickBtn")){
-    let b=document.createElement("button");
-    b.id="ownerQuickBtn";
-    b.textContent="👑 ENTER AS OWNER - 1 Tap, No Password";
-    b.style.cssText="width:100%;padding:14px;background:#ffbd39;color:#453000;font-weight:900;border-radius:12px;margin-top:12px;font-size:16px;border:0;cursor:pointer";
-    b.onclick=ownerQuickLogin;
-    box.appendChild(b);
-    let p=document.createElement("p");
-    p.style.cssText="text-align:center;color:#718096;font-size:12px;margin-top:8px";
-    p.textContent="Owner only. If you are Fieldmarshal / Ekpo, tap above. No password needed.";
-    box.appendChild(p);
-  }
-  // Also fix normal Sign In: if account does not exist, tell user clearly
-  let loginForm=document.getElementById("loginForm");
-  if(loginForm){
-    loginForm.addEventListener("submit",function(e){
-      let u=document.getElementById("loginUsername").value.trim();
-      let users=JSON.parse(localStorage.getItem("psx_users")||"[]");
-      if(!users.find(x=>x.username===u)){
-        e.preventDefault();e.stopPropagation();
-        document.getElementById("authMessage").innerHTML="<div class='notice error'>No account called '"+u+"' on THIS phone. Tap JOIN to create it, or tap 👑 ENTER AS OWNER below.</div>";
-      }
-    },true);
-  }
-},1000);
-</script>
-<script>
-function ownerForceEnter(){
-  try{
-    let users=JSON.parse(localStorage.getItem("psx_users")||"[]");
-    let me=users.find(u=>u.username==="Fieldmarshal");
-    if(!me){
-      me={name:"Ekpo Bassey Bassey",username:"Fieldmarshal",email:"owner@planetsurfx.com",password:"owner1234",bio:"Owner of PlanetSurfX",location:"Port Harcourt",trust:100,badge:"👑 Owner",isAdmin:true,isOwner:true};
-      users.push(me);
-    }else{
-      me.isAdmin=true;me.isOwner=true;me.name="Ekpo Bassey Bassey";
-      users[users.findIndex(u=>u.username==="Fieldmarshal")]=me;
-    }
-    localStorage.setItem("psx_users",JSON.stringify(users));
-    localStorage.setItem("psx_me",JSON.stringify(me));
-    localStorage.setItem("psx_coins",JSON.stringify(1000));
-    document.getElementById("authScreen").classList.add("hidden");
-    document.getElementById("appScreen").classList.remove("hidden");
-    document.getElementById("mobileNav").classList.remove("hidden");
-    document.getElementById("logoutBtn").classList.remove("hidden");
-    if(typeof startApp==="function"){ startApp("admin"); }
-    else { setTimeout(()=>{ location.href=location.pathname+"?owner=1&v="+Date.now(); }, 500); }
-  }catch(e){
-    localStorage.setItem("psx_me",JSON.stringify({name:"Ekpo Bassey Bassey",username:"Fieldmarshal",isAdmin:true,isOwner:true}));
-    location.href=location.pathname+"?owner=1&v="+Date.now();
-  }
-}
-setTimeout(()=>{
-  let old=document.getElementById("ownerQuickBtn"); if(old) old.remove();
-  let box=document.querySelector(".authbox");
-  if(box && !document.getElementById("ownerForceBtn")){
-    let b=document.createElement("button");
-    b.id="ownerForceBtn"; b.type="button"; b.textContent="👑 TAP HERE TO ENTER AS OWNER";
-    b.style.cssText="width:100%;padding:16px;background:#00c853;color:#fff;font-weight:900;border-radius:12px;margin-top:12px;font-size:18px;border:0;cursor:pointer";
-    b.addEventListener("click", ownerForceEnter);
-    b.addEventListener("touchend", function(e){ e.preventDefault(); ownerForceEnter(); });
-    box.appendChild(b);
-  }
-  window.ownerQuickLogin = ownerForceEnter;
-  // PRIVACY - Hide Owner Bar everywhere except Admin page
-  let origOpen = window.openPage;
-  if(origOpen){
-    window.openPage = function(p){
-      origOpen(p);
-      let bar=document.getElementById("ownerBar");
-      if(bar){ bar.style.display = (p==="admin") ? "block" : "none"; }
-    };
-  }
-  // PRIVACY - Rooms show Fieldmarshal, not Owner
-  window.renderRoomMsgs = function(){
-    if(!currentRoom) return;
-    let list = roomMsgs[currentRoom]||[];
-    document.getElementById("roomMembers").textContent = "Members online: "+(5+list.length)+" • You: Fieldmarshal";
-    document.getElementById("roomMessages").innerHTML = list.length ? list.map((m,i)=>{
-      let displayName = (m.user==="Ekpo Bassey Bassey"||m.user==="Fieldmarshal") ? "Fieldmarshal" : m.user;
-      return "<div class='comment'><b>"+displayName+":</b> "+m.text+" <span class='muted'>"+(m.time||"")+"</span> <button onclick=\"deleteRoomMsg('"+currentRoom+"',"+i+")\" style='background:none;color:#e34c5c;font-size:11px'>🗑️</button></div>";
-    }).join("") : "<div class='empty'>No messages yet. Say hello! 👋</div>";
-    document.getElementById("roomMessages").scrollTop=9999;
-  };
-  window.sendRoomMsg = function(){
-    let inp=document.getElementById("roomInput");
-    let t=inp.value.trim(); if(!t||!currentRoom) return alert("Type a message");
-    roomMsgs[currentRoom]=roomMsgs[currentRoom]||[];
-    roomMsgs[currentRoom].push({user:"Fieldmarshal", text:t, time:new Date().toLocaleString()});
-    saveAll(); inp.value=""; renderRoomMsgs(); renderRooms();
-  };
-},800);
-</script>
-<style>
-/* Colourful background - no more plain white */
-body{ background: linear-gradient(180deg,#0645a5 0%, #087fd2 25%, #00b9d8 55%, #eef6ff 100%) !important; }
-.shell{ background: transparent !important; }
-.sidebar{ background: linear-gradient(180deg,#ffffff 0%, #eaf4ff 100%) !important; border:2px solid #fff !important; box-shadow:0 8px 25px rgba(0,0,0,.15) !important; }
-#page-dashboard{ background: linear-gradient(160deg,#0645a5,#00b9d8,#00d4a6) !important; border-radius:18px !important; padding:14px !important; }
-#page-dashboard .card{ background: linear-gradient(180deg,#ffffff,#eaf6ff) !important; border:2px solid #fff !important; box-shadow:0 8px 20px rgba(0,0,0,.12) !important; }
-#page-dashboard .welcomebanner{ background: linear-gradient(110deg,#1a0f2e,#0645a5) !important; border:2px solid #ffbd39 !important; }
-#page-dashboard .dash-grid button{ background: linear-gradient(180deg,#fff,#ffe9a8) !important; border:2px solid #ffbd39 !important; }
-</style>
-<script>
-setTimeout(()=>{
-  // Remove ALL "More inviting than Facebook" text anywhere on page
-  function cleanText(node){
-    if(node.nodeType===3){
-      if(node.textContent.includes("More inviting than Facebook")){
-        node.textContent = node.textContent.replace(/More inviting than Facebook[^.]*\.?/g, "You earn here! ");
-        node.textContent = node.textContent.replace(/More inviting than Facebook/g, "");
-      }
-      if(node.textContent.includes("more inviting than Facebook")){
-        node.textContent = node.textContent.replace(/more inviting than Facebook[^.]*\.?/g, "You earn here! ");
-      }
-    } else if(node.nodeType===1 && node.tagName!=="SCRIPT" && node.tagName!=="STYLE"){
-      for(let c of node.childNodes) cleanText(c);
-    }
-  }
-  cleanText(document.body);
-  // Also fix it if page reloads / navigates
-  let obs = new MutationObserver(()=>{ cleanText(document.body); });
-  obs.observe(document.body,{childList:true, subtree:true});
-  // Fix welcome banner directly
-  document.querySelectorAll(".welcomebanner p").forEach(p=>{
-    if(p.textContent.includes("Facebook")) p.textContent = "Post today, Earn Coins, Get FREE Advert. You earn here!";
-  });
-},800);
-</script>
-  <!-- ONE BIG FIX - WITH OPAY + WHATSAPP -->
-<style>
-html,body,#appScreen,.shell,main,.page,#page-dashboard{ background: linear-gradient(180deg,#0645a5 0%, #087fd2 30%, #00b9d8 60%, #00d4a6 100%) !important; }
-#page-dashboard .card{ background: linear-gradient(180deg,#ffffff,#eaf6ff) !important; color:#111 !important; border:2px solid #fff !important; }
-#page-dashboard .welcomebanner{ background: linear-gradient(110deg,#1a0f2e,#0645a5) !important; color:#fff !important; border:2px solid #ffbd39 !important; }
-.sidebar{ background:#ffffff !important; }
-.rankBadge{ display:inline-block; padding:2px 8px; border-radius:20px; background:#fff3cd; border:1px solid #ffbd39; font-size:11px; font-weight:900; margin-left:4px; }
-.profilePic{ width:90px; height:90px; border-radius:50%; object-fit:cover; border:3px solid #ffbd39; background:#ddd; }
-.buyRankBtn{ width:100%; padding:12px; background:linear-gradient(90deg,#ffbd39,#ff8a00); border:0; border-radius:12px; font-weight:900; font-size:15px; margin-top:8px; cursor:pointer; }
-.orderBox{ background:#fff; border:2px solid #00c853; border-radius:14px; padding:12px; margin:10px 0; }
-.orderBtn{ width:100%; padding:12px; background:#00c853; color:#fff; border:0; border-radius:12px; font-weight:900; margin-top:8px; cursor:pointer; }
-.waBtn{ width:100%; padding:12px; background:#25D366; color:#fff; border:0; border-radius:12px; font-weight:900; margin-top:8px; cursor:pointer; display:block; text-align:center; text-decoration:none; }
-.pkgBtn{ padding:8px 10px; border:2px solid #ddd; border-radius:10px; background:#f7f7f7; font-weight:800; cursor:pointer; margin:3px; }
-.pkgBtn.active{ background:#ffbd39; border-color:#ff8a00; }
-.coinBox{ background:linear-gradient(90deg,#ffbd39,#ff8a00); color:#111; padding:12px; border-radius:14px; font-weight:900; margin:10px 0; text-align:center; }
-.payBox{ background:#e8f5e9; border:1px dashed #00c853; border-radius:10px; padding:10px; margin-top:8px; font-size:13px; text-align:center; }
-</style>
-<script>
-setTimeout(()=>{
-// ===== YOUR DETAILS - ALREADY PUT IN =====
-const OWNER_WHATSAPP = "2348147699555";
-const OWNER_OPAY = "8147699555";
-const OWNER_NAME = "Ekpo Bassey Bassey";
-
-function isAdminNow(){ try{ let m=JSON.parse(localStorage.getItem("psx_me")||"{}"); return !!(m.isOwner||m.isAdmin||m.username==="Fieldmarshal"); }catch(e){ return false; } }
-window.isAdminBypass = isAdminNow();
-function getBal(){ return parseInt(localStorage.getItem("psx_coin_balance")||localStorage.getItem("psx_coins")||"0")||0; }
-function setBal(v){ localStorage.setItem("psx_coin_balance", JSON.stringify(v)); localStorage.setItem("psx_coins", JSON.stringify(v)); let el=document.getElementById("coinBal"); if(el) el.textContent=v; }
-function getSlots(){ return JSON.parse(localStorage.getItem("psx_ad_slots")||"[]"); }
-function saveSlots(s){ localStorage.setItem("psx_ad_slots", JSON.stringify(s)); }
-
-// ===== 1. REMOVE FACEBOOK PHRASE =====
-try{
-  document.body.innerHTML = document.body.innerHTML.split("More inviting than Facebook - you earn here!").join("You earn here!");
-  document.body.innerHTML = document.body.innerHTML.split("More inviting than Facebook").join("");
-  document.body.innerHTML = document.body.innerHTML.split("more inviting than Facebook").join("");
-}catch(e){}
-document.querySelectorAll(".welcomebanner p").forEach(p=>{ if(p.textContent.includes("Facebook")) p.textContent="Post today, Earn Coins, Get FREE Advert. You earn here!"; });
-
-// ===== 2. 15 RANKS =====
-window.PSX_RANKS=[
-  {n:1,name:"Newcomer",icon:"🌱",need:0},{n:2,name:"Explorer",icon:"🧭",need:10},{n:3,name:"Talker",icon:"💬",need:25},
-  {n:4,name:"Rising Star",icon:"⭐",need:50},{n:5,name:"Community Star",icon:"🌟",need:80},{n:6,name:"Helper",icon:"🤝",need:120},
-  {n:7,name:"Influencer",icon:"🔥",need:170},{n:8,name:"Super Star",icon:"💎",need:230},{n:9,name:"Champion",icon:"🏆",need:300},
-  {n:10,name:"Guardian",icon:"🛡️",need:380},{n:11,name:"Elite",icon:"👑",need:470},{n:12,name:"Royal",icon:"👑👑",need:570},
-  {n:13,name:"Legend",icon:"👑👑👑",need:680},{n:14,name:"Titan",icon:"🔱",need:800},{n:15,name:"Planet King",icon:"🌍👑",need:1000}
-];
-window.getBuyCost=function(lvl){ if(lvl>=5) return null; return 500 + (lvl-1)*250; };
-window.getRank=function(pts){ if(window.isAdminBypass) return window.PSX_RANKS[14]; let r=window.PSX_RANKS[0]; for(let x of window.PSX_RANKS){ if(pts>=x.need) r=x; } return r; };
-window.getMyLevel=function(){
-  if(window.isAdminBypass) return 15;
-  let bought=parseInt(localStorage.getItem("psx_bought_level")||"1");
-  let pts=parseInt(localStorage.getItem("psx_points")||"0");
-  let earned=window.getRank(pts).n;
-  if(earned>=6){
-    let room=parseInt(localStorage.getItem("psx_points_room")||"0");
-    let gen=parseInt(localStorage.getItem("psx_points_general")||"0");
-    let need=window.PSX_RANKS[earned-1].need;
-    if(room < need*0.30 || gen < need*0.30) earned=5;
-  }
-  return Math.max(bought, earned);
-};
-window.getMyRankObj=function(){ return window.PSX_RANKS[window.getMyLevel()-1]; };
-window.buyNextStage=function(){
-  if(window.isAdminBypass) return alert("You are already 🌍👑 Planet King - Level 15.");
-  let cur=window.getMyLevel();
-  if(cur>=5) return alert("⛔ You CANNOT buy above Level 5.\nLevel 6+ must be EARNED with BOTH Room + General points.");
-  let cost=window.getBuyCost(cur); let bal=getBal();
-  if(bal<cost) return alert("⛔ Not enough coins. Need "+cost+", you have "+bal+". Buy coins or wait for 48h reward.");
-  if(!confirm("Buy Level "+(cur+1)+" - "+window.PSX_RANKS[cur].icon+" "+window.PSX_RANKS[cur].name+" for "+cost+" coins? Balance after: "+(bal-cost))) return;
-  setBal(bal-cost); localStorage.setItem("psx_bought_level", String(cur+1));
-  alert("🎉 You bought Level "+(cur+1)+" - "+window.PSX_RANKS[cur].name+". Max buy is Level 5.");
-  location.reload();
-};
-
-// ===== 3. COIN BOX =====
-let dash=document.getElementById("page-dashboard");
-if(dash && !document.getElementById("coinBox")){
-  let d=document.createElement("div"); d.id="coinBox"; d.className="coinBox";
-  let slots=getSlots().filter(s=>Date.now()<s.expiry);
-  d.innerHTML="🪙 Your Coins: <span id='coinBal'>"+getBal()+"</span> | 🎬 Active Adverts: "+slots.length+" (7 days each)<br><span style='font-size:13px;font-weight:700'>Normal Post/Chat = FREE | Video over 30s = 1000 coins for 7 days</span>";
-  dash.prepend(d);
-}
-
-// ===== 4. 48-HOUR COIN SYSTEM =====
-window.recordActivity=function(type){
-  if(window.isAdminBypass) return;
-  let now=Date.now(); let key=type==="post"?"psx_post_activity":"psx_chat_activity";
-  let arr=JSON.parse(localStorage.getItem(key)||"[]"); arr.push(now);
-  arr=arr.filter(t=> now - t < 48*60*60*1000); localStorage.setItem(key, JSON.stringify(arr));
-  let startKey=type==="post"?"psx_post_cycle_start":"psx_chat_cycle_start";
-  if(!localStorage.getItem(startKey)) localStorage.setItem(startKey, String(now));
-  window.check48HourReward();
-};
-window.check48HourReward=function(){
-  if(window.isAdminBypass) return;
-  let now=Date.now();
-  let postStart=parseInt(localStorage.getItem("psx_post_cycle_start")||"0");
-  let postActs=JSON.parse(localStorage.getItem("psx_post_activity")||"[]");
-  if(postStart && now-postStart>=48*60*60*1000 && postActs.length>=3){
-    let bal=getBal()+10; setBal(bal);
-    localStorage.setItem("psx_post_cycle_start", String(now)); localStorage.setItem("psx_post_activity", JSON.stringify([]));
-    alert("🎉 48 HOURS POSTING REWARD! +10 coins. New balance: "+bal);
-  }
-  let chatStart=parseInt(localStorage.getItem("psx_chat_cycle_start")||"0");
-  let chatActs=JSON.parse(localStorage.getItem("psx_chat_activity")||"[]");
-  if(chatStart && now-chatStart>=48*60*60*1000 && chatActs.length>=10){
-    let bal=getBal()+2; setBal(bal);
-    localStorage.setItem("psx_chat_cycle_start", String(now)); localStorage.setItem("psx_chat_activity", JSON.stringify([]));
-    alert("🎉 48 HOURS CHATTING REWARD! +2 coins. New balance: "+bal);
-  }
-};
-window.addContribution=function(type, where){
-  if(type==="post") window.recordActivity("post");
-  if(type==="chat") window.recordActivity("chat");
-  let total=parseInt(localStorage.getItem("psx_points")||"0");
-  let room=parseInt(localStorage.getItem("psx_points_room")||"0");
-  let gen=parseInt(localStorage.getItem("psx_points_general")||"0");
-  let add=0; if(type==="post") add=5; if(type==="chat") add=2; if(type==="advert") add=20;
-  total+=add; if(where==="room") room+=add; else gen+=add;
-  localStorage.setItem("psx_points", total); localStorage.setItem("psx_points_room", room); localStorage.setItem("psx_points_general", gen);
-  return total;
-};
-window.addCoins=function(n){ return getBal(); };
-setInterval(()=>{ try{ window.check48HourReward(); }catch(e){} }, 5*60*1000);
-
-// ===== 5. 1000 COINS = 1 ADVERT FOR 7 DAYS + SECURITY =====
-window.checkVideoAndPost=function(file, callback){
-  if(window.isAdminBypass){ callback(true); return; }
-  if(!file){ callback(true); return; }
-  let url=URL.createObjectURL(file); let v=document.createElement("video"); v.preload="metadata"; v.src=url;
-  v.onloadedmetadata=function(){
-    let dur=v.duration; URL.revokeObjectURL(url);
-    if(dur<=30){ callback(true); return; }
-    let bal=getBal();
-    if(bal<1000){ alert("⛔ This video is "+Math.round(dur)+" secs (over 30s).\nYou need 1000 coins for 1 Advert for 7 days.\nYour balance: "+bal+" coins.\nPost under 30s FREE, or buy coins."); callback(false); return; }
-    if(!confirm("This video is "+Math.round(dur)+" secs (over 30s).\nThis will use 1000 coins for 1 Advert Slot for 7 DAYS.\nBalance after: "+(bal-1000)+" coins.\nContinue?")){ callback(false); return; }
-    setBal(bal-1000);
-    let slots=getSlots(); slots.push({start:Date.now(), expiry:Date.now()+7*24*60*60*1000, duration:dur}); saveSlots(slots);
-    alert("✅ Approved! 1000 coins used. Video runs for 7 days. After 7 days it expires, need new 1000 coins.");
-    callback(true);
-  };
-  v.onerror=function(){ callback(true); };
-};
-setInterval(()=>{ let s=getSlots(); let a=s.filter(x=>Date.now()<x.expiry); if(a.length!==s.length) saveSlots(a); },60000);
-let fileInput=document.querySelector('input[type="file"]#postFile') || document.querySelector('input[type="file"]');
-if(fileInput && !fileInput.dataset.sec){
-  fileInput.dataset.sec="1";
-  fileInput.addEventListener("change", function(){ let f=this.files[0]; if(f && f.type.startsWith("video/")){ window.checkVideoAndPost(f, function(ok){ if(!ok) fileInput.value=""; }); } });
-}
-
-// ===== 6. PROFILE PHOTO + RANK UI =====
-let profilePage=document.getElementById("page-profile");
-if(profilePage && !document.getElementById("photoUploadBox")){
-  let savedPic=""; try{ savedPic=JSON.parse(localStorage.getItem("psx_me")||"{}").photo||""; }catch(e){}
-  let box=document.createElement("div"); box.id="photoUploadBox";
-  box.style.cssText="background:#fff;padding:14px;border-radius:14px;margin:10px 0;text-align:center;border:2px solid #ffbd39";
-  box.innerHTML="<img id='myProfilePic' class='profilePic' src='"+(savedPic||"https://via.placeholder.com/90")+"'><br><b>Your Profile Photo</b><br><input type='file' id='photoInput' accept='image/*' style='margin-top:8px'><br><p style='font-size:12px;color:#666'>Choose photo, it saves automatically</p><div id='myRankBox' style='margin-top:8px'></div>";
-  profilePage.prepend(box);
-  document.getElementById("photoInput").addEventListener("change", function(){
-    let f=this.files[0]; if(!f) return;
-    let reader=new FileReader(); reader.onload=function(e){
-      let url=e.target.result; document.getElementById("myProfilePic").src=url;
-      let m=JSON.parse(localStorage.getItem("psx_me")||"{}"); m.photo=url; localStorage.setItem("psx_me", JSON.stringify(m));
-      alert("✅ Profile photo saved!"); renderRankUI();
-    }; reader.readAsDataURL(f);
-  });
-}
-function renderRankUI(){
-  let lvl=window.getMyLevel(); let r=window.getMyRankObj();
-  let pts=parseInt(localStorage.getItem("psx_points")||"0");
-  let room=parseInt(localStorage.getItem("psx_points_room")||"0");
-  let gen=parseInt(localStorage.getItem("psx_points_general")||"0");
-  let bal=getBal();
-  let box=document.getElementById("myRankBox"); if(!box) return;
-  let now=Date.now();
-  let postStart=parseInt(localStorage.getItem("psx_post_cycle_start")||"0");
-  let chatStart=parseInt(localStorage.getItem("psx_chat_cycle_start")||"0");
-  let postActs=JSON.parse(localStorage.getItem("psx_post_activity")||"[]");
-  let chatActs=JSON.parse(localStorage.getItem("psx_chat_activity")||"[]");
-  let postLeft=postStart?Math.max(0,Math.ceil((48*60*60*1000-(now-postStart))/3600000)):48;
-  let chatLeft=chatStart?Math.max(0,Math.ceil((48*60*60*1000-(now-chatStart))/3600000)):48;
-  let html="<span class='rankBadge'>"+r.icon+" Level "+lvl+"/15 - "+r.name+(window.isAdminBypass?" (OWNER - Highest)":"")+"</span><br><span style='font-size:12px'>Points: "+pts+" | Room: "+room+" | General: "+gen+" | Coins: 🪙 "+bal+"</span>";
-  if(!window.isAdminBypass){
-    if(lvl<5){ let cost=window.getBuyCost(lvl); html+="<br><button class='buyRankBtn' onclick='buyNextStage()'>💰 Buy Level "+(lvl+1)+" for "+cost+" Coins</button><div style='font-size:12px;color:#888'>500 -> 750 -> 1000 -> 1250. Max buy Level 5. Level 6+ must be earned.</div>"; }
-    else html+="<br><div style='font-size:12px;color:#888'>🔒 Buying stops at Level 5. Level 6+ needs BOTH Room + General points.</div>";
-    html+="<div style='background:#eaf6ff;border:1px solid #087fd2;border-radius:10px;padding:10px;margin-top:8px;font-size:12px;text-align:left'><b>⏰ 48-Hour Coin System</b><br>📝 Posting: "+postActs.length+"/3 posts • "+postLeft+"h left • Reward: <b>10 coins</b><br>💬 Chatting: "+chatActs.length+"/10 chats • "+chatLeft+"h left • Reward: <b>2 coins</b></div>";
-  }
-  box.innerHTML=html;
-  let mem=document.getElementById("roomMembers");
-  if(mem && window.isAdminBypass && !mem.textContent.includes("Planet King")) mem.textContent += " • 👑 Admin: 🌍👑 Planet King (Level 15 - Highest)";
-}
-renderRankUI(); setInterval(renderRankUI, 3000);
-let origSend=window.sendRoomMsg;
-window.sendRoomMsg=function(){ if(origSend) origSend(); if(!window.isAdminBypass) window.addContribution("chat","room"); };
-document.querySelectorAll("button").forEach(b=>{ if(b.textContent.includes("Post") && !b.dataset.rankHook){ b.dataset.rankHook="1"; b.addEventListener("click", ()=>{ if(!window.isAdminBypass){ window.recordActivity("post"); window.addContribution("post","general"); } }); } });
-window.PSX_COIN_PACKS=[
-  {coins:500, price:500, label:"500 Coins - ₦500"},
-  {coins:1000, price:1000, label:"1000 Coins - ₦1,000 (1 Advert Slot)"},
-  {coins:2000, price:2000, label:"2000 Coins - ₦2,000 (2 Slots)"},
-  {coins:5000, price:5000, label:"5000 Coins - ₦5,000"},
-  {coins:10000, price:10000, label:"10000 Coins - ₦10,000"}
-];
-window.selectedPack=window.PSX_COIN_PACKS[1];
-function getOrders(){ return JSON.parse(localStorage.getItem("psx_coin_orders")||"[]"); }
-function saveOrders(o){ localStorage.setItem("psx_coin_orders", JSON.stringify(o)); }
-function showBuyBox(){
-  let prof=document.getElementById("page-profile");
-  if(prof && !document.getElementById("buyCoinsBox") && !window.isAdminBypass){
-    let me={}; try{ me=JSON.parse(localStorage.getItem("psx_me")||"{}"); }catch(e){}
-    let div=document.createElement("div"); div.id="buyCoinsBox"; div.className="orderBox";
-    div.innerHTML="<b>💰 Buy Coins With Money</b><p style='font-size:12px'>1. Choose package 2. Place Order 3. Pay to Opay below 4. Send proof on WhatsApp 5. Owner confirms, you get coins.</p><div id='pkgList'></div><div class='payBox'><b>💳 PAY TO OPAY</b><br>Account Number: <b>"+OWNER_OPAY+"</b><br>Account Name: <b>"+OWNER_NAME+"</b><br>Bank: <b>Opay</b><br><span style='font-size:11px'>Copy number, pay, then send screenshot</span></div><div id='orderStatus'></div><button class='orderBtn' onclick='placeCoinOrder()'>🛒 PLACE ORDER</button><a id='waLink' class='waBtn' href='#' target='_blank' style='display:none'>📲 SEND PROOF TO OWNER ON WHATSAPP</a><p style='font-size:11px;color:#888;text-align:center'>Free coins from 48h activities are automatic - no waiting.</p>";
-    prof.appendChild(div);
-    let list=document.getElementById("pkgList");
-    window.PSX_COIN_PACKS.forEach((p,i)=>{ let b=document.createElement("button"); b.className="pkgBtn"+(i===1?" active":""); b.textContent=p.label; b.onclick=()=>{ window.selectedPack=p; document.querySelectorAll(".pkgBtn").forEach(x=>x.classList.remove("active")); b.classList.add("active"); }; list.appendChild(b); });
-    let myOrders=getOrders().filter(o=>o.user===(me.username||"") && o.status==="pending");
-    if(myOrders.length){ document.getElementById("orderStatus").innerHTML="<p style='color:#ff8a00;font-weight:800'>⏳ Pending: "+myOrders[0].coins+" Coins - ₦"+myOrders[0].price+" - Waiting for Owner.</p>"; let wa=document.getElementById("waLink"); wa.style.display="block"; wa.href="https://wa.me/"+OWNER_WHATSAPP+"?text="+encodeURIComponent("Hello Owner, I want to buy "+myOrders[0].coins+" Coins. Order ID: "+myOrders[0].id+". I have paid ₦"+myOrders[0].price+" to Opay "+OWNER_OPAY+" ("+OWNER_NAME+"). Here is my proof:"); }
-  }
-}
-showBuyBox();
-window.placeCoinOrder=function(){
-  let me={}; try{ me=JSON.parse(localStorage.getItem("psx_me")||"{}"); }catch(e){}
-  let orders=getOrders();
-  if(orders.find(o=>o.user===me.username && o.status==="pending")) return alert("You already have a pending order. Send proof on WhatsApp.");
-  let p=window.selectedPack; let order={id:"ORD-"+Date.now().toString().slice(-6), user:me.username||"Guest", name:me.name||me.username, coins:p.coins, price:p.price, status:"pending", time:new Date().toLocaleString()};
-  orders.push(order); saveOrders(orders);
-  alert("✅ ORDER PLACED! "+order.id+" - "+p.coins+" Coins - ₦"+p.price+"\n\nPAY TO:\nOpay: "+OWNER_OPAY+"\nName: "+OWNER_NAME+"\n\nThen tap SEND PROOF ON WHATSAPP.");
-  let wa=document.getElementById("waLink"); wa.style.display="block"; wa.href="https://wa.me/"+OWNER_WHATSAPP+"?text="+encodeURIComponent("Hello Owner, I want to buy "+p.coins+" Coins. Order ID: "+order.id+". I have paid ₦"+p.price+" to Opay "+OWNER_OPAY+" ("+OWNER_NAME+"). Here is my proof:");
-  document.getElementById("orderStatus").innerHTML="<p style='color:#ff8a00;font-weight:800'>⏳ Pending: "+p.coins+" Coins - ₦"+p.price+" - Pay to Opay "+OWNER_OPAY+" then send proof.</p>";
-  window.open(wa.href,"_blank");
-};
-window.renderAdminOrders=function(){
-  let list=document.getElementById("adminOrdersList"); if(!list) return;
-  let pending=getOrders().filter(o=>o.status==="pending");
-  if(!pending.length){ list.innerHTML="<p>No pending orders.</p>"; return; }
-  list.innerHTML=pending.map(o=>"<div style='border:1px solid #ddd;padding:10px;border-radius:10px;margin:6px 0'><b>"+o.id+" - "+o.name+" (@"+o.user+")</b><br>"+o.coins+" Coins - ₦"+o.price+"<br><span style='font-size:12px;color:#666'>"+o.time+" - Check WhatsApp for proof. Opay: "+OWNER_OPAY+"</span><br><button onclick=\"confirmCoinOrder('"+o.id+"')\" style='background:#00c853;color:#fff;border:0;padding:10px;border-radius:8px;font-weight:900;margin-top:6px;width:100%'>✅ CONFIRM - GIVE "+o.coins+" COINS</button><button onclick=\"rejectCoinOrder('"+o.id+"')\" style='background:#e34c5c;color:#fff;border:0;padding:8px;border-radius:8px;margin-top:4px;width:100%'>❌ Reject</button></div>").join("");
-};
-window.confirmCoinOrder=function(id){ let orders=getOrders(); let o=orders.find(x=>x.id===id); if(!o) return; let ledger=JSON.parse(localStorage.getItem("psx_coin_ledger")||"{}"); ledger[o.user]=(ledger[o.user]||0)+o.coins; localStorage.setItem("psx_coin_ledger", JSON.stringify(ledger)); o.status="confirmed"; saveOrders(orders); alert("✅ Confirmed! "+o.user+" gets "+o.coins+" coins."); window.renderAdminOrders(); };
-window.rejectCoinOrder=function(id){ let orders=getOrders(); let o=orders.find(x=>x.id===id); if(!o) return; o.status="rejected"; saveOrders(orders); window.renderAdminOrders(); };
-function showAdminOrders(){ let ap=document.getElementById("page-admin"); if(!ap || !window.isAdminBypass) return; if(document.getElementById("adminOrdersBox")) return; let div=document.createElement("div"); div.id="adminOrdersBox"; div.className="orderBox"; div.innerHTML="<b>🧾 Coin Orders - Waiting For You</b><div>Your Opay: <b>"+OWNER_OPAY+" - "+OWNER_NAME+"</b></div><div id='adminOrdersList'></div><p style='font-size:11px;color:#888'>Free 48h coins are automatic - you do NOT confirm those.</p>"; ap.prepend(div); window.renderAdminOrders(); }
-try{ let me=JSON.parse(localStorage.getItem("psx_me")||"{}"); let ledger=JSON.parse(localStorage.getItem("psx_coin_ledger")||"{}"); if(me.username && ledger[me.username]){ let add=ledger[me.username]; delete ledger[me.username]; localStorage.setItem("psx_coin_ledger", JSON.stringify(ledger)); let bal=getBal()+add; setBal(bal); setTimeout(()=>alert("🎉 Owner confirmed your payment! +"+add+" coins. New balance: "+bal),1000); } }catch(e){}
-let origOpen=window.openPage; if(origOpen){ window.openPage=function(p){ origOpen(p); if(p==="admin") setTimeout(showAdminOrders,300); }; }
-setTimeout(showAdminOrders,1500);
-window.check48HourReward();
-},1200);
-</script>
-  <!-- ===== PLANETSURFX ONLY CODE - NO POPUP ===== -->
-<style>
-/* Frontpage: hide floating pills */
-body:not(.psx-inside) .psx-fab { display: none !important; }
-</style>
-<script>
-const OWNER_USER = "Fieldmarshal";
-const OWNER_PASS = "Nigerian123"; // your normal password inside " "
-
-function psxIsInside(){
-  return localStorage.getItem('psx_logged_in') === 'Fieldmarshal';
-}
-
-function psxHideLoginForever(){
-  if(!psxIsInside()) return;
-  document.body.classList.add('psx-inside');
-  // Remove EVERY Welcome back box, even if original code re-creates it
-  document.querySelectorAll('*').forEach(el=>{
-    if(el.innerText && el.innerText.trim().startsWith('Welcome back!')){
-      let box = el;
-      for(let i=0;i<5;i++){ if(box.parentElement) box = box.parentElement; }
-      if(box && box.tagName !== 'BODY' && box.tagName !== 'HTML') box.style.display = 'none';
-    }
-  });
-  // Hide floating pills if they are on frontpage - show only inside after login
-  // After we are inside, we DO want them, so don't hide here
-  let app = document.getElementById('app') || document.getElementById('dashboard') || document.getElementById('main');
-  if(app) app.style.display = 'block';
-  window.scrollTo(0,0);
-}
-
-// 1. Watch for login - NO alert, NO reload
-document.addEventListener('click', function(e){
-  let t = (e.target.innerText || '').trim().toLowerCase();
-  if(t === 'sign in'){
-    let inputs = document.querySelectorAll('input');
-    // Find the inputs that are actually visible - not the hidden duplicate
-    let visible = Array.from(inputs).filter(i => i.offsetParent !== null);
-    let typedUser = visible[0] ? visible[0].value.trim() : '';
-    let typedPass = visible[1] ? visible[1].value : '';
-    if(typedUser.toLowerCase() === OWNER_USER.toLowerCase() && typedPass === OWNER_PASS){
-      localStorage.setItem('n', 'Fieldmarshal');
-      localStorage.setItem('admin', '1');
-      localStorage.setItem('psx_logged_in', 'Fieldmarshal');
-      // Go inside straight away, no popup to block it
-      psxHideLoginForever();
-    }
-  }
-});
-
-// 2. Watcher - if original code tries to bring login back, hide it again every 500ms
-setInterval(psxHideLoginForever, 500);
-
-// 3. If you refresh and you are already logged in, go straight inside
-if(psxIsInside()){
-  setTimeout(psxHideLoginForever, 500);
-}
-
-// 4. Frontpage: hide floating pills (Meetings / Encyclopedia) until inside
-function psxHideFloats(){
-  if(psxIsInside()) return; // inside = show them
-  document.querySelectorAll('button, div, a').forEach(el=>{
-    let txt = (el.innerText||'').trim();
-    if(txt === 'Meetings' || txt === 'Encyclopedia' || txt.includes('PlanetSurfX AI')){
-      if(el.offsetHeight < 60 && el.offsetWidth > 80){
-        el.style.display = 'none';
-      }
-    }
-  });
-}
-setInterval(psxHideFloats, 800);
-</script>
-<!-- ===== END ONLY CODE ===== -->
-</body>
-</html>
+</body></html>
