@@ -795,7 +795,7 @@ async function askPlanetSurfXAI() {
       body: JSON.stringify({ model: "gpt-4o-mini", messages: [{ role: "user", content: question + (file ? " [User uploaded file: " + file.name + "]" : "") }] })
     });
     let data = await res.json();
-    let reply = data.choices && data.choices[0] ? data.choices[0].message.content : "No reply from AI.";
+    let reply = data.choices && data.choices[0] && data.choices[0].message ? data.choices[0].message.content : "AI Error: " + (data.error ? data.error.message : JSON.stringify(data).slice(0,300));
     let th = document.querySelector("#aiThinking"); if (th) th.remove();
     chatBox.innerHTML += "<div style='margin:6px; background:#f0f0f0; padding:8px; border-radius:8px;'><b>PlanetSurfX AI:</b> " + reply + "</div>";
   } catch(e) {
