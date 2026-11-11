@@ -537,4 +537,65 @@ document.addEventListener("DOMContentLoaded", function() {
 <!-- <img id="profilePhoto" src="default-avatar.png" width="100" height="100" style="border-radius:50%; object-fit:cover;" /> -->
 <!-- <input type="file" id="profilePhotoInput" accept="image/*" style="display:block; margin-top:8px;" /> -->
 <!-- <p style="font-size:12px;">Tap photo or choose file to change profile photo</p> -->
+<!-- PlanetSurfX - LANGUAGE SWITCHER - ADD ONLY - DOES NOT TOUCH LOGIN -->
+<!-- Paste this JUST ABOVE </body>, below No.1, 2, 3 -->
+<script>
+// ===== LANGUAGE SWITCHER - ONLY RUNS IF SWITCHER EXISTS =====
+
+const PLANETSURFX_LANGS = {
+  en: { name: "English", home: "Home", post: "Post", chat: "Chat", profile: "Profile", coins: "Coins", stage: "Stage", meeting: "Meeting", ai: "AI Assistant", advert: "Advert", upload: "Upload", send: "Send", login: "Login" },
+  fr: { name: "Français", home: "Accueil", post: "Publier", chat: "Discussion", profile: "Profil", coins: "Pièces", stage: "Niveau", meeting: "Réunion", ai: "Assistant IA", advert: "Publicité", upload: "Télécharger", send: "Envoyer", login: "Connexion" },
+  es: { name: "Español", home: "Inicio", post: "Publicar", chat: "Chat", profile: "Perfil", coins: "Monedas", stage: "Nivel", meeting: "Reunión", ai: "Asistente IA", advert: "Anuncio", upload: "Subir", send: "Enviar", login: "Iniciar sesión" },
+  pt: { name: "Português", home: "Início", post: "Publicar", chat: "Conversa", profile: "Perfil", coins: "Moedas", stage: "Nível", meeting: "Reunião", ai: "Assistente IA", advert: "Anúncio", upload: "Carregar", send: "Enviar", login: "Entrar" },
+  ha: { name: "Hausa", home: "Gida", post: "Buga", chat: "Hira", profile: "Bayani", coins: "Tsabar Kudi", stage: "Mataki", meeting: "Taro", ai: "Mataimakin AI", advert: "Talla", upload: "Loda", send: "Aika", login: "Shiga" },
+  yo: { name: "Yorùbá", home: "Ilé", post: "Firanṣẹ", chat: "Ìbánisọ̀rọ̀", profile: "Profaili", coins: "Owó", stage: "Ipele", meeting: "Ipade", ai: "Oluranlọwọ AI", advert: "Ipolowo", upload: "Gbejade", send: "Firanṣẹ", login: "Wọlé" },
+  ig: { name: "Igbo", home: "Ụlọ", post: "Bipụta", chat: "Nkàta", profile: "Profaịlụ", coins: "Mkpụrụ ego", stage: "Ọkwa", meeting: "Nzukọ", ai: "Onye enyemaka AI", advert: "Mgbasa ozi", upload: "Bulite", send: "Zipu", login: "Banye" },
+  pcm: { name: "Pidgin", home: "House", post: "Post Am", chat: "Chat", profile: "Profile", coins: "Coins", stage: "Level", meeting: "Meeting", ai: "AI Helper", advert: "Advert", upload: "Upload", send: "Send", login: "Login" }
+};
+
+function getCurrentLang() {
+  return localStorage.getItem("planetsurfx_lang") || "en";
+}
+function setLang(lang) {
+  if (!PLANETSURFX_LANGS[lang]) lang = "en";
+  localStorage.setItem("planetsurfx_lang", lang);
+  applyLang(lang);
+}
+function applyLang(lang) {
+  let t = PLANETSURFX_LANGS[lang] || PLANETSURFX_LANGS.en;
+  // Only change elements that have data-translate - if none, do nothing
+  // This keeps login safe - login page has no data-translate unless you add it
+  document.querySelectorAll("[data-translate]").forEach(function(el) {
+    let key = el.getAttribute("data-translate");
+    if (t[key]) el.textContent = t[key];
+  });
+  // Update switcher value if exists
+  let sel = document.querySelector("#languageSwitcher");
+  if (sel) sel.value = lang;
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+  let sel = document.querySelector("#languageSwitcher");
+  if (!sel) return; // No switcher on this page (e.g. Login) - do nothing, login safe
+  sel.value = getCurrentLang();
+  applyLang(getCurrentLang());
+  sel.addEventListener("change", function() {
+    setLang(sel.value);
+  });
+});
+</script>
+<!-- END PlanetSurfX LANGUAGE SWITCHER - SAFE FOR LOGIN -->
+
+<!-- OPTIONAL: Add this WHERE you want the switcher - in Home / Menu, NOT in Login page -->
+<!-- <select id="languageSwitcher" style="padding:8px; border-radius:8px;"> -->
+<!--   <option value="en">English</option> -->
+<!--   <option value="fr">Français</option> -->
+<!--   <option value="es">Español</option> -->
+<!--   <option value="pt">Português</option> -->
+<!--   <option value="ha">Hausa</option> -->
+<!--   <option value="yo">Yorùbá</option> -->
+<!--   <option value="ig">Igbo</option> -->
+<!--   <option value="pcm">Pidgin</option> -->
+<!-- </select> -->
+<!-- EXAMPLE of how to make words change: <span data-translate="home">Home</span> <span data-translate="post">Post</span> -->
 </body></html>
