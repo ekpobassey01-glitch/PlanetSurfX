@@ -999,5 +999,96 @@ setTimeout(()=>{
   }
 }, 1500);
 </script>
+  <!-- ===== PLANETSURFX ONE CODE: LOGIN + FLOATING ICONS ===== -->
+<style>
+/* 1. FRONTPAGE MUST BE CLEAN - Hide floating icons by default */
+.psx-fab, .floating-btn, .float-menu { display: none !important; }
+body.psx-inside .psx-fab, body.psx-inside .floating-btn, body.psx-inside .float-menu { display: flex !important; }
+</style>
+<script>
+/* ===== PART A: YOUR LOGIN ===== */
+const OWNER_USER = "Fieldmarshal";
+const OWNER_PASS = "Nigerian123"; // <-- delete this, type your normal password here inside " "
+
+/* ===== PART B: WHEN YOU TAP SIGN IN ===== */
+document.addEventListener('click', function(e){
+  let btnText = (e.target.innerText || '').trim().toLowerCase();
+  if(btnText === 'sign in' || btnText === 'admin sign in'){
+    let inputs = document.querySelectorAll('input');
+    let typedUser = inputs[0] ? inputs[0].value.trim() : '';
+    let typedPass = inputs[1] ? inputs[1].value : '';
+
+    if(typedUser.toLowerCase() === OWNER_USER.toLowerCase() && typedPass === OWNER_PASS){
+      localStorage.setItem('n', 'Fieldmarshal');
+      localStorage.setItem('admin', '1');
+      localStorage.setItem('psx_logged_in', 'Fieldmarshal');
+      alert('✅ Welcome OWNER Fieldmarshal - ADMIN UNLIMITED');
+      // Go inside immediately - don't reload
+      setTimeout(psxGoInside, 300);
+    }
+  }
+});
+
+/* ===== PART C: GO INSIDE FUNCTION ===== */
+function psxGoInside(){
+  // 1. Delete login box completely so it can't block dashboard
+  document.querySelectorAll('*').forEach(el=>{
+    if(el.innerText && el.innerText.trim().startsWith('Welcome back!')){
+      let box = el;
+      for(let i=0;i<4;i++){ if(box.parentElement) box = box.parentElement; }
+      if(box) box.remove();
+    }
+  });
+  // 2. Mark body as INSIDE - this shows floating icons + dashboard
+  document.body.classList.add('psx-inside');
+  document.body.classList.add('logged-in');
+  // 3. Show dashboard if it was hidden
+  let app = document.getElementById('app') || document.getElementById('dashboard') || document.getElementById('main');
+  if(app) app.style.display = 'block';
+  // 4. Show green bar at top
+  if(!document.getElementById('psxInsideBar')){
+    let bar = document.createElement('div');
+    bar.id = 'psxInsideBar';
+    bar.style = 'background:#16a34a;color:white;padding:12px;text-align:center;font-weight:bold;position:fixed;top:0;left:0;right:0;z-index:99999';
+    bar.innerHTML = '✅ You are INSIDE as Fieldmarshal 👑 - ADMIN UNLIMITED';
+    document.body.prepend(bar);
+  }
+  window.scrollTo(0,0);
+}
+
+/* ===== PART D: KEEP FRONTPAGE CLEAN / INSIDE CLEAN ===== */
+function psxCheckPage(){
+  let isInside = localStorage.getItem('admin')==='1' && localStorage.getItem('n')==='Fieldmarshal';
+  let loginStillThere = false;
+  document.querySelectorAll('*').forEach(el=>{
+    if(el.innerText && el.innerText.trim().startsWith('Welcome back!') && el.offsetParent !== null){
+      loginStillThere = true;
+    }
+  });
+
+  if(isInside && !loginStillThere){
+    // You are INSIDE - show floating icons
+    document.body.classList.add('psx-inside');
+  } else {
+    // You are on FRONTPAGE - hide floating icons
+    document.body.classList.remove('psx-inside');
+    document.querySelectorAll('button, div, a').forEach(el=>{
+      let t = (el.innerText||'').trim();
+      if(t.includes('PlanetSurfX AI') || t === 'Meetings' || t === 'Encyclopedia'){
+        if(el.offsetWidth > 100 && el.offsetHeight < 60){
+          el.style.display = 'none';
+        }
+      }
+    });
+  }
+  // If you are already logged in, auto-go inside
+  if(isInside && loginStillThere){
+    psxGoInside();
+  }
+}
+setInterval(psxCheckPage, 1000);
+setTimeout(psxCheckPage, 800);
+</script>
+<!-- ===== END ONE CODE ===== -->
 </body>
 </html>
