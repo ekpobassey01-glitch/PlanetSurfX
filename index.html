@@ -253,4 +253,113 @@ setTimeout(()=>{
   }
 },1000);
 </script>
+  <!-- PlanetSurfX - 1000 COINS PER ADVERT - ADD ONLY - DOES NOT TOUCH LOGIN -->
+<!-- Paste this JUST ABOVE </body> -->
+<script>
+// ===== DO NOT EDIT LOGIN - THIS ONLY RUNS ON POST BUTTON =====
+
+// 1. Get user coins from storage - if no coins yet, start at 0
+function getUserCoins() {
+  let coins = localStorage.getItem("planetsurfx_coins");
+  if (!coins) return 0;
+  return parseInt(coins);
+}
+function saveUserCoins(coins) {
+  localStorage.setItem("planetsurfx_coins", coins);
+}
+
+// 2. Check if user is Admin - Admin has unlimited access
+function isAdminUser() {
+  // Change this to how you check admin in your app
+  // For now: if stored user is admin, or username is Fieldmarshal
+  let user = localStorage.getItem("planetsurfx_user");
+  if (!user) return false;
+  user = JSON.parse(user);
+  if (user.isAdmin === true) return true;
+  if (user.username === "Fieldmarshal" || user.username === "Admin") return true;
+  return false;
+}
+
+// 3. Check 7 days rule for same advert
+function canRepostThisAdvert(videoId) {
+  let last = localStorage.getItem("planetsurfx_last_" + videoId);
+  if (!last) return { allowed: true };
+  let daysPassed = (Date.now() - parseInt(last)) / (1000 * 60 * 60 * 24);
+  if (daysPassed < 7) {
+    return { allowed: false, daysLeft: Math.ceil(7 - daysPassed) };
+  }
+  return { allowed: true };
+}
+
+// 4. MAIN CHECK - Runs ONLY when Post button is clicked
+function checkAdvertBeforePosting(videoDurationInSeconds, videoId) {
+  // Admin - no check at all
+  if (isAdminUser()) {
+    return { allowed: true, message: "Admin - unlimited, posting allowed" };
+  }
+
+  // 30 secs or less = FREE
+  if (videoDurationInSeconds <= 30) {
+    return { allowed: true, message: "Free - 30 secs or less" };
+  }
+
+  // More than 30 secs = needs 1000 coins
+  let coins = getUserCoins();
+
+  // 7 days check
+  let repost = canRepostThisAdvert(videoId || "general");
+  if (!repost.allowed) {
+    return { allowed: false, message: "This advert cannot be posted again until 7 days pass. " + repost.daysLeft + " days left." };
+  }
+
+  if (coins < 1000) {
+    return { allowed: false, message: "You need 1,000 coins to post advert/video over 30 secs. You have " + coins + " coins." };
+  }
+
+  // Deduct 1000 coins for THIS ONE advert
+  saveUserCoins(coins - 1000);
+  localStorage.setItem("planetsurfx_last_" + (videoId || "general"), Date.now().toString());
+  return { allowed: true, message: "1,000 coins deducted. You now have " + (coins - 1000) + " coins. Advert allowed." };
+}
+
+// 5. Attach to your Post button AUTOMATICALLY - does not touch login button
+document.addEventListener("DOMContentLoaded", function() {
+  // Find your post button - it looks for common names, change if yours is different
+  let postBtn = document.querySelector("#postBtn") 
+             || document.querySelector("#postAdvertBtn") 
+             || document.querySelector("#uploadBtn") 
+             || document.querySelector("[data-post]");
+
+  if (!postBtn) {
+    // No post button on this page (e.g. Login page) - do NOTHING, login is safe
+    return;
+  }
+
+  postBtn.addEventListener("click", function(e) {
+    // Get video duration from your input - change IDs if yours are different
+    let durationInput = document.querySelector("#videoDuration");
+    let duration = durationInput ? parseInt(durationInput.value) : 0;
+    let videoIdInput = document.querySelector("#videoId");
+    let videoId = videoIdInput ? videoIdInput.value : "general";
+
+    // If no duration entered, ask user - or set to 0 to mean free
+    if (!duration) {
+      // If you don't have duration input, this will treat as free - change as needed
+      // To test 1000 coins rule, type a number like 45 in #videoDuration
+    }
+
+    let result = checkAdvertBeforePosting(duration, videoId);
+    if (!result.allowed) {
+      e.preventDefault();
+      e.stopPropagation();
+      alert(result.message);
+      return false;
+    } else {
+      // Allowed - let your normal posting continue
+      console.log(result.message);
+    }
+  });
+});
+</script>
+<!-- END PlanetSurfX 1000 COINS - SAFE FOR LOGIN -->
 </body></html>
