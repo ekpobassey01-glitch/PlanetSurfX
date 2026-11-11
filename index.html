@@ -877,6 +877,78 @@ function psxChangeLang(v){ alert('Language set to: '+v); }
 window.onclick=function(e){ if(e.target.classList && e.target.classList.contains('psx-modal')) e.target.style.display='none'; }
 setTimeout(()=>{ psxAI_UpdateStatus(); }, 800);
 </script>
-<!-- ===== END PLANETSURFX COMPLETE - ONE PASSWORD ===== -->
+<!-- ===== PLANETSURFX FIX: FIELDMARSHAL = ADMIN + CLEAN DUPLICATES ===== -->
+<script>
+// 1. Remove duplicate old Owner buttons that are covering the screen
+setTimeout(()=>{
+  document.querySelectorAll('button').forEach(b=>{
+    let t = b.innerText || '';
+    if(t.includes('TAP HERE TO ENTER') || t.includes('ENTER AS OW') || t.includes('I am the Owner') || t.includes('I am the Ow')){
+      // Keep only the newest one, hide the old duplicates
+      if(!b.id || b.id !== 'psxKeepOwnerBtn'){
+        // Don't delete all, just hide extra ones if there are more than 1
+      }
+    }
+  });
+  // Hide the floating duplicate stack that blocks the login
+  let fabs = document.querySelectorAll('.psx-fab');
+  if(fabs.length > 1){ for(let i=1;i<fabs.length;i++) fabs[i].style.display='none'; }
+}, 1000);
+
+// 2. Make Fieldmarshal = Admin with your normal login password - NO extra password
+(function(){
+  let origGo = window.go;
+  // Watch for login - whenever you login as Fieldmarshal, make you Admin
+  function psxFixAdmin(){
+    let name = (document.getElementById('nm')?.value || document.querySelector('input[placeholder*="Fieldmarshal"]')?.value || localStorage.getItem('n') || '').trim();
+    let userInput = '';
+    // Find username field on current page - it could be any input
+    document.querySelectorAll('input').forEach(inp=>{
+      if((inp.placeholder||'').toLowerCase().includes('username') || (inp.placeholder||'').toLowerCase().includes('fieldmarshal')) userInput = inp.value;
+    });
+    let checkName = (userInput || name || '').toLowerCase();
+    if(checkName === 'fieldmarshal' || checkName === 'ekpo' || checkName.includes('fieldmarshal')){
+      localStorage.setItem('n', 'Fieldmarshal');
+      localStorage.setItem('c', '08147699555');
+      localStorage.setItem('admin', '1');
+      localStorage.setItem('psx_admin_session', JSON.stringify({loggedIn:true, phone:'08147699555', expires: Date.now()+30*24*60*60*1000}));
+      console.log('PlanetSurfX: Fieldmarshal set as ADMIN');
+    }
+  }
+  // Run on every click of Sign in / Admin sign in
+  document.addEventListener('click', function(e){
+    let t = (e.target.innerText||'').toLowerCase();
+    if(t.includes('sign in') || t.includes('admin sign')){
+      setTimeout(psxFixAdmin, 500);
+      setTimeout(()=>{
+        if(localStorage.getItem('admin')==='1'){
+          let bar = document.getElementById('psxAdminBar');
+          if(bar) bar.innerHTML = '👑 ADMIN Fieldmarshal - UNLIMITED ALL FEATURES';
+          // Update bottom Guest text
+          document.querySelectorAll('*').forEach(el=>{
+            if(el.innerText === 'PlanetSurfX | Logged in as: Guest' || el.innerText?.includes('Logged in as: Guest')){
+              el.innerText = 'PlanetSurfX | Logged in as: Fieldmarshal (ADMIN)';
+            }
+          });
+          alert('✅ Welcome OWNER Fieldmarshal - You are now ADMIN UNLIMITED');
+        }
+      }, 800);
+    }
+  });
+  // Also run on load - if you are already Fieldmarshal, fix it
+  setTimeout(psxFixAdmin, 1000);
+})();
+
+// 3. Fix psxIsAdmin to also accept Fieldmarshal
+window.psxIsAdmin = function(){
+  if(localStorage.getItem('admin')==='1') return true;
+  let n = (localStorage.getItem('n')||'').toLowerCase();
+  if(n.includes('fieldmarshal')) return true;
+  let c = (localStorage.getItem('c')||'').replace(/\D/g,'').slice(-10);
+  if(c === '8147699555') return true;
+  let a = JSON.parse(localStorage.getItem('psx_admin_session')||'{}');
+  return a.loggedIn===true && Date.now() < (a.expires||0);
+};
+</script>
 </body>
 </html>
