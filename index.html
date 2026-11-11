@@ -572,5 +572,75 @@ setTimeout(showAdminOrders,1500);
 window.check48HourReward();
 },1200);
 </script>
+  <!-- ===== PLANETSURFX: FLOATING BUTTONS - PASTE BEFORE </body> - WILL NOT ALTER YOUR SITE ===== -->
+<style>
+.psx-float{position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;flex-direction:column;gap:10px;font-family:Arial,sans-serif}
+.psx-float button{border:0;border-radius:30px;padding:12px 16px;font-weight:bold;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,.3);font-size:14px}
+.psx-float-lang{background:#fff;color:#000;border:1px solid #ddd !important}
+.psx-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:10000;justify-content:center;align-items:flex-start;overflow:auto;padding:20px}
+.psx-box{background:#fff;color:#000;width:100%;max-width:650px;border-radius:14px;padding:20px;margin-top:40px;font-family:Arial,sans-serif}
+.psx-box input,.psx-box select{width:100%;padding:12px;margin:8px 0;border:1px solid #ccc;border-radius:10px;box-sizing:border-box}
+.psx-box button{width:100%;padding:12px;border:0;border-radius:10px;background:#0a3d62;color:#fff;font-weight:bold;cursor:pointer;margin-top:8px}
+.psx-close{float:right;cursor:pointer;font-size:22px}
+#psxMeetFrame{width:100%;height:500px;border:0;border-radius:12px;display:none;margin-top:12px}
+</style>
+
+<!-- FLOATING BUTTONS - Bottom Right Corner Only -->
+<div class="psx-float">
+  <select class="psx-float-lang" id="psxLang" onchange="psxChangeLang(this.value)" title="Change Language">
+    <option value="en">🌐 English</option>
+    <option value="fr">Français</option>
+    <option value="es">Español</option>
+    <option value="pt">Português</option>
+    <option value="yo">Yoruba</option>
+    <option value="ha">Hausa</option>
+    <option value="ig">Igbo</option>
+    <option value="pcm">Pidgin</option>
+  </select>
+  <button style="background:#00b894;color:#fff" onclick="psxOpen('psxMeetModal')">📹 Meetings</button>
+  <button style="background:#0a3d62;color:#fff" onclick="psxOpen('psxWikiModal')">📚 Encyclopedia</button>
+</div>
+<div id="psxMeetModal" class="psx-modal"><div class="psx-box">
+  <span class="psx-close" onclick="psxClose('psxMeetModal')">×</span>
+  <h2>📹 Create Meeting - No Time Limit</h2>
+  <p>Convener sets the time. Share the link with anyone.</p>
+  <input id="psxMeetTitle" placeholder="Meeting Title e.g. Surf Meetup Bali">
+  <input id="psxMeetDate" type="date">
+  <input id="psxMeetTime" type="time">
+  <select id="psxMeetDuration">
+    <option value="0">No End Time - Convener decides</option>
+    <option value="30">30 mins</option>
+    <option value="60">60 mins</option>
+    <option value="120">2 hours</option>
+  </select>
+  <input id="psxMeetInvite" placeholder="Invite emails, comma separated">
+  <button onclick="psxCreateMeeting()">Create Meeting Link</button>
+  <div id="psxMeetLink" style="margin-top:12px;word-break:break-all;background:#f1f1f1;padding:12px;border-radius:10px;display:none"></div>
+  <button id="psxJoinBtn" style="display:none;background:#00b894" onclick="psxJoinMeeting()">▶ Start / Join Meeting Now - Screen Share, Audio, Chat Inside</button>
+  <iframe id="psxMeetFrame" allow="camera; microphone; fullscreen; display-capture"></iframe>
+  <p style="font-size:13px;color:#555">Features: Screen Sharing, Audio, Video, Text Chat, Raise Hand, Reactions, Recording. No time limit.</p>
+</div></div>
+
+<!-- ENCYCLOPEDIA POPUP -->
+<div id="psxWikiModal" class="psx-modal"><div class="psx-box">
+  <span class="psx-close" onclick="psxClose('psxWikiModal')">×</span>
+  <h2>📚 PlanetSurfX Encyclopedia / World Dictionary</h2>
+  <p>Ask anything or search any word. It will answer you.</p>
+  <input id="psxAskInput" placeholder="Ask anything... e.g. What is photosynthesis? What is Ubuntu?">
+  <button onclick="psxAsk()">Ask / Search</button>
+  <div id="psxAskAnswer" style="margin-top:14px;line-height:1.6"></div>
+</div></div>
+
+<script>
+const psxTrans={en:{join:"Join Now",explore:"Explore"},fr:{join:"Rejoindre",explore:"Explorer"},es:{join:"Unirse",explore:"Explorar"},pt:{join:"Juntar-se",explore:"Explorar"},yo:{join:"Darapọ̀",explore:"Ṣawari"},ha:{join:"Shiga",explore:"Bincika"},ig:{join:"Sonye",explore:"Chọgharịa"},pcm:{join:"Join Now",explore:"Explore"}};
+function psxChangeLang(lang){localStorage.setItem('psx_lang',lang);alert('Language changed to: '+document.getElementById('psxLang').options[document.getElementById('psxLang').selectedIndex].text);document.querySelectorAll('[data-i18n]').forEach(el=>{let k=el.getAttribute('data-i18n');if(psxTrans[lang]&&psxTrans[lang][k]) el.textContent=psxTrans[lang][k];});}
+function psxOpen(id){document.getElementById(id).style.display='flex';}
+function psxClose(id){document.getElementById(id).style.display='none';}
+let psxCurrentRoom='';
+function psxCreateMeeting(){let title=document.getElementById('psxMeetTitle').value||'PlanetSurfX Meeting';let date=document.getElementById('psxMeetDate').value;let time=document.getElementById('psxMeetTime').value;let dur=document.getElementById('psxMeetDuration').value;psxCurrentRoom='PSX-'+title.replace(/[^a-zA-Z0-9]/g,'-')+'-'+Date.now().toString().slice(-5);let link=location.origin+'/meet/'+psxCurrentRoom+'?date='+date+'&time='+time+'&duration='+dur;let box=document.getElementById('psxMeetLink');box.style.display='block';box.innerHTML='<b>Your Meeting Link - Copy and send to people you invite:</b><br>'+link+'<br><br><b>Date:</b> '+date+' <b>Time:</b> '+time+' <b>Duration:</b> '+(dur=='0'?'No End Time - You decide':dur+' mins');document.getElementById('psxJoinBtn').style.display='block';if(navigator.clipboard) navigator.clipboard.writeText(link);}
+function psxJoinMeeting(){let f=document.getElementById('psxMeetFrame');f.style.display='block';f.src='https://meet.jit.si/'+psxCurrentRoom;f.scrollIntoView();}
+async function psxAsk(){let q=document.getElementById('psxAskInput').value.trim();if(!q) return alert('Type something to ask');let ans=document.getElementById('psxAskAnswer');ans.innerHTML='Searching...';try{let wiki=await fetch('https://en.wikipedia.org/api/rest_v1/page/summary/'+encodeURIComponent(q)).then(r=>r.json());if(wiki&&wiki.extract){ans.innerHTML='<h3>'+wiki.title+'</h3><p>'+wiki.extract+'</p>'+(wiki.thumbnail?'<img src="'+wiki.thumbnail.source+'" style="max-width:100%;border-radius:10px">':'')+'<p><a href="'+(wiki.content_urls?.desktop?.page||'#')+'" target="_blank">Read more on Wikipedia</a></p>';return;}}catch(e){}try{let dict=await fetch('https://api.dictionaryapi.dev/api/v2/entries/en/'+encodeURIComponent(q)).then(r=>r.json());if(dict&&dict[0]&&dict[0].meanings){ans.innerHTML='<h3>'+q+'</h3><p><b>Meaning:</b> '+dict[0].meanings[0].definitions[0].definition+'</p><p><b>Example:</b> '+(dict[0].meanings[0].definitions[0].example||' - ')+'</p>';return;}}catch(e){}ans.innerHTML='Sorry, no answer found for "'+q+'". Try another word, e.g. Nigeria, Water, Love, Computer.';}
+window.onclick=function(e){if(e.target.classList&&e.target.classList.contains('psx-modal')) e.target.style.display='none';}
+</script>
 </body>
 </html>
