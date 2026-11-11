@@ -416,7 +416,7 @@ function isAdminStage() {
 // Show stage badge - does nothing on login page if no badge element
 function showStageBadge() {
   // Admin is always highest
-  let level = isAdminStage() ? 15 : getUserStage();
+  let me = localStorage.getItem("psx_me") || ""; let level = (typeof isOwner === "function" && isOwner(me)) || isAdminStage() ? 15 : getUserStage();
   let stage = PLANETSURFX_STAGES[level - 1];
   let badge = document.querySelector("#stageBadge") || document.querySelector("#crownBadge") || document.querySelector("#userStage");
   if (!badge) return; // No badge on this page (e.g. Login) - do nothing, login safe
