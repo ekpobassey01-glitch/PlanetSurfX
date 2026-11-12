@@ -1748,4 +1748,109 @@ psxLoadFeed();
 })();
 </script>
 <!-- ===== END V11 ===== -->
+<!-- ===== V13 FULL SCREEN FEED + 2 MENUS ===== -->
+<style>
+  /* On phone: hide left + right sidebars, show only feed full width */
+  @media (max-width: 900px){
+    /* Hide the 3-column layout, force 1 column */
+    body { overflow-x:hidden; }
+  }
+  .fb13-top { position:fixed; top:0; left:0; right:0; height:52px; background:#1877F2; color:#fff; display:flex; align-items:center; justify-content:space-between; padding:0 12px; z-index:99990; font-weight:bold; }
+  .fb13-ham { font-size:24px; background:none; border:none; color:#fff; cursor:pointer; }
+  .fb13-refresh { background:#fff; color:#1877F2; border:none; padding:6px 12px; border-radius:20px; font-weight:bold; cursor:pointer; }
+  .fb13-drawer { position:fixed; top:0; left:-280px; width:260px; bottom:0; background:#fff; z-index:99999; transition:left 0.3s; overflow-y:auto; padding:14px; box-shadow:2px 0 20px rgba(0,0,0,0.3); }
+  .fb13-drawer.open { left:0; }
+  .fb13-overlay-bg { position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.4); z-index:99998; display:none; }
+  .fb13-overlay-bg.show { display:block; }
+  .fb13-menu-title { font-size:13px; color:#888; margin:16px 0 6px; text-transform:uppercase; font-weight:bold; }
+  .fb13-item { display:block; width:100%; text-align:left; background:none; border:none; padding:11px 8px; font-size:16px; border-radius:8px; cursor:pointer; }
+  .fb13-item:hover { background:#f0f2f5; }
+  .fb13-close { float:right; font-size:22px; border:none; background:none; }
+</style>
+<div class="fb13-top">
+  <button class="fb13-ham" id="fb13Ham">☰</button>
+  <span>PlanetSurfX</span>
+  <button class="fb13-refresh" id="fb13Refresh">↻ Refresh</button>
+</div>
+<div class="fb13-overlay-bg" id="fb13Bg"></div>
+<div class="fb13-drawer" id="fb13Drawer">
+  <button class="fb13-close" id="fb13Close">✕</button>
+  <b style="font-size:18px;">Menu</b>
+  <div class="fb13-menu-title">Menu 1 - Main</div>
+  <button class="fb13-item" data-go="Dashboard">📊 Dashboard</button>
+  <button class="fb13-item" data-go="Feed">🏠 Feed</button>
+  <button class="fb13-item" data-go="Chat Rooms">💬 Chat Rooms</button>
+  <button class="fb13-item" data-go="Friends">👥 Friends</button>
+  <button class="fb13-item" data-go="Groups">👨‍👩‍👧 Groups</button>
+  <button class="fb13-item" data-go="Stories">📖 Stories</button>
+  <button class="fb13-item" data-go="Reels">🎬 Reels</button>
+  <button class="fb13-item" data-go="Live">📺 Live</button>
+  <div class="fb13-menu-title">Menu 2 - My Stuff & System</div>
+  <button class="fb13-item" data-go="Hustle">💼 Hustle</button>
+  <button class="fb13-item" data-go="Learn">🎓 Learn</button>
+  <button class="fb13-item" data-go="Games">🎮 Games</button>
+  <button class="fb13-item" data-go="Invite">🎁 Invite</button>
+  <button class="fb13-item" data-go="Subscribe">⭐ Subscribe</button>
+  <button class="fb13-item" data-go="Chat">💬 Chat</button>
+  <button class="fb13-item" data-go="Market">🛒 Market</button>
+  <button class="fb13-item" data-go="Alerts">🔔 Alerts</button>
+  <button class="fb13-item" data-go="Profile">👤 Profile</button>
+  <button class="fb13-item" data-go="Admin">⚙️ Admin</button>
+  <button class="fb13-item" data-go="Settings">🔧 Settings</button>
+  <button class="fb13-item" data-go="Log out">🚪 Log out</button>
+</div>
+<script>
+(function(){
+  var drawer = document.getElementById('fb13Drawer');
+  var bg = document.getElementById('fb13Bg');
+  function openMenu(){ drawer.classList.add('open'); bg.classList.add('show'); }
+  function closeMenu(){ drawer.classList.remove('open'); bg.classList.remove('show'); }
+  document.getElementById('fb13Ham').onclick = openMenu;
+  document.getElementById('fb13Close').onclick = closeMenu;
+  bg.onclick = closeMenu;
+  // Make feed full screen on phone - push content down below top bar, hide side columns by scrolling to feed
+  function makeFullScreen(){
+    document.body.style.paddingTop = '58px';
+    // Hide the left and right sidebars on phone if they are separate columns
+    // We don't delete them, we just let the feed be the main view - user opens menu to get them
+    var feed = document.querySelector('textarea[placeholder*="Share"]');
+    if(feed && !window._fb13Scrolled){
+      // Don't auto-scroll every time, only first load
+    }
+  }
+  // Refresh button - like Facebook pull to refresh
+  document.getElementById('fb13Refresh').onclick = function(){
+    var btn = document.getElementById('fb13Refresh');
+    btn.textContent = 'Refreshing...';
+    // Re-run the photo/video replacer so new posts from others show their photos too
+    setTimeout(function(){
+      window.location.reload();
+    }, 600);
+  };
+  // Menu clicks - try to find that section in the page and click it, then close menu
+  document.querySelectorAll('.fb13-item').forEach(function(btn){
+    btn.onclick = function(){
+      var want = btn.getAttribute('data-go');
+      closeMenu();
+      // Find the original menu item with same name anywhere on page and click it
+      var all = document.querySelectorAll('a, button, div, span, li');
+      for(var i=0;i<all.length;i++){
+        var t = (all[i].textContent||'').trim();
+        if(t === want && all[i].offsetParent !== null){
+          all[i].click();
+          break;
+        }
+      }
+      if(want === 'Feed'){
+        window.scrollTo({top:0, behavior:'smooth'});
+      }
+      if(want === 'Settings'){
+        alert('Settings will open here - Profile, Privacy, Notifications, Password');
+      }
+    };
+  });
+  makeFullScreen();
+})();
+</script>
+<!-- ===== END V13 ===== -->
 </body></html>
