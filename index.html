@@ -1513,4 +1513,131 @@ psxLoadFeed();
 })();
 </script>
 <!-- ===== END V9 ===== -->
+<!-- ===== V9 FACEBOOK STYLE ===== -->
+<style>
+  .fb9-overlay { position:fixed; top:0; left:0; right:0; bottom:0; background:#fff; z-index:99999; display:none; flex-direction:column; }
+  .fb9-overlay.open { display:flex; }
+  .fb9-head { display:flex; align-items:center; justify-content:space-between; padding:14px; border-bottom:1px solid #ddd; font-weight:bold; font-size:18px; }
+  .fb9-close { font-size:24px; border:none; background:none; cursor:pointer; }
+  .fb9-body { flex:1; padding:16px; overflow:auto; }
+  .fb9-text { width:100%; min-height:160px; border:none; outline:none; font-size:19px; resize:none; }
+  .fb9-preview img { width:100%; border-radius:12px; margin-top:12px; }
+  .fb9-preview video { width:100%; border-radius:12px; margin-top:12px; }
+  .fb9-foot { padding:14px; border-top:1px solid #ddd; }
+  .fb9-row { display:flex; gap:8px; margin-bottom:12px; }
+  .fb9-btn { flex:1; background:#f0f2f5; border:none; padding:12px; border-radius:10px; font-size:15px; cursor:pointer; }
+  .fb9-post { width:100%; background:#1877F2; color:#fff; border:none; padding:14px; border-radius:10px; font-size:17px; font-weight:bold; cursor:pointer; }
+</style>
+<div class="fb9-overlay" id="fb9Overlay">
+  <div class="fb9-head"><button class="fb9-close" id="fb9Close">✕</button><span>New post</span><span></span></div>
+  <div class="fb9-body">
+    <textarea class="fb9-text" id="fb9Text" placeholder="What's on your mind?"></textarea>
+    <div class="fb9-preview" id="fb9Preview"></div>
+  </div>
+  <div class="fb9-foot">
+    <div class="fb9-row">
+      <button class="fb9-btn" id="fb9Photo">📷 Photo</button>
+      <button class="fb9-btn" id="fb9Video">🎥 Video</button>
+      <button class="fb9-btn" id="fb9File">📎 File</button>
+    </div>
+    <button class="fb9-post" id="fb9Publish">Post</button>
+    <p style="text-align:center; font-size:13px; color:#666;">Post audience: Public • Everyone can see</p>
+  </div>
+</div>
+<script>
+(function(){
+  var overlay = document.getElementById('fb9Overlay');
+  var textEl = document.getElementById('fb9Text');
+  var preview = document.getElementById('fb9Preview');
+  var photoData = null, videoData = null, fileName = '';
+  // Open Facebook-style page when you tap the small box
+  function hookOpen(){
+    var box = document.querySelector('textarea[placeholder*="Share"]');
+    if(box && !box.dataset.fb9){
+      box.dataset.fb9='1';
+      box.addEventListener('focus', function(e){ e.preventDefault(); box.blur(); overlay.classList.add('open'); textEl.focus(); });
+      box.addEventListener('click', function(e){ e.preventDefault(); overlay.classList.add('open'); });
+    }
+  }
+  document.getElementById('fb9Close').onclick = function(){ overlay.classList.remove('open'); };
+  function pickPhoto(){
+    var inp = document.createElement('input'); inp.type='file'; inp.accept='image/*';
+    inp.onchange = function(){
+      var f = inp.files[0]; if(!f) return;
+      fileName = f.name;
+      var r = new FileReader();
+      r.onload = function(){ photoData = r.result; localStorage.setItem('fb9_photo', r.result); localStorage.setItem('fb9_name', f.name); preview.innerHTML = '<img src="'+r.result+'">'; };
+      r.readAsDataURL(f);
+    };
+    inp.click();
+  }
+  function pickVideo(){
+    var inp = document.createElement('input'); inp.type='file'; inp.accept='video/*';
+    inp.onchange = function(){
+      var f = inp.files[0]; if(!f) return;
+      fileName = f.name;
+      var r = new FileReader();
+      r.onload = function(){ videoData = r.result; localStorage.setItem('fb9_video', r.result); preview.innerHTML = '<video src="'+r.result+'" controls></video>'; };
+      r.readAsDataURL(f);
+    };
+    inp.click();
+  }
+  function pickFile(){
+    var inp = document.createElement('input'); inp.type='file';
+    inp.onchange = function(){
+      var f = inp.files[0]; if(!f) return;
+      fileName = f.name;
+      preview.innerHTML = 'Attached file: <b>'+f.name+'</b>';
+    };
+    inp.click();
+  }
+  document.getElementById('fb9Photo').onclick = pickPhoto;
+  document.getElementById('fb9Video').onclick = pickVideo;
+  document.getElementById('fb9File').onclick = pickFile;
+  // Publish like Facebook
+  document.getElementById('fb9Publish').onclick = function(){
+    var txt = textEl.value.trim();
+    if(!txt && !photoData && !videoData){ alert('Write something or add a photo'); return; }
+    var origBox = document.querySelector('textarea[placeholder*="Share"]');
+    var marker = '[Photo: ' + (fileName || 'photo') + ']';
+    if(origBox){
+      origBox.value = txt + (photoData ? ' ' + marker : '');
+      // Find original Publish button - the one next to the small box
+      var btns = document.querySelectorAll('button');
+      var pub = null;
+      btns.forEach(function(b){ if(b.textContent.trim()==='Publish') pub = b; });
+      if(pub) pub.click();
+    }
+    overlay.classList.remove('open');
+    textEl.value = ''; preview.innerHTML = '';
+    // After 1 sec, find the new post at top and show REAL photo instead of [Photo: ...]
+    setTimeout(function(){
+      var feed = document.querySelectorAll('div');
+      feed.forEach(function(p){
+        if((p.textContent||'').indexOf(marker)!==-1 && !p.dataset.fb9done){
+          p.dataset.fb9done='1';
+          if(photoData){
+            var img = document.createElement('img');
+            img.src = photoData; img.style.width='100%'; img.style.borderRadius='12px'; img.style.marginTop='10px'; img.style.display='block';
+            img.onclick = function(){ window.open(photoData,'_blank'); };
+            p.appendChild(img);
+          }
+          if(videoData){
+            var v = document.createElement('video');
+            v.src = videoData; v.controls=true; v.style.width='100%'; v.style.borderRadius='12px'; v.style.marginTop='10px';
+            p.appendChild(v);
+          }
+        }
+      });
+      // Scroll to top like Facebook - new post at top
+      window.scrollTo({top:0, behavior:'smooth'});
+      alert('Your post was shared');
+    }, 1200);
+    photoData = null; videoData = null; fileName = '';
+  };
+  setInterval(hookOpen, 1000);
+  hookOpen();
+})();
+</script>
+<!-- ===== END V9 ===== -->
 </body></html>
