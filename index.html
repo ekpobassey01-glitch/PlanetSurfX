@@ -1348,4 +1348,42 @@ psxLoadFeed();
 })();
 </script>
 <!-- ===== END V6 ===== -->
+<!-- ===== V7 HIDE 2ND SET ===== -->
+<style>
+  .fb4-bar, .fb5-bar, .fb5-preview { display:none !important; }
+</style>
+<script>
+(function(){
+  function hideSecond(){
+    // Find the composer box
+    var box = document.querySelector('textarea[placeholder*="Share"]');
+    if(!box) return;
+    // Find its card - go up 2-3 levels
+    var card = box.parentElement;
+    if(card) card = card.parentElement || card;
+    if(!card) return;
+    // Find all rows inside the card that contain Photo + Video + File together
+    var rows = card.querySelectorAll('div');
+    var found = [];
+    rows.forEach(function(r){
+      var t = r.textContent || '';
+      if(t.indexOf('Photo')!==-1 && t.indexOf('Video')!==-1 && t.indexOf('File')!==-1){
+        // Only take direct rows, not the big card itself
+        if(r !== card && r.querySelectorAll('button, span').length <= 6){
+          found.push(r);
+        }
+      }
+    });
+    // Keep 1st row, hide the rest
+    for(var i=1;i<found.length;i++){
+      found[i].style.display = 'none';
+    }
+    // Also hide any of my old bars that are still showing
+    document.querySelectorAll('.fb4-bar, .fb5-bar').forEach(function(b){ b.style.display='none'; });
+  }
+  setInterval(hideSecond, 800);
+  hideSecond();
+})();
+</script>
+<!-- ===== END V7 ===== -->
 </body></html>
