@@ -1963,4 +1963,143 @@ psxLoadFeed();
 })();
 </script>
 <!-- ===== END V14 ===== -->
+<!-- ===== V15 HIDE OTHERS ===== -->
+<style>
+  .fb15-page-bar { position:fixed; top:52px; left:0; right:0; background:#fff; padding:10px 14px; z-index:99994; display:none; border-bottom:1px solid #ddd; align-items:center; gap:10px; }
+  .fb15-page-bar.show { display:flex; }
+  .fb15-back2 { background:#1877F2; color:#fff; border:none; padding:9px 16px; border-radius:20px; font-weight:bold; cursor:pointer; }
+  /* Hide original left sidebar - kill double menu */
+  .fb15-hide { display:none !important; }
+</style>
+<div class="fb15-page-bar" id="fb15Bar"><button class="fb15-back2" id="fb15Back">← Back to Feed</button><b id="fb15Title">Feed</b></div>
+<script>
+(function(){
+  // 1. Kill double menu: hide original sidebar that has Dashboard + Feed + Chat Rooms list
+  function hideOriginalSidebar(){
+    document.querySelectorAll('div, nav, aside, ul').forEach(function(el){
+      if(el.closest('.fb13-drawer') || el.closest('#fb14Page') || el.closest('.fb13-top')) return;
+      var t = el.textContent || '';
+      // Original sidebar has Dashboard + Feed + Chat Rooms + Friends + Groups together in one box
+      if(t.indexOf('Dashboard')!==-1 && t.indexOf('Chat Rooms')!==-1 && t.indexOf('Friends')!==-1 && t.indexOf('Groups')!==-1){
+        // Only hide the small menu box, not the whole page
+        if(el.children.length <= 20 && el.offsetHeight < 800){
+          // Check it is NOT the main page container (main page is very tall)
+          if(el.offsetHeight < 700) el.classList.add('fb15-hide');
+        }
+      }
+    });
+    // Hide V14 fake page - we don't use it anymore
+    var old = document.getElementById('fb14Page');
+    if(old) old.style.display='none';
+  }
+  // 2. Show ONLY Feed on load: hide admin + welcome + subscription + AI + news cards from main view
+  // We hide them by marking them, but we keep them in memory so menu can show them later
+  function getTopCards(){
+    // Find the main container - the one that holds What's happening
+    var box = document.querySelector('textarea[placeholder*="Share"]');
+    if(!box) return [];
+    var main = box;
+    for(var i=0;i<5;i++){ if(main.parentElement) main = main.parentElement; }
+    // Return direct children that look like cards
+    return Array.from(main.children || []);
+  }
+  function showOnly(name){
+    // name = 'Feed' or 'Chat Rooms' etc.
+    var bar = document.getElementById('fb15Bar');
+    var title = document.getElementById('fb15Title');
+    if(name === 'Feed'){
+      bar.classList.remove('show');
+      // Show feed cards: What's happening, Stories, World Feed
+      document.querySelectorAll('div').forEach(function(d){
+        if(d.classList.contains('fb15-hide') && d.dataset.fb15Keep) d.classList.remove('fb15-hide');
+      });
+      window.scrollTo({top:0, behavior:'smooth'});
+      return;
+    }
+    // For other features: find the REAL content by keyword, not by heading
+    // Chat Rooms real content has "You are in:" or "Join any room" or "Romance"
+    // Groups real content has "Create group" + "Discover"
+    // Friends real content has "Your friends" + "Send request"
+    var keywords = {
+      'Chat Rooms': ['You are in:', 'Join any room', 'Romance'],
+      'Groups': ['Create group', 'Discover'],
+      'Friends': ['Your friends', 'Send request'],
+      'Stories': ['No stories yet'],
+      'Hustle': ['Hustle'],
+      'Learn': ['Learn'],
+      'Games': ['Games'],
+      'Market': ['Market'],
+      'Alerts': ['Alerts'],
+      'Profile': ['Profile'],
+      'Admin': ['Administration', 'OWNER SECURITY']
+    };
+    var keys = keywords[name] || [name];
+    var found = false;
+    // Search all divs for a card that contains the keyword AND is not in menu
+    document.querySelectorAll('div').forEach(function(d){
+      if(d.closest('.fb13-drawer') || d.closest('.fb15-page-bar')) return;
+      var txt = d.textContent || '';
+      // Must be a card-sized box, not the whole page
+      if(d.children.length > 2 && d.children.length < 15 && d.offsetHeight > 100 && d.offsetHeight < 900){
+        for(var i=0;i<keys.length;i++){
+          if(txt.indexOf(keys[i])!==-1){
+            // This is the real card - show it full screen by moving it to top
+            d.style.display = 'block';
+            d.style.position = 'fixed';
+            d.style.top = '100px';
+            d.style.left = '10px';
+            d.style.right = '10px';
+            d.style.bottom = '10px';
+            d.style.zIndex = '99993';
+            d.style.background = '#fff';
+            d.style.overflowY = 'auto';
+            d.style.padding = '14px';
+            d.style.borderRadius = '12px';
+            d.dataset.fb15Open = '1';
+            found = true;
+            title.textContent = name;
+            bar.classList.add('show');
+            break;
+          }
+        }
+      }
+    });
+    if(!found){
+      alert(name + ' is opening... If you still see Dashboard, scroll up and tap Refresh once. The real ' + name + ' is below on the page.');
+    }
+  }
+  function closeFeature(){
+    document.querySelectorAll('[data-fb15-open]').forEach(function(d){
+      d.style.position = ''; d.style.top=''; d.style.left=''; d.style.right=''; d.style.bottom=''; d.style.zIndex=''; d.style.overflowY=''; d.style.padding=''; d.style.borderRadius='';
+      d.removeAttribute('data-fb15-open');
+    });
+    document.getElementById('fb15Bar').classList.remove('show');
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+  document.getElementById('fb15Back').onclick = closeFeature;
+  // Wire menu to V15
+  function wire(){
+    document.querySelectorAll('.fb13-item').forEach(function(btn){
+      if(btn.dataset.fb15) return;
+      btn.dataset.fb15='1';
+      btn.onclick = function(){
+        var want = btn.getAttribute('data-go');
+        document.getElementById('fb13Drawer').classList.remove('open');
+        document.getElementById('fb13Bg').classList.remove('show');
+        closeFeature();
+        if(want === 'Feed'){ showOnly('Feed'); return; }
+        if(want === 'Log out'){
+          var all = document.querySelectorAll('a, button');
+          for(var i=0;i<all.length;i++){ if((all[i].textContent||'').trim()==='Log out'){ all[i].click(); break; } }
+          return;
+        }
+        setTimeout(function(){ showOnly(want); }, 300);
+      };
+    });
+  }
+  setInterval(function(){ hideOriginalSidebar(); wire(); }, 1000);
+  hideOriginalSidebar(); wire();
+})();
+</script>
+<!-- ===== END V15 ===== -->
 </body></html>
