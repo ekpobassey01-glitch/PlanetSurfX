@@ -1267,4 +1267,85 @@ psxLoadFeed();
 })();
 </script>
 <!-- ===== END V5 ===== -->
+<!-- ===== V6 FIX ORIGINAL BUTTONS ===== -->
+<style>
+  /* 1. Fix box to ONE fixed Facebook size - stop it growing forever */
+  textarea[placeholder*="Share"] {
+    min-height: 180px !important;
+    height: 180px !important;
+    max-height: 180px !important;
+    width: 100% !important;
+    font-size: 17px !important;
+    padding: 14px !important;
+    box-sizing: border-box !important;
+    resize: none !important;
+  }
+  /* 2. Hide ALL my extra bars - V4 and V5 */
+  .fb4-bar, .fb5-bar, .fb5-preview { display: none !important; }
+  /* 3. Remove red border test */
+  body { border: none !important; }
+</style>
+<script>
+(function(){
+  function fixOriginal(){
+    // Find the ORIGINAL buttons - the first ones in the page
+    var allBtns = document.querySelectorAll('button, span, div, label');
+    var photoBtn = null, videoBtn = null, fileBtn = null;
+    allBtns.forEach(function(el){
+      var t = (el.textContent || '').trim();
+      // Only take buttons that are NOT inside my old bars
+      if(el.closest('.fb4-bar') || el.closest('.fb5-bar')) return;
+      if(el.children.length > 1) return;
+      if(t === '📷 Photo' || t === 'Photo' || t.indexOf('Photo')===0) { if(!photoBtn) photoBtn = el; }
+      if(t === '🎥 Video' || t === 'Video' || t.indexOf('Video')===0) { if(!videoBtn) videoBtn = el; }
+      if(t === '📎 File' || t === 'File' || t.indexOf('File')===0) { if(!fileBtn) fileBtn = el; }
+    });
+    if(photoBtn && !photoBtn.dataset.fixed){
+      photoBtn.dataset.fixed = '1';
+      photoBtn.style.cursor = 'pointer';
+      var inp = document.createElement('input');
+      inp.type='file'; inp.accept='image/*'; inp.style.display='none';
+      document.body.appendChild(inp);
+      photoBtn.onclick = function(e){ e.preventDefault(); e.stopPropagation(); inp.click(); };
+      inp.onchange = function(){
+        var f = inp.files[0]; if(!f) return;
+        var box = document.querySelector('textarea[placeholder*="Share"]');
+        if(box) box.value = box.value + ' [Photo: ' + f.name + ']';
+        alert('Photo attached: ' + f.name + ' - now tap Publish');
+      };
+    }
+    if(videoBtn && !videoBtn.dataset.fixed){
+      videoBtn.dataset.fixed = '1';
+      videoBtn.style.cursor = 'pointer';
+      var inp2 = document.createElement('input');
+      inp2.type='file'; inp2.accept='video/*'; inp2.style.display='none';
+      document.body.appendChild(inp2);
+      videoBtn.onclick = function(e){ e.preventDefault(); e.stopPropagation(); inp2.click(); };
+      inp2.onchange = function(){
+        var f = inp2.files[0]; if(!f) return;
+        var box = document.querySelector('textarea[placeholder*="Share"]');
+        if(box) box.value = box.value + ' [Video: ' + f.name + ']';
+        alert('Video attached: ' + f.name + ' - now tap Publish');
+      };
+    }
+    if(fileBtn && !fileBtn.dataset.fixed){
+      fileBtn.dataset.fixed = '1';
+      fileBtn.style.cursor = 'pointer';
+      var inp3 = document.createElement('input');
+      inp3.type='file'; inp3.style.display='none';
+      document.body.appendChild(inp3);
+      fileBtn.onclick = function(e){ e.preventDefault(); e.stopPropagation(); inp3.click(); };
+      inp3.onchange = function(){
+        var f = inp3.files[0]; if(!f) return;
+        var box = document.querySelector('textarea[placeholder*="Share"]');
+        if(box) box.value = box.value + ' [File: ' + f.name + ']';
+        alert('File attached: ' + f.name + ' - now tap Publish');
+      };
+    }
+  }
+  setInterval(fixOriginal, 1000);
+  fixOriginal();
+})();
+</script>
+<!-- ===== END V6 ===== -->
 </body></html>
