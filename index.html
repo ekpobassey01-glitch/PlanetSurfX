@@ -2227,4 +2227,102 @@ psxLoadFeed();
 })();
 </script>
 <!-- ===== END V16 ===== -->
+<!-- ===== V17 MOVE REAL MENU INTO DRAWER ===== -->
+<style>
+  /* Make real menu work in ALL modes - not only Desktop site */
+  /* Force the site to not hide content on small phones */
+  .fb17-force * { pointer-events:auto !important; }
+  #fb17Drawer { position:fixed; top:0; left:-290px; width:270px; bottom:0; background:#fff; z-index:99999; transition:left 0.3s; overflow-y:auto; padding:0; box-shadow:2px 0 20px rgba(0,0,0,0.3); }
+  #fb17Drawer.open { left:0; }
+  #fb17Bg { position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.4); z-index:99998; display:none; }
+  #fb17Bg.show { display:block; }
+  .fb17-top { position:fixed; top:0; left:0; right:0; height:52px; background:#1877F2; color:#fff; display:flex; align-items:center; justify-content:space-between; padding:0 12px; z-index:99990; font-weight:bold; }
+  /* The moved real menu - make it full width inside drawer, big tap area */
+  #fb17Drawer > * { display:block !important; width:100% !important; }
+  #fb17Drawer button, #fb17Drawer a, #fb17Drawer div { font-size:17px !important; padding:12px 14px !important; }
+  .fb17-close { width:100%; padding:12px; border:none; background:#f0f2f5; font-weight:bold; font-size:16px; }
+</style>
+<div class="fb17-top">
+  <button id="fb17Ham" style="font-size:24px; background:none; border:none; color:#fff;">☰</button>
+  <span>PlanetSurfX</span>
+  <button id="fb17Refresh" style="background:#fff; color:#1877F2; border:none; padding:6px 12px; border-radius:20px; font-weight:bold;">↻ Refresh</button>
+</div>
+<div id="fb17Bg"></div>
+<div id="fb17Drawer">
+  <button class="fb17-close" id="fb17Close">✕ Close Menu</button>
+  <div id="fb17Slot" style="padding:8px;"></div>
+</div>
+<script>
+(function(){
+  // 1. Turn OFF old fake menus - V13/V14/V15/V16 - so they stop fighting
+  ['fb13Drawer','fb14Page','fb15Bar','fb16Bar'].forEach(function(id){
+    var el = document.getElementById(id);
+    if(el) el.style.display = 'none';
+  });
+  // Stop old fake buttons from doing anything - hide them
+  document.querySelectorAll('.fb13-item').forEach(function(b){ b.style.display='none'; });
+
+  // 2. FIND the real working menu - the one that responds in Desktop mode
+  // It is the box that has Dashboard + Feed + Chat Rooms + Friends + Groups together
+  function findRealMenu(){
+    var best = null, bestScore = 0;
+    document.querySelectorAll('div, nav, aside, ul').forEach(function(el){
+      if(el.id==='fb17Drawer' || el.id==='fb17Slot' || el.closest('#fb17Drawer')) return;
+      var t = el.textContent || '';
+      if(t.indexOf('Dashboard')!==-1 && t.indexOf('Chat Rooms')!==-1 && t.indexOf('Friends')!==-1 && t.indexOf('Groups')!==-1){
+        // The real sidebar is a small box, not the whole page
+        // Score: more menu words + smaller height = real sidebar
+        var score = 0;
+        ['Dashboard','Feed','Chat Rooms','Friends','Groups','Stories','Reels','Live','Hustle','Learn'].forEach(function(w){ if(t.indexOf(w)!==-1) score++; });
+        if(el.offsetHeight < 1200 && score > bestScore){ bestScore = score; best = el; }
+      }
+    });
+    return best;
+  }
+
+  // 3. MOVE it - not copy - into our drawer. Same buttons, same code.
+  var moved = false;
+  function moveMenu(){
+    if(moved) return;
+    var real = findRealMenu();
+    if(!real) return;
+    var slot = document.getElementById('fb17Slot');
+    // Move the real element inside the drawer
+    slot.appendChild(real);
+    // Make it visible in ALL modes - override the mobile-hide CSS that made it not respond
+    real.style.display = 'block';
+    real.style.visibility = 'visible';
+    real.style.opacity = '1';
+    real.style.pointerEvents = 'auto';
+    real.style.position = 'static';
+    real.style.width = '100%';
+    // Force the page to behave like desktop for clicks - add class to body
+    document.body.classList.add('fb17-force');
+    moved = true;
+    // When user taps any real menu item, close drawer automatically
+    real.addEventListener('click', function(e){
+      // If they tapped a menu item (not just empty space), close drawer after 300ms
+      setTimeout(function(){
+        document.getElementById('fb17Drawer').classList.remove('open');
+        document.getElementById('fb17Bg').classList.remove('show');
+      }, 300);
+    });
+  }
+
+  // 4. Drawer open/close
+  function openMenu(){ moveMenu(); document.getElementById('fb17Drawer').classList.add('open'); document.getElementById('fb17Bg').classList.add('show'); }
+  function closeMenu(){ document.getElementById('fb17Drawer').classList.remove('open'); document.getElementById('fb17Bg').classList.remove('show'); }
+  document.getElementById('fb17Ham').onclick = openMenu;
+  document.getElementById('fb17Close').onclick = closeMenu;
+  document.getElementById('fb17Bg').onclick = closeMenu;
+  document.getElementById('fb17Refresh').onclick = function(){ window.location.reload(); };
+
+  // Try to move on load, and retry - because site loads menu late
+  moveMenu();
+  setInterval(moveMenu, 1000);
+  // Also force feed full screen on load - hide nothing, just add top padding
+  document.body.style.paddingTop = '58px';
+})();
+</script>
+<!-- ===== END V17 ===== -->
 </body></html>
