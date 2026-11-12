@@ -1748,642 +1748,73 @@ psxLoadFeed();
 })();
 </script>
 <!-- ===== END V11 ===== -->
-<!-- ===== V13 FULL SCREEN FEED + 2 MENUS ===== -->
+<!-- ===== V19 CLEAN SLATE - DO NOT MOVE MENU ===== -->
 <style>
-  /* On phone: hide left + right sidebars, show only feed full width */
+  /* On phone: your real left menu becomes a drawer, content becomes full width */
   @media (max-width: 900px){
-    /* Hide the 3-column layout, force 1 column */
-    body { overflow-x:hidden; }
+    /* Make the whole page 1 column, not 3 squeezed columns */
+    body { overflow-x:hidden !important; }
   }
-  .fb13-top { position:fixed; top:0; left:0; right:0; height:52px; background:#1877F2; color:#fff; display:flex; align-items:center; justify-content:space-between; padding:0 12px; z-index:99990; font-weight:bold; }
-  .fb13-ham { font-size:24px; background:none; border:none; color:#fff; cursor:pointer; }
-  .fb13-refresh { background:#fff; color:#1877F2; border:none; padding:6px 12px; border-radius:20px; font-weight:bold; cursor:pointer; }
-  .fb13-drawer { position:fixed; top:0; left:-280px; width:260px; bottom:0; background:#fff; z-index:99999; transition:left 0.3s; overflow-y:auto; padding:14px; box-shadow:2px 0 20px rgba(0,0,0,0.3); }
-  .fb13-drawer.open { left:0; }
-  .fb13-overlay-bg { position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.4); z-index:99998; display:none; }
-  .fb13-overlay-bg.show { display:block; }
-  .fb13-menu-title { font-size:13px; color:#888; margin:16px 0 6px; text-transform:uppercase; font-weight:bold; }
-  .fb13-item { display:block; width:100%; text-align:left; background:none; border:none; padding:11px 8px; font-size:16px; border-radius:8px; cursor:pointer; }
-  .fb13-item:hover { background:#f0f2f5; }
-  .fb13-close { float:right; font-size:22px; border:none; background:none; }
+  #fb19Ham { font-size:26px; background:#1877F2; color:#fff; border:none; padding:6px 12px; border-radius:6px; margin-right:8px; cursor:pointer; }
+  #fb19DrawerBg { position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.4); z-index:99997; display:none; }
+  #fb19DrawerBg.show { display:block; }
+  /* When drawer is open, we will add a class to body - CSS will show the real sidebar as drawer */
+  body.fb19-open #fb19DrawerBg { display:block; }
 </style>
-<div class="fb13-top">
-  <button class="fb13-ham" id="fb13Ham">☰</button>
-  <span>PlanetSurfX</span>
-  <button class="fb13-refresh" id="fb13Refresh">↻ Refresh</button>
-</div>
-<div class="fb13-overlay-bg" id="fb13Bg"></div>
-<div class="fb13-drawer" id="fb13Drawer">
-  <button class="fb13-close" id="fb13Close">✕</button>
-  <b style="font-size:18px;">Menu</b>
-  <div class="fb13-menu-title">Menu 1 - Main</div>
-  <button class="fb13-item" data-go="Dashboard">📊 Dashboard</button>
-  <button class="fb13-item" data-go="Feed">🏠 Feed</button>
-  <button class="fb13-item" data-go="Chat Rooms">💬 Chat Rooms</button>
-  <button class="fb13-item" data-go="Friends">👥 Friends</button>
-  <button class="fb13-item" data-go="Groups">👨‍👩‍👧 Groups</button>
-  <button class="fb13-item" data-go="Stories">📖 Stories</button>
-  <button class="fb13-item" data-go="Reels">🎬 Reels</button>
-  <button class="fb13-item" data-go="Live">📺 Live</button>
-  <div class="fb13-menu-title">Menu 2 - My Stuff & System</div>
-  <button class="fb13-item" data-go="Hustle">💼 Hustle</button>
-  <button class="fb13-item" data-go="Learn">🎓 Learn</button>
-  <button class="fb13-item" data-go="Games">🎮 Games</button>
-  <button class="fb13-item" data-go="Invite">🎁 Invite</button>
-  <button class="fb13-item" data-go="Subscribe">⭐ Subscribe</button>
-  <button class="fb13-item" data-go="Chat">💬 Chat</button>
-  <button class="fb13-item" data-go="Market">🛒 Market</button>
-  <button class="fb13-item" data-go="Alerts">🔔 Alerts</button>
-  <button class="fb13-item" data-go="Profile">👤 Profile</button>
-  <button class="fb13-item" data-go="Admin">⚙️ Admin</button>
-  <button class="fb13-item" data-go="Settings">🔧 Settings</button>
-  <button class="fb13-item" data-go="Log out">🚪 Log out</button>
-</div>
 <script>
 (function(){
-  var drawer = document.getElementById('fb13Drawer');
-  var bg = document.getElementById('fb13Bg');
-  function openMenu(){ drawer.classList.add('open'); bg.classList.add('show'); }
-  function closeMenu(){ drawer.classList.remove('open'); bg.classList.remove('show'); }
-  document.getElementById('fb13Ham').onclick = openMenu;
-  document.getElementById('fb13Close').onclick = closeMenu;
-  bg.onclick = closeMenu;
-  // Make feed full screen on phone - push content down below top bar, hide side columns by scrolling to feed
-  function makeFullScreen(){
-    document.body.style.paddingTop = '58px';
-    // Hide the left and right sidebars on phone if they are separate columns
-    // We don't delete them, we just let the feed be the main view - user opens menu to get them
-    var feed = document.querySelector('textarea[placeholder*="Share"]');
-    if(feed && !window._fb13Scrolled){
-      // Don't auto-scroll every time, only first load
+  // 1. If any old drawer still has your real menu inside it, put it back first
+  document.querySelectorAll('#fb17Drawer, #fb18Drawer, #fb13Drawer').forEach(function(d){
+    // Move any children that look like real menu back to body, before we delete the drawer
+    var slot = d.querySelector('#fb17Slot, #fb18Slot');
+    var content = slot || d;
+    while(content.firstChild){
+      var child = content.firstChild;
+      // Don't move the Close button itself
+      if(child.id && (child.id==='fb17Close' || child.id==='fb18Close')){ content.removeChild(child); continue; }
+      document.body.appendChild(child);
     }
-  }
-  // Refresh button - like Facebook pull to refresh
-  document.getElementById('fb13Refresh').onclick = function(){
-    var btn = document.getElementById('fb13Refresh');
-    btn.textContent = 'Refreshing...';
-    // Re-run the photo/video replacer so new posts from others show their photos too
-    setTimeout(function(){
-      window.location.reload();
-    }, 600);
-  };
-  // Menu clicks - try to find that section in the page and click it, then close menu
-  document.querySelectorAll('.fb13-item').forEach(function(btn){
-    btn.onclick = function(){
-      var want = btn.getAttribute('data-go');
-      closeMenu();
-      // Find the original menu item with same name anywhere on page and click it
-      var all = document.querySelectorAll('a, button, div, span, li');
-      for(var i=0;i<all.length;i++){
-        var t = (all[i].textContent||'').trim();
-        if(t === want && all[i].offsetParent !== null){
-          all[i].click();
-          break;
-        }
-      }
-      if(want === 'Feed'){
-        window.scrollTo({top:0, behavior:'smooth'});
-      }
-      if(want === 'Settings'){
-        alert('Settings will open here - Profile, Privacy, Notifications, Password');
-      }
-    };
+    d.remove();
   });
-  makeFullScreen();
-})();
-</script>
-<!-- ===== END V13 ===== -->
-<!-- ===== V14 ONE FEATURE AT A TIME + FULL SCREEN FEED ===== -->
-<style>
-  .fb14-page { position:fixed; top:52px; left:0; right:0; bottom:0; background:#fff; z-index:99995; overflow-y:auto; padding:14px; display:none; }
-  .fb14-page.open { display:block; }
-  .fb14-back { background:#f0f2f5; border:none; padding:10px 16px; border-radius:20px; font-weight:bold; margin-bottom:12px; cursor:pointer; font-size:15px; }
-  .fb14-feed-big { font-size:18px !important; }
-  .fb14-feed-big img { width:100% !important; max-width:100% !important; border-radius:12px; }
-  .fb14-feed-big video { width:100% !important; }
-  /* Hide duplicate sidebars on phone - no repetition */
-  @media (max-width:900px){
-    body { padding-top:58px !important; }
-  }
-</style>
-<div class="fb14-page" id="fb14Page">
-  <button class="fb14-back" id="fb14Back">← Back to Feed</button>
-  <div id="fb14Content"></div>
-</div>
-<script>
-(function(){
-  var isOwner = document.body.textContent.indexOf('OWNER')!==-1 || document.body.textContent.indexOf('Fieldmarshal')!==-1;
-  // 1. ADMIN ONLY - hide admin features from public
-  function hideAdminForPublic(){
-    if(isOwner) return; // you are owner, you see everything
-    // Hide Admin menu items + admin sections for normal users
-    document.querySelectorAll('.fb13-item').forEach(function(b){
-      var t = b.textContent || '';
-      if(t.indexOf('Admin')!==-1 || t.indexOf('Settings')!==-1) b.style.display='none';
-    });
-    // Hide OWNER SECURITY, Administration, Generate PIN sections
-    document.querySelectorAll('div, section').forEach(function(d){
-      var txt = (d.textContent||'').substring(0,120);
-      if(txt.indexOf('OWNER SECURITY')!==-1 || txt.indexOf('Administration - FULL')!==-1 || txt.indexOf('Generate PIN')!==-1){
-        if(d.children.length < 4) d.style.display='none';
-      }
-    });
-  }
-  // 2. On login, show ONLY Feed - hide everything else from main view
-  // We do this by hiding the big dashboard containers that are NOT feed
-  function showOnlyFeedOnLoad(){
-    // Make fonts bigger for feed
-    document.body.classList.add('fb14-feed-big');
-  }
-  // 3. Menu click = open ONLY that feature full screen
-  function openFeature(name){
-    var page = document.getElementById('fb14Page');
-    var content = document.getElementById('fb14Content');
-    // Find the original section for this feature - search for its heading
-    var found = null;
-    // Headings to look for
-    var headings = document.querySelectorAll('h1,h2,h3,h4,div,b,strong');
-    for(var i=0;i<headings.length;i++){
-      var t = (headings[i].textContent||'').trim();
-      // Exact match, and not in our menu drawer
-      if(t === name && !headings[i].closest('.fb13-drawer') && !headings[i].closest('#fb14Page')){
-        // Get its card - go up 2 levels
-        var card = headings[i];
-        for(var k=0;k<3;k++){ if(card.parentElement) card = card.parentElement; }
-        found = card;
-        break;
-      }
-    }
-    if(found){
-      content.innerHTML = '<h2 style="font-size:22px; margin-bottom:12px;">'+name+'</h2>';
-      var clone = found.cloneNode(true);
-      clone.style.display = 'block';
-      // Make clone big
-      clone.style.fontSize = '17px';
-      content.appendChild(clone);
-      page.classList.add('open');
-      window.scrollTo(0,0);
-    } else {
-      // If we can't find the section, show a clean page with message
-      content.innerHTML = '<h2>'+name+'</h2><p>This is the '+name+' page. It will open here full screen.</p><p>If you still see the Dashboard behind, scroll up and tap Refresh.</p>';
-      page.classList.add('open');
-    }
-  }
-  document.getElementById('fb14Back').onclick = function(){
-    document.getElementById('fb14Page').classList.remove('open');
-    window.scrollTo({top:0, behavior:'smooth'});
-  };
-  // Re-wire menu buttons to use openFeature
-  function wireMenu(){
-    document.querySelectorAll('.fb13-item').forEach(function(btn){
-      if(btn.dataset.fb14) return;
-      btn.dataset.fb14='1';
-      btn.onclick = function(){
-        var want = btn.getAttribute('data-go');
-        // Close drawer
-        document.getElementById('fb13Drawer').classList.remove('open');
-        document.getElementById('fb13Bg').classList.remove('show');
-        if(want === 'Feed'){
-          document.getElementById('fb14Page').classList.remove('open');
-          window.scrollTo({top:0, behavior:'smooth'});
-          return;
-        }
-        if(want === 'Log out'){
-          // Find real logout
-          var all = document.querySelectorAll('a, button');
-          for(var i=0;i<all.length;i++){ if((all[i].textContent||'').trim()==='Log out'){ all[i].click(); break; } }
-          return;
-        }
-        openFeature(want);
-      };
-    });
-  }
-  setInterval(function(){ wireMenu(); hideAdminForPublic(); showOnlyFeedOnLoad(); }, 1000);
-  wireMenu(); hideAdminForPublic(); showOnlyFeedOnLoad();
-})();
-</script>
-<!-- ===== END V14 ===== -->
-<!-- ===== V15 HIDE OTHERS ===== -->
-<style>
-  .fb15-page-bar { position:fixed; top:52px; left:0; right:0; background:#fff; padding:10px 14px; z-index:99994; display:none; border-bottom:1px solid #ddd; align-items:center; gap:10px; }
-  .fb15-page-bar.show { display:flex; }
-  .fb15-back2 { background:#1877F2; color:#fff; border:none; padding:9px 16px; border-radius:20px; font-weight:bold; cursor:pointer; }
-  /* Hide original left sidebar - kill double menu */
-  .fb15-hide { display:none !important; }
-</style>
-<div class="fb15-page-bar" id="fb15Bar"><button class="fb15-back2" id="fb15Back">← Back to Feed</button><b id="fb15Title">Feed</b></div>
-<script>
-(function(){
-  // 1. Kill double menu: hide original sidebar that has Dashboard + Feed + Chat Rooms list
-  function hideOriginalSidebar(){
-    document.querySelectorAll('div, nav, aside, ul').forEach(function(el){
-      if(el.closest('.fb13-drawer') || el.closest('#fb14Page') || el.closest('.fb13-top')) return;
-      var t = el.textContent || '';
-      // Original sidebar has Dashboard + Feed + Chat Rooms + Friends + Groups together in one box
-      if(t.indexOf('Dashboard')!==-1 && t.indexOf('Chat Rooms')!==-1 && t.indexOf('Friends')!==-1 && t.indexOf('Groups')!==-1){
-        // Only hide the small menu box, not the whole page
-        if(el.children.length <= 20 && el.offsetHeight < 800){
-          // Check it is NOT the main page container (main page is very tall)
-          if(el.offsetHeight < 700) el.classList.add('fb15-hide');
-        }
-      }
-    });
-    // Hide V14 fake page - we don't use it anymore
-    var old = document.getElementById('fb14Page');
-    if(old) old.style.display='none';
-  }
-  // 2. Show ONLY Feed on load: hide admin + welcome + subscription + AI + news cards from main view
-  // We hide them by marking them, but we keep them in memory so menu can show them later
-  function getTopCards(){
-    // Find the main container - the one that holds What's happening
-    var box = document.querySelector('textarea[placeholder*="Share"]');
-    if(!box) return [];
-    var main = box;
-    for(var i=0;i<5;i++){ if(main.parentElement) main = main.parentElement; }
-    // Return direct children that look like cards
-    return Array.from(main.children || []);
-  }
-  function showOnly(name){
-    // name = 'Feed' or 'Chat Rooms' etc.
-    var bar = document.getElementById('fb15Bar');
-    var title = document.getElementById('fb15Title');
-    if(name === 'Feed'){
-      bar.classList.remove('show');
-      // Show feed cards: What's happening, Stories, World Feed
-      document.querySelectorAll('div').forEach(function(d){
-        if(d.classList.contains('fb15-hide') && d.dataset.fb15Keep) d.classList.remove('fb15-hide');
-      });
-      window.scrollTo({top:0, behavior:'smooth'});
-      return;
-    }
-    // For other features: find the REAL content by keyword, not by heading
-    // Chat Rooms real content has "You are in:" or "Join any room" or "Romance"
-    // Groups real content has "Create group" + "Discover"
-    // Friends real content has "Your friends" + "Send request"
-    var keywords = {
-      'Chat Rooms': ['You are in:', 'Join any room', 'Romance'],
-      'Groups': ['Create group', 'Discover'],
-      'Friends': ['Your friends', 'Send request'],
-      'Stories': ['No stories yet'],
-      'Hustle': ['Hustle'],
-      'Learn': ['Learn'],
-      'Games': ['Games'],
-      'Market': ['Market'],
-      'Alerts': ['Alerts'],
-      'Profile': ['Profile'],
-      'Admin': ['Administration', 'OWNER SECURITY']
-    };
-    var keys = keywords[name] || [name];
-    var found = false;
-    // Search all divs for a card that contains the keyword AND is not in menu
-    document.querySelectorAll('div').forEach(function(d){
-      if(d.closest('.fb13-drawer') || d.closest('.fb15-page-bar')) return;
-      var txt = d.textContent || '';
-      // Must be a card-sized box, not the whole page
-      if(d.children.length > 2 && d.children.length < 15 && d.offsetHeight > 100 && d.offsetHeight < 900){
-        for(var i=0;i<keys.length;i++){
-          if(txt.indexOf(keys[i])!==-1){
-            // This is the real card - show it full screen by moving it to top
-            d.style.display = 'block';
-            d.style.position = 'fixed';
-            d.style.top = '100px';
-            d.style.left = '10px';
-            d.style.right = '10px';
-            d.style.bottom = '10px';
-            d.style.zIndex = '99993';
-            d.style.background = '#fff';
-            d.style.overflowY = 'auto';
-            d.style.padding = '14px';
-            d.style.borderRadius = '12px';
-            d.dataset.fb15Open = '1';
-            found = true;
-            title.textContent = name;
-            bar.classList.add('show');
-            break;
-          }
-        }
-      }
-    });
-    if(!found){
-      alert(name + ' is opening... If you still see Dashboard, scroll up and tap Refresh once. The real ' + name + ' is below on the page.');
-    }
-  }
-  function closeFeature(){
-    document.querySelectorAll('[data-fb15-open]').forEach(function(d){
-      d.style.position = ''; d.style.top=''; d.style.left=''; d.style.right=''; d.style.bottom=''; d.style.zIndex=''; d.style.overflowY=''; d.style.padding=''; d.style.borderRadius='';
-      d.removeAttribute('data-fb15-open');
-    });
-    document.getElementById('fb15Bar').classList.remove('show');
-    window.scrollTo({top:0, behavior:'smooth'});
-  }
-  document.getElementById('fb15Back').onclick = closeFeature;
-  // Wire menu to V15
-  function wire(){
-    document.querySelectorAll('.fb13-item').forEach(function(btn){
-      if(btn.dataset.fb15) return;
-      btn.dataset.fb15='1';
-      btn.onclick = function(){
-        var want = btn.getAttribute('data-go');
-        document.getElementById('fb13Drawer').classList.remove('open');
-        document.getElementById('fb13Bg').classList.remove('show');
-        closeFeature();
-        if(want === 'Feed'){ showOnly('Feed'); return; }
-        if(want === 'Log out'){
-          var all = document.querySelectorAll('a, button');
-          for(var i=0;i<all.length;i++){ if((all[i].textContent||'').trim()==='Log out'){ all[i].click(); break; } }
-          return;
-        }
-        setTimeout(function(){ showOnly(want); }, 300);
-      };
-    });
-  }
-  setInterval(function(){ hideOriginalSidebar(); wire(); }, 1000);
-  hideOriginalSidebar(); wire();
-})();
-</script>
-<!-- ===== END V15 ===== -->
-<!-- ===== V16 FOCUS MODE - TURN OFF OLD PATCHES ===== -->
-<style>
-  .fb16-bar { position:fixed; top:52px; left:0; right:0; background:#1877F2; color:#fff; padding:10px 14px; z-index:99999; display:none; align-items:center; gap:10px; }
-  .fb16-bar.show { display:flex; }
-  .fb16-back { background:#fff; color:#1877F2; border:none; padding:8px 14px; border-radius:20px; font-weight:bold; }
-  .fb16-hidden { display:none !important; }
-</style>
-<div class="fb16-bar" id="fb16Bar"><button class="fb16-back" id="fb16Back">← Back to Feed</button><b id="fb16Title">Feed</b></div>
-<script>
-(function(){
-  // 1. Turn OFF old fake pages - V14 and V15 - they cause the alerts and empty pages
-  function killOld(){
-    var a = document.getElementById('fb14Page'); if(a) a.style.display='none';
-    var b = document.getElementById('fb15Bar'); if(b) b.style.display='none';
-    // Remove V15's alert logic by stopping its interval - we can't stop it, but we hide its bar
-  }
-  // 2. Focus Mode: find real section, hide everything else at each level
-  var savedHidden = [];
-  function focusOn(name){
-    // Keywords for REAL content - not menu
-    var map = {
-      'Dashboard': ['My Coins - NOT Cash', 'Welcome', 'Daily Check-in'],
-      'Chat Rooms': ['You are in:', 'Join any room', 'Romance'],
-      'Friends': ['Your friends', 'Send request', 'No pending requests'],
-      'Groups': ['Create group', 'No groups yet'],
-      'Stories': ['No stories yet', 'Stories'],
-      'Reels': ['Reels'],
-      'Live': ['Live'],
-      'Hustle': ['Hustle'],
-      'Learn': ['Learn'],
-      'Games': ['Games'],
-      'Invite': ['Invite'],
-      'Subscribe': ['Subscription'],
-      'Chat': ['Chat Rooms'],
-      'Market': ['Market'],
-      'Alerts': ['Alerts'],
-      'Profile': ['Profile'],
-      'Admin': ['Administration - FULL', 'OWNER SECURITY'],
-      'Settings': ['Settings']
-    };
-    var keys = map[name] || [name];
-    // Find the DEEPEST element that contains the keyword and looks like a card
-    var best = null, bestScore = 0;
-    document.querySelectorAll('div, section').forEach(function(d){
-      if(d.closest('.fb13-drawer') || d.closest('.fb16-bar') || d.closest('#fb14Page')) return;
-      var txt = d.textContent || '';
-      for(var i=0;i<keys.length;i++){
-        if(txt.indexOf(keys[i])!==-1){
-          // Score: smaller boxes are better - we want the card, not the whole page
-          var score = 10000 - d.offsetHeight;
-          // Prefer boxes that have the keyword in their first 200 chars (heading)
-          if(txt.substring(0,200).indexOf(keys[i])!==-1) score += 5000;
-          if(score > bestScore){ bestScore = score; best = d; }
-          break;
-        }
-      }
-    });
-    if(!best){ alert('Could not find '+name+' - tap Refresh once and try again'); return; }
-    // Hide everything else: walk up to body, hide siblings at each level
-    savedHidden = [];
-    var cur = best;
-    // First, make the card itself full screen
-    cur.style.display = 'block';
-    cur.style.position = 'fixed';
-    cur.style.top = '100px'; cur.style.left = '8px'; cur.style.right = '8px'; cur.style.bottom = '8px';
-    cur.style.zIndex = '99998'; cur.style.background = '#fff'; cur.style.overflowY = 'auto';
-    cur.style.padding = '14px'; cur.style.borderRadius = '12px';
-    cur.dataset.fb16Open = '1';
-    // Hide siblings of its parents up to body
-    var p = cur.parentElement;
-    while(p && p !== document.body){
-      Array.from(p.children).forEach(function(sib){
-        if(sib !== cur && !sib.contains(cur) && !sib.classList.contains('fb13-top') && !sib.classList.contains('fb16-bar') && sib.id !== 'fb16Bar'){
-          if(sib.style.display !== 'none'){
-            savedHidden.push(sib);
-            sib.classList.add('fb16-hidden');
-          }
-        }
-      });
-      cur = p;
-      p = p.parentElement;
-    }
-    // Hide top-level siblings of the main container too
-    var bar = document.getElementById('fb16Bar');
-    document.getElementById('fb16Title').textContent = name;
-    bar.classList.add('show');
-    window.scrollTo(0,0);
-  }
-  function backToFeed(){
-    // Restore the opened card
-    document.querySelectorAll('[data-fb16-open]').forEach(function(d){
-      d.style.position=''; d.style.top=''; d.style.left=''; d.style.right=''; d.style.bottom=''; d.style.zIndex=''; d.style.background=''; d.style.overflowY=''; d.style.padding=''; d.style.borderRadius='';
-      d.removeAttribute('data-fb16-open');
-    });
-    savedHidden.forEach(function(sib){ sib.classList.remove('fb16-hidden'); });
-    savedHidden = [];
-    document.getElementById('fb16Bar').classList.remove('show');
-    window.scrollTo({top:0, behavior:'smooth'});
-  }
-  document.getElementById('fb16Back').onclick = backToFeed;
-  // Wire menu to Focus Mode - overwrite V13/V14/V15 wiring
-  function wire(){
-    document.querySelectorAll('.fb13-item').forEach(function(btn){
-      if(btn.dataset.fb16) return;
-      btn.dataset.fb16='1';
-      btn.onclick = function(){
-        var want = btn.getAttribute('data-go');
-        document.getElementById('fb13Drawer').classList.remove('open');
-        document.getElementById('fb13Bg').classList.remove('show');
-        backToFeed();
-        if(want === 'Feed'){ return; }
-        if(want === 'Log out'){
-          var all = document.querySelectorAll('a, button');
-          for(var i=0;i<all.length;i++){ if((all[i].textContent||'').trim()==='Log out'){ all[i].click(); break; } }
-          return;
-        }
-        setTimeout(function(){ focusOn(want); }, 200);
-      };
-    });
-  }
-  setInterval(function(){ killOld(); wire(); }, 800);
-  killOld(); wire();
-})();
-</script>
-<!-- ===== END V16 ===== -->
-<!-- ===== V17 MOVE REAL MENU INTO DRAWER ===== -->
-<style>
-  /* Make real menu work in ALL modes - not only Desktop site */
-  /* Force the site to not hide content on small phones */
-  .fb17-force * { pointer-events:auto !important; }
-  #fb17Drawer { position:fixed; top:0; left:-290px; width:270px; bottom:0; background:#fff; z-index:99999; transition:left 0.3s; overflow-y:auto; padding:0; box-shadow:2px 0 20px rgba(0,0,0,0.3); }
-  #fb17Drawer.open { left:0; }
-  #fb17Bg { position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.4); z-index:99998; display:none; }
-  #fb17Bg.show { display:block; }
-  .fb17-top { position:fixed; top:0; left:0; right:0; height:52px; background:#1877F2; color:#fff; display:flex; align-items:center; justify-content:space-between; padding:0 12px; z-index:99990; font-weight:bold; }
-  /* The moved real menu - make it full width inside drawer, big tap area */
-  #fb17Drawer > * { display:block !important; width:100% !important; }
-  #fb17Drawer button, #fb17Drawer a, #fb17Drawer div { font-size:17px !important; padding:12px 14px !important; }
-  .fb17-close { width:100%; padding:12px; border:none; background:#f0f2f5; font-weight:bold; font-size:16px; }
-</style>
-<div class="fb17-top">
-  <button id="fb17Ham" style="font-size:24px; background:none; border:none; color:#fff;">☰</button>
-  <span>PlanetSurfX</span>
-  <button id="fb17Refresh" style="background:#fff; color:#1877F2; border:none; padding:6px 12px; border-radius:20px; font-weight:bold;">↻ Refresh</button>
-</div>
-<div id="fb17Bg"></div>
-<div id="fb17Drawer">
-  <button class="fb17-close" id="fb17Close">✕ Close Menu</button>
-  <div id="fb17Slot" style="padding:8px;"></div>
-</div>
-<script>
-(function(){
-  // 1. Turn OFF old fake menus - V13/V14/V15/V16 - so they stop fighting
-  ['fb13Drawer','fb14Page','fb15Bar','fb16Bar'].forEach(function(id){
-    var el = document.getElementById(id);
-    if(el) el.style.display = 'none';
-  });
-  // Stop old fake buttons from doing anything - hide them
-  document.querySelectorAll('.fb13-item').forEach(function(b){ b.style.display='none'; });
+  // Delete any leftover old top bars
+  document.querySelectorAll('.fb13-top, .fb17-top').forEach(function(el){ el.remove(); });
 
-  // 2. FIND the real working menu - the one that responds in Desktop mode
-  // It is the box that has Dashboard + Feed + Chat Rooms + Friends + Groups together
-  function findRealMenu(){
-    var best = null, bestScore = 0;
-    document.querySelectorAll('div, nav, aside, ul').forEach(function(el){
-      if(el.id==='fb17Drawer' || el.id==='fb17Slot' || el.closest('#fb17Drawer')) return;
-      var t = el.textContent || '';
-      if(t.indexOf('Dashboard')!==-1 && t.indexOf('Chat Rooms')!==-1 && t.indexOf('Friends')!==-1 && t.indexOf('Groups')!==-1){
-        // The real sidebar is a small box, not the whole page
-        // Score: more menu words + smaller height = real sidebar
-        var score = 0;
-        ['Dashboard','Feed','Chat Rooms','Friends','Groups','Stories','Reels','Live','Hustle','Learn'].forEach(function(w){ if(t.indexOf(w)!==-1) score++; });
-        if(el.offsetHeight < 1200 && score > bestScore){ bestScore = score; best = el; }
-      }
-    });
-    return best;
-  }
-
-  // 3. MOVE it - not copy - into our drawer. Same buttons, same code.
-  var moved = false;
-  function moveMenu(){
-    if(moved) return;
-    var real = findRealMenu();
-    if(!real) return;
-    var slot = document.getElementById('fb17Slot');
-    // Move the real element inside the drawer
-    slot.appendChild(real);
-    // Make it visible in ALL modes - override the mobile-hide CSS that made it not respond
-    real.style.display = 'block';
-    real.style.visibility = 'visible';
-    real.style.opacity = '1';
-    real.style.pointerEvents = 'auto';
-    real.style.position = 'static';
-    real.style.width = '100%';
-    // Force the page to behave like desktop for clicks - add class to body
-    document.body.classList.add('fb17-force');
-    moved = true;
-    // When user taps any real menu item, close drawer automatically
-    real.addEventListener('click', function(e){
-      // If they tapped a menu item (not just empty space), close drawer after 300ms
-      setTimeout(function(){
-        document.getElementById('fb17Drawer').classList.remove('open');
-        document.getElementById('fb17Bg').classList.remove('show');
-      }, 300);
-    });
-  }
-
-  // 4. Drawer open/close
-  function openMenu(){ moveMenu(); document.getElementById('fb17Drawer').classList.add('open'); document.getElementById('fb17Bg').classList.add('show'); }
-  function closeMenu(){ document.getElementById('fb17Drawer').classList.remove('open'); document.getElementById('fb17Bg').classList.remove('show'); }
-  document.getElementById('fb17Ham').onclick = openMenu;
-  document.getElementById('fb17Close').onclick = closeMenu;
-  document.getElementById('fb17Bg').onclick = closeMenu;
-  document.getElementById('fb17Refresh').onclick = function(){ window.location.reload(); };
-
-  // Try to move on load, and retry - because site loads menu late
-  moveMenu();
-  setInterval(moveMenu, 1000);
-  // Also force feed full screen on load - hide nothing, just add top padding
-  document.body.style.paddingTop = '58px';
-})();
-</script>
-<!-- ===== END V17 ===== -->
-<!-- ===== V18 USE REAL HEADER + FULL WIDTH CONTENT ===== -->
-<script>
-(function(){
-  // 1. DELETE all my old bars/drawers - not just hide, delete so they stop covering taps
-  ['fb13Drawer','fb13Bg','fb14Page','fb15Bar','fb16Bar','fb17Drawer','fb17Bg'].forEach(function(id){
-    var el = document.getElementById(id);
-    if(el) el.remove();
-  });
-  document.querySelectorAll('.fb13-top,.fb15-page-bar,.fb16-bar,.fb17-top').forEach(function(el){ el.remove(); });
-
-  // 2. Find YOUR real blue header - the one that is always there in normal + desktop mode
-  function findHeader(){
+  // 2. Find your REAL header and add ONE ☰ button inside it - no new top bar
+  function addHam(){
+    if(document.getElementById('fb19Ham')) return;
     var headers = document.querySelectorAll('header, div');
     for(var i=0;i<headers.length;i++){
       var t = headers[i].textContent || '';
       if(t.indexOf('PlanetSurfX')!==-1 && headers[i].offsetHeight < 90 && headers[i].offsetHeight > 30){
-        if(!headers[i].closest('#fb18Drawer')) return headers[i];
+        var btn = document.createElement('button');
+        btn.id = 'fb19Ham';
+        btn.textContent = '☰';
+        btn.onclick = function(e){
+          e.stopPropagation();
+          // Toggle: show/hide the REAL sidebar using CSS - don't move it
+          var sidebar = findSidebar();
+          if(sidebar){
+            if(sidebar.dataset.fb19Open==='1'){
+              sidebar.style.position=''; sidebar.style.left=''; sidebar.style.top=''; sidebar.style.bottom=''; sidebar.style.zIndex=''; sidebar.style.background=''; sidebar.style.overflowY=''; sidebar.style.width=''; sidebar.style.boxShadow='';
+              sidebar.dataset.fb19Open='0';
+              document.getElementById('fb19DrawerBg').classList.remove('show');
+            } else {
+              sidebar.style.position='fixed'; sidebar.style.left='0'; sidebar.style.top='0'; sidebar.style.bottom='0'; sidebar.style.zIndex='99998'; sidebar.style.background='#fff'; sidebar.style.overflowY='auto'; sidebar.style.width='270px'; sidebar.style.boxShadow='2px 0 20px rgba(0,0,0,0.3)'; sidebar.style.display='block';
+              sidebar.dataset.fb19Open='1';
+              document.getElementById('fb19DrawerBg').classList.add('show');
+            }
+          }
+        };
+        headers[i].insertBefore(btn, headers[i].firstChild);
+        return;
       }
     }
-    return document.body.firstElementChild;
   }
-
-  // 3. Create ONE drawer, but put its button INSIDE your real header - so it works in all modes
-  var drawer = document.createElement('div');
-  drawer.id = 'fb18Drawer';
-  drawer.style.cssText = 'position:fixed;top:0;left:-290px;width:270px;bottom:0;background:#fff;z-index:99999;transition:left 0.3s;overflow-y:auto;padding:0;box-shadow:2px 0 20px rgba(0,0,0,0.3);';
-  drawer.innerHTML = '<button id="fb18Close" style="width:100%;padding:12px;border:none;background:#f0f2f5;font-weight:bold;">✕ Close Menu</button><div id="fb18Slot"></div>';
-  document.body.appendChild(drawer);
-  var bg = document.createElement('div');
-  bg.id = 'fb18Bg';
-  bg.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.4);z-index:99998;display:none;';
-  document.body.appendChild(bg);
-
-  function openMenu(){ drawer.style.left='0'; bg.style.display='block'; }
-  function closeMenu(){ drawer.style.left='-290px'; bg.style.display='none'; }
-  document.getElementById('fb18Close').onclick = closeMenu;
-  bg.onclick = closeMenu;
-
-  // 4. Put ☰ button inside YOUR header, not on top of it
-  function addHamToRealHeader(){
-    if(document.getElementById('fb18Ham')) return;
-    var h = findHeader();
-    if(!h) return;
-    var btn = document.createElement('button');
-    btn.id = 'fb18Ham';
-    btn.textContent = '☰';
-    btn.style.cssText = 'font-size:26px;background:#1877F2;color:#fff;border:none;padding:6px 12px;border-radius:6px;margin-right:8px;cursor:pointer;position:relative;z-index:100000;';
-    btn.onclick = function(e){ e.stopPropagation(); openMenu(); };
-    h.insertBefore(btn, h.firstChild);
-    h.style.display='flex'; h.style.alignItems='center';
-  }
-
-  // 5. MOVE real menu into drawer (same as before - real buttons, not fake)
-  var moved = false;
-  function moveMenu(){
-    if(moved) return;
+  // 3. Find real sidebar - the box with Dashboard + Feed + Chat Rooms
+  function findSidebar(){
     var best=null, bestScore=0;
-    document.querySelectorAll('div, nav, aside, ul').forEach(function(el){
-      if(el.id==='fb18Drawer' || el.closest('#fb18Drawer')) return;
+    document.querySelectorAll('div, nav, aside').forEach(function(el){
+      if(el.id==='fb19DrawerBg') return;
       var t = el.textContent || '';
       if(t.indexOf('Dashboard')!==-1 && t.indexOf('Chat Rooms')!==-1 && t.indexOf('Friends')!==-1){
         var score=0;
@@ -2391,56 +1822,27 @@ psxLoadFeed();
         if(el.offsetHeight < 1200 && score > bestScore){ bestScore=score; best=el; }
       }
     });
-    if(!best) return;
-    document.getElementById('fb18Slot').appendChild(best);
-    best.style.display='block'; best.style.width='100%';
-    moved=true;
-    // When a real item is tapped, close drawer + make content FULL WIDTH
-    best.addEventListener('click', function(){
-      setTimeout(function(){
-        closeMenu();
-        makeFullWidth();
-      }, 350);
-    });
+    return best;
   }
+  // 4. Background click closes drawer
+  var bg = document.createElement('div');
+  bg.id = 'fb19DrawerBg';
+  bg.onclick = function(){
+    var s = findSidebar();
+    if(s){ s.style.position=''; s.style.left=''; s.style.top=''; s.style.bottom=''; s.style.zIndex=''; s.style.background=''; s.style.overflowY=''; s.style.width=''; s.style.boxShadow=''; s.dataset.fb19Open='0'; }
+    bg.classList.remove('show');
+  };
+  document.body.appendChild(bg);
 
-  // 6. FIX SQUEEZING: hide left/right columns, make middle take whole screen
-  function makeFullWidth(){
-    // Find the main layout container - the one that holds the 3 columns
-    // We hide any column that is NOT the one showing Chat Rooms / Friends / Feed right now
-    // Simplest reliable fix: force body grid to 1 column
-    var style = document.getElementById('fb18Style');
-    if(!style){
-      style = document.createElement('style');
-      style.id = 'fb18Style';
-      style.textContent = `
-        /* Full width content - no more squeezed middle column */
-        body { overflow-x:hidden !important; }
-        /* Hide right sidebar (Welcome / Subscription / Today) when a feature is open - it was causing white space */
-        /* We keep it in memory, just hide it for now so content can be full width */
-      `;
-      document.head.appendChild(style);
-    }
-    // After a menu click, the site shows that feature in the middle.
-    // Make that middle element full width by finding the widest content box and expanding it
-    setTimeout(function(){
-      // Expand all main content boxes to 100%
-      document.querySelectorAll('div').forEach(function(d){
-        // If this div contains "Chat Rooms" + "You are in:" or "Friends" + "Your friends" etc, it's the opened feature
-        var txt = d.textContent || '';
-        if((txt.indexOf('You are in:')!==-1 || txt.indexOf('Your friends')!==-1 || txt.indexOf('No groups yet')!==-1) && d.offsetWidth > 100 && d.offsetWidth < window.innerWidth){
-          d.style.width = '100%';
-          d.style.maxWidth = '100%';
-          d.style.margin = '0';
-        }
-      });
-    }, 500);
-  }
+  // 5. FIX SQUEEZING: make the main content area full width on phone
+  // Your site uses a 3-column layout. On phone we force the content column to 100%
+  var st = document.createElement('style');
+  st.textContent = '@media (max-width:900px){ main, [class*="main"], [class*="content"] { width:100% !important; max-width:100% !important; } }';
+  document.head.appendChild(st);
 
-  addHamToRealHeader();
-  moveMenu();
-  setInterval(function(){ addHamToRealHeader(); moveMenu(); }, 1200);
+  addHam();
+  setInterval(addHam, 1200);
 })();
 </script>
-<!-- ===== END V18 ===== -->
+<!-- ===== END V19 ===== -->
 </body></html>
