@@ -1853,4 +1853,114 @@ psxLoadFeed();
 })();
 </script>
 <!-- ===== END V13 ===== -->
+<!-- ===== V14 ONE FEATURE AT A TIME + FULL SCREEN FEED ===== -->
+<style>
+  .fb14-page { position:fixed; top:52px; left:0; right:0; bottom:0; background:#fff; z-index:99995; overflow-y:auto; padding:14px; display:none; }
+  .fb14-page.open { display:block; }
+  .fb14-back { background:#f0f2f5; border:none; padding:10px 16px; border-radius:20px; font-weight:bold; margin-bottom:12px; cursor:pointer; font-size:15px; }
+  .fb14-feed-big { font-size:18px !important; }
+  .fb14-feed-big img { width:100% !important; max-width:100% !important; border-radius:12px; }
+  .fb14-feed-big video { width:100% !important; }
+  /* Hide duplicate sidebars on phone - no repetition */
+  @media (max-width:900px){
+    body { padding-top:58px !important; }
+  }
+</style>
+<div class="fb14-page" id="fb14Page">
+  <button class="fb14-back" id="fb14Back">← Back to Feed</button>
+  <div id="fb14Content"></div>
+</div>
+<script>
+(function(){
+  var isOwner = document.body.textContent.indexOf('OWNER')!==-1 || document.body.textContent.indexOf('Fieldmarshal')!==-1;
+  // 1. ADMIN ONLY - hide admin features from public
+  function hideAdminForPublic(){
+    if(isOwner) return; // you are owner, you see everything
+    // Hide Admin menu items + admin sections for normal users
+    document.querySelectorAll('.fb13-item').forEach(function(b){
+      var t = b.textContent || '';
+      if(t.indexOf('Admin')!==-1 || t.indexOf('Settings')!==-1) b.style.display='none';
+    });
+    // Hide OWNER SECURITY, Administration, Generate PIN sections
+    document.querySelectorAll('div, section').forEach(function(d){
+      var txt = (d.textContent||'').substring(0,120);
+      if(txt.indexOf('OWNER SECURITY')!==-1 || txt.indexOf('Administration - FULL')!==-1 || txt.indexOf('Generate PIN')!==-1){
+        if(d.children.length < 4) d.style.display='none';
+      }
+    });
+  }
+  // 2. On login, show ONLY Feed - hide everything else from main view
+  // We do this by hiding the big dashboard containers that are NOT feed
+  function showOnlyFeedOnLoad(){
+    // Make fonts bigger for feed
+    document.body.classList.add('fb14-feed-big');
+  }
+  // 3. Menu click = open ONLY that feature full screen
+  function openFeature(name){
+    var page = document.getElementById('fb14Page');
+    var content = document.getElementById('fb14Content');
+    // Find the original section for this feature - search for its heading
+    var found = null;
+    // Headings to look for
+    var headings = document.querySelectorAll('h1,h2,h3,h4,div,b,strong');
+    for(var i=0;i<headings.length;i++){
+      var t = (headings[i].textContent||'').trim();
+      // Exact match, and not in our menu drawer
+      if(t === name && !headings[i].closest('.fb13-drawer') && !headings[i].closest('#fb14Page')){
+        // Get its card - go up 2 levels
+        var card = headings[i];
+        for(var k=0;k<3;k++){ if(card.parentElement) card = card.parentElement; }
+        found = card;
+        break;
+      }
+    }
+    if(found){
+      content.innerHTML = '<h2 style="font-size:22px; margin-bottom:12px;">'+name+'</h2>';
+      var clone = found.cloneNode(true);
+      clone.style.display = 'block';
+      // Make clone big
+      clone.style.fontSize = '17px';
+      content.appendChild(clone);
+      page.classList.add('open');
+      window.scrollTo(0,0);
+    } else {
+      // If we can't find the section, show a clean page with message
+      content.innerHTML = '<h2>'+name+'</h2><p>This is the '+name+' page. It will open here full screen.</p><p>If you still see the Dashboard behind, scroll up and tap Refresh.</p>';
+      page.classList.add('open');
+    }
+  }
+  document.getElementById('fb14Back').onclick = function(){
+    document.getElementById('fb14Page').classList.remove('open');
+    window.scrollTo({top:0, behavior:'smooth'});
+  };
+  // Re-wire menu buttons to use openFeature
+  function wireMenu(){
+    document.querySelectorAll('.fb13-item').forEach(function(btn){
+      if(btn.dataset.fb14) return;
+      btn.dataset.fb14='1';
+      btn.onclick = function(){
+        var want = btn.getAttribute('data-go');
+        // Close drawer
+        document.getElementById('fb13Drawer').classList.remove('open');
+        document.getElementById('fb13Bg').classList.remove('show');
+        if(want === 'Feed'){
+          document.getElementById('fb14Page').classList.remove('open');
+          window.scrollTo({top:0, behavior:'smooth'});
+          return;
+        }
+        if(want === 'Log out'){
+          // Find real logout
+          var all = document.querySelectorAll('a, button');
+          for(var i=0;i<all.length;i++){ if((all[i].textContent||'').trim()==='Log out'){ all[i].click(); break; } }
+          return;
+        }
+        openFeature(want);
+      };
+    });
+  }
+  setInterval(function(){ wireMenu(); hideAdminForPublic(); showOnlyFeedOnLoad(); }, 1000);
+  wireMenu(); hideAdminForPublic(); showOnlyFeedOnLoad();
+})();
+</script>
+<!-- ===== END V14 ===== -->
 </body></html>
