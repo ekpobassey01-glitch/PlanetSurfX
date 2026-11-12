@@ -1640,4 +1640,112 @@ psxLoadFeed();
 })();
 </script>
 <!-- ===== END V9 ===== -->
+<!-- ===== V11 BEAT V6 - REAL PHOTO/VIDEO ===== -->
+<style>
+  .fb11-img { width:100%; border-radius:12px; margin-top:10px; display:block; }
+  .fb11-vid { width:100%; border-radius:12px; margin-top:10px; display:block; background:#000; }
+  .fb11-prev { margin-top:10px; }
+  .fb11-prev img, .fb11-prev video { width:100%; border-radius:12px; margin-top:8px; display:block; }
+</style>
+<script>
+(function(){
+  // V11 runs FASTER than V6 (200ms vs 1000ms) so it wins the button
+  function takeButtons(){
+    var all = document.querySelectorAll('button, span, div');
+    all.forEach(function(el){
+      var t = (el.textContent||'').trim();
+      if(el.closest('.fb4-bar') || el.closest('.fb5-bar')) return;
+      if(el.children.length > 1) return;
+      // PHOTO - overwrite V6 every time
+      if(t.indexOf('Photo')===0 || t==='📷 Photo'){
+        el.onclick = function(e){
+          e.preventDefault(); e.stopPropagation();
+          var inp = document.createElement('input');
+          inp.type='file'; inp.accept='image/*';
+          inp.onchange = function(){
+            var f = inp.files[0]; if(!f) return;
+            var r = new FileReader();
+            r.onload = function(){
+              localStorage.setItem('fb11_photo', r.result);
+              localStorage.setItem('fb11_name', f.name);
+              window._fb11Photo = r.result;
+              var box = document.querySelector('textarea[placeholder*="Share"]');
+              if(box){
+                var old = document.querySelector('.fb11-prev'); if(old) old.remove();
+                var pv = document.createElement('div'); pv.className='fb11-prev';
+                pv.innerHTML = 'Photo ready: <b>'+f.name+'</b><img src="'+r.result+'">';
+                box.after(pv);
+                if(box.value.indexOf('[Photo:')===-1) box.value = box.value + ' [Photo: '+f.name+']';
+              }
+              alert('Photo ready - you can see it now. Tap Publish');
+            };
+            r.readAsDataURL(f);
+          };
+          inp.click();
+        };
+      }
+      // VIDEO - overwrite V6 every time
+      if(t.indexOf('Video')===0 || t==='🎥 Video'){
+        el.onclick = function(e){
+          e.preventDefault(); e.stopPropagation();
+          var inp = document.createElement('input');
+          inp.type='file'; inp.accept='video/*';
+          inp.onchange = function(){
+            var f = inp.files[0]; if(!f) return;
+            var r = new FileReader();
+            r.onload = function(){
+              localStorage.setItem('fb11_video', r.result);
+              localStorage.setItem('fb11_vname', f.name);
+              window._fb11Video = r.result;
+              var box = document.querySelector('textarea[placeholder*="Share"]');
+              if(box){
+                var old = document.querySelector('.fb11-prev'); if(old) old.remove();
+                var pv = document.createElement('div'); pv.className='fb11-prev';
+                pv.innerHTML = 'Video ready: <b>'+f.name+'</b><video src="'+r.result+'" controls></video>';
+                box.after(pv);
+                if(box.value.indexOf('[Video:')===-1) box.value = box.value + ' [Video: '+f.name+']';
+              }
+              alert('Video ready - tap play to preview, then tap Publish');
+            };
+            r.readAsDataURL(f);
+          };
+          inp.click();
+        };
+      }
+    });
+  }
+  // Show REAL photo/video in World Feed - fix for old posts too
+  function showInFeed(){
+    // Find every element that contains [Photo: ...] text
+    document.querySelectorAll('div, p, span').forEach(function(p){
+      var txt = p.textContent || '';
+      if(txt.indexOf('[Photo:')!==-1 && !p.dataset.fb11done){
+        var photo = localStorage.getItem('fb11_photo') || window._fb11Photo;
+        if(photo){
+          // Only add to the smallest box that holds the text, not the big page
+          if(p.children.length <= 3){
+            p.dataset.fb11done='1';
+            var img = document.createElement('img');
+            img.src = photo; img.className='fb11-img';
+            img.onclick = function(){ window.open(photo,'_blank'); };
+            p.appendChild(img);
+          }
+        }
+      }
+      if(txt.indexOf('[Video:')!==-1 && !p.dataset.fb11vdone){
+        var vidData = localStorage.getItem('fb11_video') || window._fb11Video;
+        if(vidData && p.children.length <= 3){
+          p.dataset.fb11vdone='1';
+          var v = document.createElement('video');
+          v.src = vidData; v.controls=true; v.className='fb11-vid';
+          p.appendChild(v);
+        }
+      }
+    });
+  }
+  setInterval(function(){ takeButtons(); showInFeed(); }, 200);
+  takeButtons(); showInFeed();
+})();
+</script>
+<!-- ===== END V11 ===== -->
 </body></html>
