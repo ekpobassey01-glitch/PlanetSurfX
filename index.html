@@ -2102,4 +2102,129 @@ psxLoadFeed();
 })();
 </script>
 <!-- ===== END V15 ===== -->
+<!-- ===== V16 FOCUS MODE - TURN OFF OLD PATCHES ===== -->
+<style>
+  .fb16-bar { position:fixed; top:52px; left:0; right:0; background:#1877F2; color:#fff; padding:10px 14px; z-index:99999; display:none; align-items:center; gap:10px; }
+  .fb16-bar.show { display:flex; }
+  .fb16-back { background:#fff; color:#1877F2; border:none; padding:8px 14px; border-radius:20px; font-weight:bold; }
+  .fb16-hidden { display:none !important; }
+</style>
+<div class="fb16-bar" id="fb16Bar"><button class="fb16-back" id="fb16Back">← Back to Feed</button><b id="fb16Title">Feed</b></div>
+<script>
+(function(){
+  // 1. Turn OFF old fake pages - V14 and V15 - they cause the alerts and empty pages
+  function killOld(){
+    var a = document.getElementById('fb14Page'); if(a) a.style.display='none';
+    var b = document.getElementById('fb15Bar'); if(b) b.style.display='none';
+    // Remove V15's alert logic by stopping its interval - we can't stop it, but we hide its bar
+  }
+  // 2. Focus Mode: find real section, hide everything else at each level
+  var savedHidden = [];
+  function focusOn(name){
+    // Keywords for REAL content - not menu
+    var map = {
+      'Dashboard': ['My Coins - NOT Cash', 'Welcome', 'Daily Check-in'],
+      'Chat Rooms': ['You are in:', 'Join any room', 'Romance'],
+      'Friends': ['Your friends', 'Send request', 'No pending requests'],
+      'Groups': ['Create group', 'No groups yet'],
+      'Stories': ['No stories yet', 'Stories'],
+      'Reels': ['Reels'],
+      'Live': ['Live'],
+      'Hustle': ['Hustle'],
+      'Learn': ['Learn'],
+      'Games': ['Games'],
+      'Invite': ['Invite'],
+      'Subscribe': ['Subscription'],
+      'Chat': ['Chat Rooms'],
+      'Market': ['Market'],
+      'Alerts': ['Alerts'],
+      'Profile': ['Profile'],
+      'Admin': ['Administration - FULL', 'OWNER SECURITY'],
+      'Settings': ['Settings']
+    };
+    var keys = map[name] || [name];
+    // Find the DEEPEST element that contains the keyword and looks like a card
+    var best = null, bestScore = 0;
+    document.querySelectorAll('div, section').forEach(function(d){
+      if(d.closest('.fb13-drawer') || d.closest('.fb16-bar') || d.closest('#fb14Page')) return;
+      var txt = d.textContent || '';
+      for(var i=0;i<keys.length;i++){
+        if(txt.indexOf(keys[i])!==-1){
+          // Score: smaller boxes are better - we want the card, not the whole page
+          var score = 10000 - d.offsetHeight;
+          // Prefer boxes that have the keyword in their first 200 chars (heading)
+          if(txt.substring(0,200).indexOf(keys[i])!==-1) score += 5000;
+          if(score > bestScore){ bestScore = score; best = d; }
+          break;
+        }
+      }
+    });
+    if(!best){ alert('Could not find '+name+' - tap Refresh once and try again'); return; }
+    // Hide everything else: walk up to body, hide siblings at each level
+    savedHidden = [];
+    var cur = best;
+    // First, make the card itself full screen
+    cur.style.display = 'block';
+    cur.style.position = 'fixed';
+    cur.style.top = '100px'; cur.style.left = '8px'; cur.style.right = '8px'; cur.style.bottom = '8px';
+    cur.style.zIndex = '99998'; cur.style.background = '#fff'; cur.style.overflowY = 'auto';
+    cur.style.padding = '14px'; cur.style.borderRadius = '12px';
+    cur.dataset.fb16Open = '1';
+    // Hide siblings of its parents up to body
+    var p = cur.parentElement;
+    while(p && p !== document.body){
+      Array.from(p.children).forEach(function(sib){
+        if(sib !== cur && !sib.contains(cur) && !sib.classList.contains('fb13-top') && !sib.classList.contains('fb16-bar') && sib.id !== 'fb16Bar'){
+          if(sib.style.display !== 'none'){
+            savedHidden.push(sib);
+            sib.classList.add('fb16-hidden');
+          }
+        }
+      });
+      cur = p;
+      p = p.parentElement;
+    }
+    // Hide top-level siblings of the main container too
+    var bar = document.getElementById('fb16Bar');
+    document.getElementById('fb16Title').textContent = name;
+    bar.classList.add('show');
+    window.scrollTo(0,0);
+  }
+  function backToFeed(){
+    // Restore the opened card
+    document.querySelectorAll('[data-fb16-open]').forEach(function(d){
+      d.style.position=''; d.style.top=''; d.style.left=''; d.style.right=''; d.style.bottom=''; d.style.zIndex=''; d.style.background=''; d.style.overflowY=''; d.style.padding=''; d.style.borderRadius='';
+      d.removeAttribute('data-fb16-open');
+    });
+    savedHidden.forEach(function(sib){ sib.classList.remove('fb16-hidden'); });
+    savedHidden = [];
+    document.getElementById('fb16Bar').classList.remove('show');
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+  document.getElementById('fb16Back').onclick = backToFeed;
+  // Wire menu to Focus Mode - overwrite V13/V14/V15 wiring
+  function wire(){
+    document.querySelectorAll('.fb13-item').forEach(function(btn){
+      if(btn.dataset.fb16) return;
+      btn.dataset.fb16='1';
+      btn.onclick = function(){
+        var want = btn.getAttribute('data-go');
+        document.getElementById('fb13Drawer').classList.remove('open');
+        document.getElementById('fb13Bg').classList.remove('show');
+        backToFeed();
+        if(want === 'Feed'){ return; }
+        if(want === 'Log out'){
+          var all = document.querySelectorAll('a, button');
+          for(var i=0;i<all.length;i++){ if((all[i].textContent||'').trim()==='Log out'){ all[i].click(); break; } }
+          return;
+        }
+        setTimeout(function(){ focusOn(want); }, 200);
+      };
+    });
+  }
+  setInterval(function(){ killOld(); wire(); }, 800);
+  killOld(); wire();
+})();
+</script>
+<!-- ===== END V16 ===== -->
 </body></html>
