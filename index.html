@@ -1748,116 +1748,59 @@ psxLoadFeed();
 })();
 </script>
 <!-- ===== END V11 ===== -->
-<!-- ===== V20 TOP HORIZONTAL BAR - NO SIDE MENU ===== -->
+<!-- ===== V21 TOP BAR FIXED - NO POPUP ===== -->
 <style>
-  #fb20Bar { position:sticky; top:0; z-index:99990; background:#fff; display:flex; gap:6px; overflow-x:auto; padding:8px 8px; border-bottom:1px solid #ddd; white-space:nowrap; scrollbar-width:none; }
-  #fb20Bar::-webkit-scrollbar { display:none; }
-  .fb20Tab { flex:0 0 auto; padding:9px 14px; border-radius:20px; border:1px solid #ddd; background:#f0f2f5; font-size:14px; font-weight:600; cursor:pointer; }
-  .fb20Tab.active { background:#1877F2; color:#fff; border-color:#1877F2; }
-  /* Hide the old vertical side menu completely - we don't need it anymore */
-  /* Fit to screen - content takes full width in both phone + desktop */
-  body { overflow-x:hidden !important; }
+  #fb21Bar { position:fixed !important; top:48px !important; left:0 !important; right:0 !important; z-index:999999 !important; background:#fff !important; display:flex !important; gap:6px !important; overflow-x:auto !important; padding:8px !important; border-bottom:2px solid #1877F2 !important; white-space:nowrap !important; }
+  #fb21Bar::-webkit-scrollbar { display:none; }
+  .fb21Tab { flex:0 0 auto; padding:9px 14px; border-radius:20px; border:1px solid #ddd; background:#f0f2f5; font-size:14px; font-weight:700; cursor:pointer; }
+  .fb21Tab.active { background:#1877F2; color:#fff; border-color:#1877F2; }
+  body { padding-top:96px !important; overflow-x:hidden !important; }
+  .fb21-hide { display:none !important; }
 </style>
-<div id="fb20Bar"></div>
+<div id="fb21Bar"></div>
 <script>
 (function(){
-  // 1. Remove any leftover side-menu stuff from V19
-  ['fb19DrawerBg','fb19Ham','fb18Drawer','fb18Bg','fb17Drawer','fb17Bg'].forEach(function(id){
-    var el = document.getElementById(id); if(el) el.remove();
-  });
-
-  // 2. List of features - same as your Dashboard, in same order
   var tabs = ['Dashboard','Feed','Chat Rooms','Friends','Groups','Stories','Reels','Live','Hustle','Learn','Games','Invite','Subscribe','Chat','Market','Alerts','Profile','Admin'];
-
-  // 3. Find the REAL sidebar item for a name - the one that actually works in Desktop mode
-  // We don't create fake buttons, we TRIGGER the real one when you tap the top tab
-  function findRealItem(name){
-    // Find all clickable elements that have exactly this name
-    var cands = [];
-    document.querySelectorAll('div, button, a, li, span').forEach(function(el){
-      if(el.closest('#fb20Bar')) return;
-      var txt = (el.textContent || '').trim();
-      // Must be a small item, not the whole page - e.g. "Chat Rooms" alone
-      if(txt === name || txt.indexOf(name) === 0 && txt.length < name.length + 3){
-        // Prefer items that are inside the left sidebar area (left side of page)
-        if(el.offsetHeight > 10 && el.offsetHeight < 80) cands.push(el);
-      }
-    });
-    // Return the smallest / leftmost one - that's the sidebar item
-    cands.sort(function(a,b){ return a.getBoundingClientRect().left - b.getBoundingClientRect().left; });
-    return cands[0] || null;
-  }
-
-  // 4. Build the top bar - one tab per feature
-  var bar = document.getElementById('fb20Bar');
-  tabs.forEach(function(name){
-    var btn = document.createElement('button');
-    btn.className = 'fb20Tab';
-    btn.textContent = name;
-    btn.onclick = function(){
-      // Highlight active tab
-      document.querySelectorAll('.fb20Tab').forEach(function(b){ b.classList.remove('active'); });
-      btn.classList.add('active');
-      // Find and click the REAL item
-      var real = findRealItem(name);
-      if(real){
-        real.click();
-      } else {
-        // Fallback: try to find by scanning for the name in the sidebar container
-        var all = document.querySelectorAll('*');
-        for(var i=0;i<all.length;i++){
-          var t = (all[i].textContent || '').trim();
-          if(t === name && all[i].offsetHeight < 80 && all[i].offsetHeight > 10){
-            all[i].click(); break;
-          }
-        }
-      }
-      // After switching, scroll to top and make content fit screen
-      setTimeout(function(){
-        window.scrollTo({top:0, behavior:'smooth'});
-        // Make the opened feature full width
-        document.querySelectorAll('div').forEach(function(d){
-          if(d.offsetWidth > 100 && d.offsetWidth < window.innerWidth && d.textContent.length > 50){
-            // Only expand the main content boxes, not tiny buttons
-            if(d.offsetHeight > 200){ d.style.maxWidth='100%'; d.style.width='100%'; }
+  var bar = document.getElementById('fb21Bar');
+  if(bar && bar.children.length === 0){
+    tabs.forEach(function(name){
+      var b = document.createElement('button');
+      b.className = 'fb21Tab'; b.textContent = name;
+      b.onclick = function(){
+        document.querySelectorAll('.fb21Tab').forEach(function(x){ x.classList.remove('active'); });
+        b.classList.add('active');
+        var found = null;
+        document.querySelectorAll('div, button, a, li, span').forEach(function(el){
+          if(found) return;
+          if(el.closest('#fb21Bar')) return;
+          var t = (el.textContent || '').trim();
+          if(t === name && el.offsetHeight > 10 && el.offsetHeight < 80 && el.offsetWidth < 300){
+            found = el;
           }
         });
-      }, 400);
-    };
-    bar.appendChild(btn);
-  });
-
-  // 5. Hide the old vertical sidebar on all modes - so it doesn't squeeze the screen
+        if(found) found.click();
+        setTimeout(function(){ window.scrollTo({top:0, behavior:'smooth'}); }, 400);
+      };
+      bar.appendChild(b);
+    });
+  }
   setInterval(function(){
-    // Find the vertical sidebar - the tall box on the left with all the menu items
+    if(!document.getElementById('fb21Bar')){ document.body.appendChild(bar); }
+    bar.style.display = 'flex';
     document.querySelectorAll('div, nav, aside').forEach(function(el){
-      if(el.closest('#fb20Bar')) return;
+      if(el.closest('#fb21Bar')) return;
       var t = el.textContent || '';
       if(t.indexOf('Dashboard')!==-1 && t.indexOf('Chat Rooms')!==-1 && t.indexOf('Friends')!==-1 && t.indexOf('Groups')!==-1){
-        if(el.offsetHeight < 1500 && el.offsetHeight > 300){
-          // Don't hide if it's the whole body - only hide the narrow left column
-          if(el.offsetWidth < 320){
-            el.style.display='none';
-          }
+        if(el.offsetHeight > 300 && el.offsetHeight < 1500 && el.offsetWidth < 320){
+          el.classList.add('fb21-hide');
+          el.style.display = 'none';
         }
       }
     });
-  }, 1000);
-
-  // 6. Put the bar just below the blue header - move it to top of page content
-  function placeBar(){
-    var header = null;
-    document.querySelectorAll('header, div').forEach(function(el){
-      if(!header && (el.textContent||'').indexOf('PlanetSurfX')!==-1 && el.offsetHeight < 90 && el.offsetHeight > 30) header = el;
-    });
-    if(header && bar && bar.parentElement !== document.body){
-      // Bar is already at top, keep it sticky
-    }
-    // Ensure bar is at very top, just under blue header
-    if(bar.parentElement !== document.body) document.body.insertBefore(bar, document.body.firstChild);
-  }
-  placeBar();
+    var ham = document.getElementById('fb19Ham');
+    if(ham) ham.remove();
+  }, 800);
 })();
 </script>
-<!-- ===== END V20 ===== -->
+<!-- ===== END V21 ===== -->  
 </body></html>
