@@ -1748,40 +1748,7 @@ psxLoadFeed();
 })();
 </script>
 <!-- ===== END V11 ===== -->
-<!-- ===== V21 TOP BAR FIXED - NO POPUP ===== -->
-<style>
-  #fb21Bar { position:fixed !important; top:48px !important; left:0 !important; right:0 !important; z-index:999999 !important; background:#fff !important; display:flex !important; gap:6px !important; overflow-x:auto !important; padding:8px !important; border-bottom:2px solid #1877F2 !important; white-space:nowrap !important; }
-  #fb21Bar::-webkit-scrollbar { display:none; }
-  .fb21Tab { flex:0 0 auto; padding:9px 14px; border-radius:20px; border:1px solid #ddd; background:#f0f2f5; font-size:14px; font-weight:700; cursor:pointer; }
-  .fb21Tab.active { background:#1877F2; color:#fff; border-color:#1877F2; }
-  body { padding-top:96px !important; overflow-x:hidden !important; }
-  .fb21-hide { display:none !important; }
-</style>
-<div id="fb21Bar"></div>
-<script>
-(function(){
-  var tabs = ['Dashboard','Feed','Chat Rooms','Friends','Groups','Stories','Reels','Live','Hustle','Learn','Games','Invite','Subscribe','Chat','Market','Alerts','Profile','Admin'];
-  var bar = document.getElementById('fb21Bar');
-  if(bar && bar.children.length === 0){
-    tabs.forEach(function(name){
-      var b = document.createElement('button');
-      b.className = 'fb21Tab'; b.textContent = name;
-      b.onclick = function(){
-        document.querySelectorAll('.fb21Tab').forEach(function(x){ x.classList.remove('active'); });
-        b.classList.add('active');
-        var found = null;
-        document.querySelectorAll('div, button, a, li, span').forEach(function(el){
-          if(found) return;
-          if(el.closest('#fb21Bar')) return;
-          var t = (el.textContent || '').trim();
-          if(t === name && el.offsetHeight > 10 && el.offsetHeight < 80 && el.offsetWidth < 300){
-            found = el;
-          }
-        });
-        if(found) found.click();
-        setTimeout(function(){ window.scrollTo({top:0, behavior:'smooth'}); }, 400);
-      };
-      bar.appendChild(b);
+bar.appendChild(b);
     });
   }
   setInterval(function(){
