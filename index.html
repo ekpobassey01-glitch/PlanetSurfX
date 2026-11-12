@@ -1803,4 +1803,32 @@ psxLoadFeed();
 })();
 </script>
 <!-- ===== END V21 ===== -->  
+<!-- ===== V21.1 FIX TABS - OFF-SCREEN NOT HIDDEN ===== -->
+<script>
+(function(){
+  setInterval(function(){
+    // Bring back the real sidebar, but push it off-screen to the left - so it can't be seen, but it CAN still be clicked by the top bar
+    document.querySelectorAll('div, nav, aside').forEach(function(el){
+      if(el.closest('#fb21Bar')) return;
+      var t = el.textContent || '';
+      if(t.indexOf('Dashboard')!==-1 && t.indexOf('Chat Rooms')!==-1 && t.indexOf('Friends')!==-1 && t.indexOf('Groups')!==-1){
+        if(el.offsetHeight > 300 && el.offsetHeight < 1500 && el.offsetWidth < 320){
+          // Undo V21's display:none
+          el.classList.remove('fb21-hide');
+          el.style.display = 'block';
+          // Move it off-screen, not hidden
+          el.style.position = 'fixed';
+          el.style.left = '-1000px';
+          el.style.top = '0';
+          el.style.width = '270px';
+          el.style.zIndex = '1';
+          el.style.opacity = '0';
+          el.style.pointerEvents = 'none';
+        }
+      }
+    });
+  }, 800);
+})();
+</script>
+<!-- ===== END V21.1 ===== -->
 </body></html>
