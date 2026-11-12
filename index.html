@@ -1202,4 +1202,69 @@ psxLoadFeed();
 </script>
 <!-- ===== END V3 ===== -->
 <style>body{border:6px solid red !important;}</style>
+<!-- ===== V5 FACEBOOK COMPOSER ===== -->
+<style>
+  textarea[placeholder*="Share"] {
+    min-height: 220px !important;
+    height: 220px !important;
+    width: 100% !important;
+    font-size: 18px !important;
+    padding: 16px !important;
+    box-sizing: border-box !important;
+  }
+  .fb5-bar { display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; padding-top:12px; border-top:1px solid #ddd; }
+  .fb5-btn { background:#f0f2f5; border:none; padding:9px 16px; border-radius:20px; font-size:15px; cursor:pointer; }
+  .fb5-preview { margin-top:10px; font-size:14px; }
+  .fb5-preview img, .fb5-preview video { max-width:100%; max-height:180px; border-radius:10px; display:block; margin-top:8px; }
+</style>
+<script>
+(function(){
+  function build(){
+    var box = document.querySelector('textarea[placeholder*="Share"]');
+    if(!box) return;
+    // Remove old bars so they don't double
+    document.querySelectorAll('.fb4-bar').forEach(function(b){ b.remove(); });
+    if(document.querySelector('.fb5-bar')) return;
+    box.addEventListener('input', function(){
+      this.style.height = 'auto';
+      this.style.height = Math.max(220, this.scrollHeight) + 'px';
+    });
+    var photoInput = document.createElement('input');
+    photoInput.type = 'file'; photoInput.accept = 'image/*'; photoInput.style.display = 'none';
+    var videoInput = document.createElement('input');
+    videoInput.type = 'file'; videoInput.accept = 'video/*'; videoInput.style.display = 'none';
+    var fileInput = document.createElement('input');
+    fileInput.type = 'file'; fileInput.style.display = 'none';
+    var bar = document.createElement('div');
+    bar.className = 'fb5-bar';
+    bar.innerHTML = '<button type="button" class="fb5-btn" data-t="photo">📷 Photo</button><button type="button" class="fb5-btn" data-t="video">🎥 Video</button><button type="button" class="fb5-btn" data-t="file">📎 File</button>';
+    var preview = document.createElement('div');
+    preview.className = 'fb5-preview';
+    bar.querySelector('[data-t="photo"]').onclick = function(){ photoInput.click(); };
+    bar.querySelector('[data-t="video"]').onclick = function(){ videoInput.click(); };
+    bar.querySelector('[data-t="file"]').onclick = function(){ fileInput.click(); };
+    function showFile(input, kind){
+      var f = input.files[0]; if(!f) return;
+      preview.innerHTML = 'Attached: <b>' + f.name + '</b>';
+      if(kind==='photo'){ preview.innerHTML += '<img src="'+URL.createObjectURL(f)+'">'; }
+      if(kind==='video'){ preview.innerHTML += '<video src="'+URL.createObjectURL(f)+'" controls></video>'; }
+      window._fb5File = f.name;
+    }
+    photoInput.onchange = function(){ showFile(photoInput,'photo'); };
+    videoInput.onchange = function(){ showFile(videoInput,'video'); };
+    fileInput.onchange = function(){ showFile(fileInput,'file'); };
+    box.after(bar);
+    bar.after(preview);
+    bar.appendChild(photoInput); bar.appendChild(videoInput); bar.appendChild(fileInput);
+    document.addEventListener('click', function(e){
+      if(e.target && e.target.textContent.trim()==='Publish' && window._fb5File){
+        if(box.value.indexOf(window._fb5File)===-1){ box.value = box.value + ' [' + window._fb5File + ']'; }
+      }
+    });
+  }
+  setInterval(build, 1500);
+  build();
+})();
+</script>
+<!-- ===== END V5 ===== -->
 </body></html>
