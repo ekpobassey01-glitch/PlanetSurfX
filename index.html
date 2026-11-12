@@ -1748,139 +1748,43 @@ psxLoadFeed();
 })();
 </script>
 <!-- ===== END V11 ===== -->
-<!-- ===== V24 TOP BAR - ALWAYS VISIBLE + DIRECT SWITCH ===== -->
+ <!-- ===== V25 TURN SIDEBAR INTO TOP BAR - NO NEW BUTTONS ===== -->
 <style>
-  /* Bar is BELOW the blue header, and ABOVE everything - nothing can cover it */
-  #fb24Bar { position:fixed !important; top:72px !important; left:0 !important; right:0 !important; z-index:9999999 !important; background:#ffffff !important; display:flex !important; gap:6px !important; overflow-x:auto !important; padding:10px 8px !important; border-bottom:3px solid #1877F2 !important; white-space:nowrap !important; box-shadow:0 2px 8px rgba(0,0,0,0.15) !important; }
-  #fb24Bar::-webkit-scrollbar { display:none; }
-  .fb24Tab { flex:0 0 auto; padding:10px 16px; border-radius:20px; border:1px solid #ddd; background:#f0f2f5; font-size:14px; font-weight:700; cursor:pointer; }
-  .fb24Tab.active { background:#1877F2 !important; color:#fff !important; border-color:#1877F2 !important; }
-  body { padding-top:122px !important; overflow-x:hidden !important; }
-  .fb24-hide { display:none !important; }
-  .fb24-show { display:block !important; width:100% !important; max-width:100% !important; }
+  /* This is the ONLY bar - it IS your original sidebar, just laid flat */
+  #fb25Bar { position:fixed !important; top:72px !important; left:0 !important; right:0 !important; z-index:99999 !important; background:#fff !important; display:flex !important; flex-direction:row !important; gap:6px !important; overflow-x:auto !important; overflow-y:hidden !important; padding:8px !important; border-bottom:3px solid #1877F2 !important; white-space:nowrap !important; }
+  #fb25Bar::-webkit-scrollbar { display:none; }
+  /* Each original menu item becomes a pill */
+  #fb25Bar > * { flex:0 0 auto !important; width:auto !important; max-width:none !important; padding:9px 14px !important; border-radius:20px !important; border:1px solid #ddd !important; background:#f0f2f5 !important; font-size:14px !important; font-weight:700 !important; }
+  body { padding-top:122px !important; }
 </style>
-<div id="fb24Bar"></div>
 <script>
 (function(){
-  var tabs = ['Dashboard','Feed','Chat Rooms','Friends','Groups','Stories','Reels','Live','Hustle','Learn','Games','Invite','Subscribe','Chat','Market','Alerts','Profile','Admin'];
-  var bar = document.getElementById('fb24Bar');
-
-  function buildBar(){
-    if(!bar || bar.children.length > 0) return;
-    tabs.forEach(function(name){
-      var b = document.createElement('button');
-      b.className = 'fb24Tab'; b.textContent = name;
-      b.onclick = function(){ switchTo(name, b); };
-      bar.appendChild(b);
-    });
-    var f = bar.querySelector('.fb24Tab'); if(f) f.classList.add('active');
-  }
-
-  function switchTo(name, btn){
-    document.querySelectorAll('.fb24Tab').forEach(function(x){ x.classList.remove('active'); });
-    if(btn) btn.classList.add('active');
-
-    // A) Try site's own view containers - divs with id like view-feed, page-chat, tab-friends
-    var views = [];
-    document.querySelectorAll('[id]').forEach(function(el){
-      var id = (el.id||'').toLowerCase();
-      if(id.indexOf('view')!==-1 || id.indexOf('page')!==-1 || id.indexOf('tab-')!==-1 || id.indexOf('screen')!==-1 || id.indexOf('section')!==-1){
-        if(el.offsetHeight > 50) views.push(el);
-      }
-    });
-    // Keep only top-level views (not views inside views)
-    views = views.filter(function(v){ return !views.some(function(o){ return o!==v && o.contains(v); }); });
-
-    if(name === 'Dashboard'){
-      views.forEach(function(v){ v.classList.remove('fb24-hide'); });
-      // Also unhide all cards
-      document.querySelectorAll('.fb24-hide').forEach(function(c){ if(!c.closest('#fb24Bar')) c.classList.remove('fb24-hide'); });
-      window.scrollTo({top:0});
-      return;
-    }
-
-    if(views.length >= 2){
-      var matchedView = 0;
-      views.forEach(function(v){
-        var id = (v.id||'').toLowerCase();
-        var txt = (v.textContent||'').substring(0,150).toLowerCase();
-        // Match by id or by heading
-        var hit = id.indexOf(name.toLowerCase().replace(' ',''))!==-1 || id.indexOf(name.toLowerCase())!==-1 || txt.indexOf(name.toLowerCase())!==-1;
-        if(hit){ v.classList.remove('fb24-hide'); v.classList.add('fb24-show'); matchedView++; }
-        else { v.classList.add('fb24-hide'); v.classList.remove('fb24-show'); }
-      });
-      if(matchedView > 0){ window.scrollTo({top:0}); return; }
-      // If views didn't match, fall through to card method below
-      views.forEach(function(v){ v.classList.remove('fb24-hide'); });
-    }
-
-    // B) No view containers - Dashboard is one long page. Hide all cards, show ONLY the matching card.
-    // A card = a box with a heading + button, not the whole page wrapper
-    var cards = [];
-    document.querySelectorAll('div').forEach(function(el){
-      if(el.closest('#fb24Bar')) return;
-      if(el.offsetHeight < 80 || el.offsetHeight > 900) return;
-      if(el.querySelectorAll(':scope > div').length > 4) return; // wrapper, skip
-      var t = (el.textContent||'').trim();
-      if(t.length < 20 || t.length > 2500) return;
-      if(!el.querySelector('button, input, a, h1, h2, h3')) return;
-      cards.push(el);
-    });
-    cards = cards.filter(function(c){ return !cards.some(function(o){ return o!==c && o.contains(c); }); });
-
-    var matched = 0;
-    cards.forEach(function(c){
-      var t = (c.textContent||'');
-      var head = t.substring(0,150);
-      var hit = head.indexOf(name)!==-1;
-      // Extra matches for features whose card heading is different
-      if(name==='Feed' && (t.indexOf('Create Post')!==-1 || t.indexOf('What is on your mind')!==-1)) hit = true;
-      if(name==='Chat' && t.indexOf('Chat')!==-1 && t.length < 800) hit = true;
-      if(name==='Games' && t.indexOf('Today')!==-1) hit = true;
-      if(name==='Admin' && t.indexOf('Administration')!==-1) hit = true;
-      if(name==='Profile' && t.indexOf('Profile')!==-1) hit = true;
-      if(name==='Market' && t.indexOf('Market')!==-1) hit = true;
-      if(name==='Subscribe' && t.indexOf('Subscription')!==-1) hit = true;
-      if(name==='Invite' && t.indexOf('Invite')!==-1) hit = true;
-      if(hit){ c.classList.remove('fb24-hide'); c.classList.add('fb24-show'); matched++; }
-      else { c.classList.add('fb24-hide'); c.classList.remove('fb24-show'); }
-    });
-    if(matched === 0){
-      // Nothing matched - don't leave blank screen, show all again
-      cards.forEach(function(c){ c.classList.remove('fb24-hide'); });
-    }
-    window.scrollTo({top:0});
-  }
-
-  buildBar();
-
-  // Keep bar alive - if site re-renders and removes it, put it back every 600ms
-  // Also keep the old vertical side menu pushed off-screen so it NEVER pops up again
-  setInterval(function(){
-    if(!document.getElementById('fb24Bar')){
-      document.body.insertBefore(bar, document.body.firstChild);
-    }
-    bar.style.display = 'flex';
-    bar.style.top = '72px';
+  var tries = 0;
+  var done = false;
+  var timer = setInterval(function(){
+    if(done) { clearInterval(timer); return; }
+    tries++;
+    if(tries > 30) { clearInterval(timer); return; }
+    // Find your ORIGINAL sidebar - the box that has Dashboard + Feed + Chat Rooms + Friends + Groups
+    var sidebar = null;
     document.querySelectorAll('div, nav, aside').forEach(function(el){
-      if(el.closest('#fb24Bar')) return;
+      if(sidebar) return;
+      if(el.id === 'fb25Bar') return;
       var t = el.textContent || '';
       if(t.indexOf('Dashboard')!==-1 && t.indexOf('Chat Rooms')!==-1 && t.indexOf('Friends')!==-1 && t.indexOf('Groups')!==-1){
         if(el.offsetHeight > 300 && el.offsetHeight < 1500 && el.offsetWidth < 320){
-          el.style.display = 'block';
-          el.style.position = 'fixed';
-          el.style.left = '-1000px';
-          el.style.top = '0';
-          el.style.width = '270px';
-          el.style.zIndex = '1';
-          el.style.opacity = '0';
-          el.style.pointerEvents = 'none';
+          sidebar = el;
         }
       }
     });
-    ['fb21Bar','fb22Bar','fb23Bar','fb19Ham','fb20Bar'].forEach(function(id){ var o=document.getElementById(id); if(o) o.remove(); });
-  }, 600);
+    if(!sidebar) return;
+    // Turn THAT box into the top bar. Do not create new buttons. Do not hide cards.
+    // Do not touch anything else.
+    sidebar.id = 'fb25Bar';
+    sidebar.style.display = 'flex';
+    done = true;
+  }, 500);
 })();
 </script>
-<!-- ===== END V24 ===== -->
+<!-- ===== END V25 ===== -->     
 </body></html>
