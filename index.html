@@ -1845,4 +1845,44 @@ psxLoadFeed();
 })();
 </script>
 <!-- ===== END V19 ===== -->
+<!-- ===== V19 FIX - CLOSE MENU AFTER TAP ===== -->
+<script>
+(function(){
+  function findSidebar(){
+    var best=null, bestScore=0;
+    document.querySelectorAll('div, nav, aside').forEach(function(el){
+      if(el.id==='fb19DrawerBg') return;
+      var t = el.textContent || '';
+      if(t.indexOf('Dashboard')!==-1 && t.indexOf('Chat Rooms')!==-1 && t.indexOf('Friends')!==-1){
+        var score=0;
+        ['Dashboard','Feed','Chat Rooms','Friends','Groups','Stories','Reels','Live'].forEach(function(w){ if(t.indexOf(w)!==-1) score++; });
+        if(el.offsetHeight < 1500 && score > bestScore){ bestScore=score; best=el; }
+      }
+    });
+    return best;
+  }
+  function closeMenu(){
+    var s = findSidebar();
+    if(s){
+      s.style.position=''; s.style.left=''; s.style.top=''; s.style.bottom=''; s.style.zIndex=''; s.style.background=''; s.style.overflowY=''; s.style.width=''; s.style.boxShadow=''; s.dataset.fb19Open='0';
+    }
+    var bg = document.getElementById('fb19DrawerBg');
+    if(bg) bg.classList.remove('show');
+  }
+  // Close when you tap ANY menu item - Dashboard, Chat Rooms, Friends, etc.
+  setInterval(function(){
+    var s = findSidebar();
+    if(!s || s.dataset.fb19CloseWired) return;
+    s.dataset.fb19CloseWired='1';
+    s.addEventListener('click', function(e){
+      // Only close if they tapped a real item, not empty space
+      var txt = (e.target.textContent || '').trim();
+      if(txt.length > 0 && txt.length < 30){
+        setTimeout(closeMenu, 250);
+      }
+    });
+  }, 800);
+})();
+</script>
+<!-- ===== END V19 FIX ===== -->
 </body></html>
